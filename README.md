@@ -11,21 +11,25 @@ Docker images.
 
 ## Building
 
-Run 'make'
+Run `make`
 
 ## Running
 
 The easiest way is to use docker-compose. Copy the file `snikket.conf.example` to
 `snikket.conf` and edit the values in it. Then run:
 
-  docker-compose up -d
+```console
+docker-compose up -d
+```
 
 If you need to change port mappings or any other advanced options, you can edit the
-docker-compse.yml file.
+`docker-compse.yml` file.
 
 Alternatively you can run docker manually with something like the following:
 
+```console
 docker run --env-file=snikket.conf -p 80:5280 -p 443:5281 -p 5222:5222 -p 5269:5269 snikket
+```
 
 ## Development
 
@@ -37,7 +41,7 @@ Outgoing emails from dev images are captured by a local [MailHog](https://github
 instance and are accessible in a dashboard served on port 8025. The dashboard requires authentication.
 The username is 'snikket' and the auto-generated password can be found with the following command:
 
-```
+```console
 docker exec snikket_snikket_1 cat /tmp/mailhog-password
 ```
 
