@@ -1,0 +1,19 @@
+name: Docker image build
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: >-
+        docker build .
+          --file docker/Dockerfile
+          --tag snikket/snikket:dev
+    - name: Log into registry
+      run: echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u snikket --password-stdin
+    - name: Push the Docker image
+      run: docker push snikket/snikket:dev

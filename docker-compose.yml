@@ -1,0 +1,26 @@
+version: "3.3"
+
+services:
+  snikket:
+    image: snikket:latest
+    ports:
+      # HTTP port
+      - "80:5280"
+      # HTTPS port
+      - "443:5281"
+      # XMPP client connections (STARTTLS and Direct TLS)
+      - "5222:5222"
+      - "5223:5223"
+      # XMPP server-to-server connections
+      - "5269:5269"
+      # Mail viewer (dev only)
+      - "8025:8025"
+    volumes:
+      - type: "volume"
+        source: snikket_data
+        target: /snikket
+    env_file: snikket.conf
+    restart: "unless-stopped"
+
+volumes:
+  snikket_data:

@@ -1,0 +1,16 @@
+---
+
+- name: Install certbot
+  apt:
+    name: certbot
+    state: present
+    install_recommends: no
+- name: Create directory for certs
+  file:
+    state: directory
+    path: /etc/ssl/certbot
+- name: Install certbot cron script
+  copy:
+    src: ../files/certbot.cron
+    dest: /etc/cron.daily/certbot
+    mode: 0550

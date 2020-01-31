@@ -1,0 +1,13 @@
+---
+# Main playbook
+
+- hosts: all
+  become: yes
+  gather_facts: no
+  tasks:
+    - import_tasks: tasks/prosody.yml
+    - import_tasks: tasks/supervisor.yml
+    - import_tasks: tasks/cron.yml
+    - import_tasks: tasks/certs.yml
+    - import_tasks: tasks/mail.yml
+    - import_tasks: tasks/scripts.yml

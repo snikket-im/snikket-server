@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{site_name} | Snikket</title>
+	<link rel="stylesheet" href="/share/bootstrap4/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/snikket.css">
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+	<meta name="msapplication-TileColor" content="#fbd308">
+	<meta name="theme-color" content="#fbd308">
+</head>
+<body>
+	<div id="background" class="fixed-top overflow-hidden" aria-role="none presentation"></div>
+	<div id="form" class="container col-md-8 col-md-offset-2 col-sm-8 cold-sm-offset-2 col-lg-6 col-lg-offset-3 mt-2 mt-md-5">
+		<div class="card rounded-lg shadow">
+			<h1 class="card-header rounded-lg rounded-lg">
+				Secure communication on {site_name}<br/>
+			</h1>
+			<div id="powered-by"><a href="https://snikket.org/">Powered by <img src="/snikket-logo.svg"></a></div>
+			<div class="card-body" >
+				<p>{site_name} is using Snikket - a secure, privacy-friendly chat app.</p>
+
+				{allow_email&
+					<h5 class="card-title">Request invitation</h5>
+
+					<p>You may join the Snikket network by creating an account
+					on {site_name}. Registration is by invitation only, enter
+					your email address to request an invitation.</p>
+
+					<form action="/invite-request" method="post">
+						<div class="form-group form-row">
+							<label for="user" class="col-md-4 col-lg-12 col-form-label">Email:</label>
+							<div class="col-md-8 col-lg-12">
+								<div class="input-group">
+									<input
+									       type="email" name="email" class="form-control" aria-describedby="emailHelp"
+									       required autofocus minlength="3" length="30"
+									>
+								</div>
+								<small id="emailHelp" class="d-block form-text text-muted">
+									Enter the email address we should deliver your invitation to.
+									<br/>
+									Your email address will be kept private as per our <a href="privacy/">Privacy Policy</a>.
+								</small>
+							</div>
+						</div>
+						<div class="form-group form-row float-right">
+							<button type="submit" class="btn btn-primary btn-lg">Submit</button>
+						</div>
+					</form>
+				}
+			</div>
+		</div>
+	</div>
+	<script src="/share/jquery/jquery.min.js"></script>
+	<script src="/share/bootstrap4/js/bootstrap.min.js"></script>
+</body>
+</html>

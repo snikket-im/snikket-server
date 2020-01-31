@@ -1,0 +1,5 @@
+# The domain of your Snikket instance
+SNIKKET_DOMAIN=example.com
+
+# The email address of the primary admin
+SNIKKET_ADMIN_EMAIL=admin@example.com

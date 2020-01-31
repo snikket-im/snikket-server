@@ -1,0 +1,19 @@
+#!/bin/bash
+
+SHOW_QR=0
+if [ "$1" == "--qr" ]; then
+	SHOW_QR=1;
+fi
+
+URL=$( prosodyctl mod_easy_invite "$SNIKKET_DOMAIN" generate "$@" )
+
+echo ""
+echo "Your invite link: $URL"
+echo ""
+if [ "$SHOW_QR" = "1" ]; then
+	echo "QR code for scanning:"
+	echo ""
+	echo "$URL" | qrencode -t ansi
+	echo ""
+fi
+

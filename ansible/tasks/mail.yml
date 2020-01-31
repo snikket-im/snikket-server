@@ -1,0 +1,32 @@
+---
+
+- name: Install msmtp-mta
+  apt:
+    name: msmtp-mta
+    state: present
+    install_recommends: no
+
+- name: Configure msmtp-mta
+  copy:
+    src: ../files/msmtp.conf
+    dest: /etc/msmtprc
+
+- name: Download MailHog
+  get_url:
+    url: "https://github.com/mailhog/MailHog/releases/download/v1.0.0/MailHog_linux_amd64"
+    checksum: sha256:ba921e04438e176c474d533447ae64707ffcdd1230f0153f86cb188d348f25c0
+    dest: /usr/local/bin/mailhog
+    mode: 0755
+  tags: dev
+
+- name: Add MailHog authentication
+  template:
+    src: "../templates/mailhog-auth"
+    dest: "/etc/mailhog-auth"
+  tags: dev
+
+- name: Add MailHog service
+  copy:
+    src: "../files/supervisor-mailhog.conf"
+    dest: "/etc/supervisor/conf.d/mailhog.conf"
+  tags: dev

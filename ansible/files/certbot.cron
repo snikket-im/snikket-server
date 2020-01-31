@@ -1,0 +1,12 @@
+#!/bin/sh
+
+certbot certonly -n --webroot --webroot-path /var/www \
+  --cert-path /etc/ssl/certbot \
+  --keep $SNIKKET_CERTBOT_OPTIONS \
+  --agree-tos --email "$SNIKKET_ADMIN_EMAIL" --expand \
+  --allow-subset-of-names \
+  --config-dir /snikket/letsencrypt \
+  --domain "$SNIKKET_DOMAIN" --domain "share.$SNIKKET_DOMAIN" \
+  --domain "groups.$SNIKKET_DOMAIN"
+
+prosodyctl --root cert import /snikket/letsencrypt/live

@@ -1,0 +1,113 @@
+---
+
+- name: "Add Prosody package signing key"
+  apt_key:
+    url: "https://packages.prosody.im/debian/pubkey.asc"
+- name: "Add Prosody package repo"
+  apt_repository:
+    repo: "deb https://packages.prosody.im/debian buster main"
+- name: "Install Prosody package"
+  apt:
+    name: prosody-trunk
+    state: present
+    install_recommends: yes
+- name: "Deploy Prosody config"
+  copy:
+    src: ../files/prosody.cfg.lua
+    dest: /etc/prosody/prosody.cfg.lua
+- name: "Create Prosody data directory"
+  file:
+    state: directory
+    path: /snikket/prosody
+    owner: prosody
+    group: prosody
+    mode: 0750
+- name: "Create Prosody modules directory"
+  file:
+    state: directory
+    path: /etc/prosody/modules
+- name: "Create web root directory"
+  file:
+    state: directory
+    path: /var/www
+- name: "FIXME Workaround for Prosody package bug"
+  file:
+    path: /etc/prosody/certs
+    state: directory
+    owner: prosody
+    group: adm
+    mode: 0750
+    recurse: yes
+- name: "Disable Prosody init script"
+  service:
+    name: prosody
+    enabled: no
+- name: "Stop Prosody if running"
+  service:
+    name: prosody
+    state: stopped
+
+- name: Install Mercurial
+  apt:
+    name: mercurial
+    state: present
+    install_recommends: no
+
+- name: Clone prosody-modules
+  hg:
+    repo: https://hg.prosody.im/prosody-modules
+    dest: /usr/local/lib/prosody-modules
+    revision: default
+    purge: yes
+    update: yes
+- name: Enable wanted modules
+  file:
+    state: link
+    src: "/usr/local/lib/prosody-modules/{{item}}"
+    dest: "/etc/prosody/modules/{{item}}"
+  loop:
+    - mod_smacks
+    - mod_cloud_notify
+    - mod_invite
+    - mod_block_registrations
+    - mod_compact_resource
+    - mod_conversejs
+    - mod_http_upload
+    - mod_lastlog
+    - mod_limit_auth
+    - mod_password_policy
+    - mod_password_reset
+    - mod_roster_allinall
+    - mod_strict_https
+    - mod_vcard_muc
+    - mod_reload_modules
+    - mod_email
+    - mod_http_altconnect
+    - mod_bookmarks
+    - mod_default_bookmarks
+    - mod_muc_defaults
+
+
+- name: Install Bootstrap and JS libs
+  apt:
+    name:
+      - libjs-bootstrap4
+      - libjs-jquery
+    install_recommends: no
+
+- name: Enable wanted modules
+  file:
+    state: link
+    src: "/usr/local/lib/snikket-modules/{{item}}"
+    dest: "/etc/prosody/modules/{{item}}"
+  loop:
+    - mod_landing_page
+    - mod_invites
+    - mod_invites_page
+    - mod_invites_register
+    - mod_invites_api
+    - mod_easy_invite
+    - mod_http_acme_challenge
+    - mod_http_libjs
+    - mod_update_check
+    - mod_authz_internal

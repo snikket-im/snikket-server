@@ -1,0 +1,7 @@
+---
+
+- name: "Add helper scripts"
+  copy:
+    src: "../files/bin/"
+    dest: "/usr/local/bin/"
+    mode: 0755

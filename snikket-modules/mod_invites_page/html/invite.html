@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Invite to {site_name} | Snikket</title>
+	<link rel="stylesheet" href="/share/bootstrap4/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/snikket.css">
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+	<meta name="msapplication-TileColor" content="#fbd308">
+	<meta name="theme-color" content="#fbd308">
+	<style>
+		#install-buttons-container {
+			text-align: center;
+		}
+		#install-buttons-container img {
+			height: 3.5em;
+			margin: 0 auto 0.5em auto;
+		}
+		button {
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<div id="background" class="fixed-top overflow-hidden" aria-role="none presentation"></div>
+	<div id="form" class="container col-md-8 col-md-offset-2 col-sm-8 cold-sm-offset-2 col-lg-6 col-lg-offset-3 mt-2 mt-md-5">
+		<div class="card rounded-lg shadow">
+			<h1 class="card-header rounded-lg rounded-lg">
+				Invite to {site_name}<br/>
+			</h1>
+			<div id="powered-by">Powered by <img src="/snikket-logo.svg"></div>
+			<div class="card-body" >
+				{inviter?<p>You have been invited to chat on {site_name} using Snikket,
+				a secure, privacy-friendly chat app.</p>}
+
+				{inviter&<p>You have been invited to chat with {inviter} using Snikket,
+				a secure, privacy-friendly chat app on {site_name}.</p>}
+
+				<h5 class="card-title">Get started</h5>
+
+				<p>Install the Snikket app on your Android device (iOS <a href="https://snikket.org/faq/#is-there-an-ios-app">coming soon!</a>)</p>
+
+				<div id="install-buttons-container" class="container">
+					<a href='https://play.google.com/store/apps/details?id=org.snikket.android&referrer={uri|urlescape}&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>
+						<img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/>
+					</a>
+					<a href="#qr-modal" class="d-none" id="qr-modal-show">
+						<button class="btn btn-info" title="Send this invite to your device"
+							data-toggle="modal" data-target="#qr-modal">Not on mobile?</button>
+					</a>
+				</div>
+
+
+
+				<p>After installation the app should automatically open and prompt you to
+				create an account. If not, simply click the button below.</p>
+
+				<h6 class="text-center">App already installed?</h6>
+
+				<div class="text-center">
+					<a href="{uri}" id="uri-cta"><button class="btn btn-secondary btn-sm">Open the app</button></a><br/>
+					<small class="text-muted">This button works only if you have the app installed already!</small>
+				</div>
+				<br/>
+				<h5>Alternatives</h5>
+				<p>You can connect to Snikket using any XMPP-compatible software. If the button above does not
+				work with your app, you may need to <a href="register?{token}">register an account manually</a>.</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal" tabindex="-1" role="dialog" id="qr-modal">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title">Scan invite code</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <p>You can transfer this invite to your mobile device by scanning a code with your camera. You can use
+	           either a QR scanner app or the Snikket app itself.</p>
+	        <nav>
+	          <div class="nav nav-tabs" id="nav-tab" role="tablist">
+	            <a class="nav-item nav-link active" id="qr-tab-scanner" data-toggle="tab" href="#qr-info-url" role="tab" aria-controls="qr-info-url" aria-selected="true">Using a QR code scanner</a>
+	            <a class="nav-item nav-link" id="qr-tab-app" data-toggle="tab" href="#qr-info-uri" role="tab" aria-controls="qr-info-uri" aria-selected="false">Using the Snikket app</a>
+	          </div>
+	        </nav>
+	        <div class="tab-content">
+			<div id="qr-info-url" class="tab-pane show active">
+			  <p>Use a <em>QR code</em> scanner on your mobile device to scan the code below:</p>
+			  <div id="qr-invite-page" class="w-50 p-1 mx-auto"></div>
+			</div>
+		        <div id="qr-info-uri" class="tab-pane">
+		        	<div>
+				        <img src="/img/snikket-scan-button-shdw.png" class="d-block w-25 p-1 float-right">
+				        <p>Install the Snikket app on your mobile device, open it, and
+				           tap the 'Scan' button at the top.</p>
+				        <p>Your camera will turn on. Point it at the square code below until it is
+				           within the highlighted square on your screen, and wait until the app
+				           recognises it.</p>
+				</div>
+			        <div id="qr-uri" class="w-50 p-1 mx-auto clearfix"></div>
+			</div>
+		</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<script src="/share/jquery/jquery.min.js"></script>
+	<script src="/share/bootstrap4/js/bootstrap.min.js"></script>
+	<script src="/qrcode.min.js"></script>
+	<script type="text/javascript">
+		$('#qr-modal').one('show.bs.modal', function (e) {
+			new QRCode(document.getElementById("qr-uri"), document.getElementById("uri-cta").getAttribute("href"));
+			new QRCode(document.getElementById("qr-invite-page"), document.location.href);
+		});
+		$('#qr-modal-show').addClass("d-md-block");
+	</script>
+</body>
+</html>

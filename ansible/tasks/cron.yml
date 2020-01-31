@@ -1,0 +1,15 @@
+---
+
+- name: Install anacron
+  apt:
+    name: anacron
+    state: present
+    install_recommends: no
+- name: "Remove system cron scripts"
+  file:
+    path: "/etc/cron.daily/{{item}}"
+    state: absent
+  loop:
+    - apt-compat
+    - dpkg
+    - passwd
