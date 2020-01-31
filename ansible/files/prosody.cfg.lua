@@ -66,6 +66,7 @@ modules_enabled = {
 		"invites_api";
 		"easy_invite";
 		"watchregistrations";
+		"firewall";
 }
 
 registration_watchers = {} -- Disable by default
