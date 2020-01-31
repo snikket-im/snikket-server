@@ -65,7 +65,11 @@ modules_enabled = {
 		"invites_register";
 		"invites_api";
 		"easy_invite";
+		"watchregistrations";
 }
+
+registration_watchers = {} -- Disable by default
+registration_notification = "New user registered: $username"
 
 reload_global_modules = { "http" }
 
