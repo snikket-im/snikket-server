@@ -164,3 +164,4 @@ Component ("groups."..DOMAIN) "muc"
 
 Component ("share."..DOMAIN) "http_upload"
 
+Include "/snikket/prosody/*.cfg.lua"
