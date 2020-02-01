@@ -36,6 +36,6 @@ RUN apt-get update \
 
 ADD www /var/www
 
-RUN echo "Snikket $BUILD_SERIES.$BUILD_ID" > /var/lib/prosody/prosody.version
+RUN echo "Snikket $BUILD_SERIES.$BUILD_ID" > /usr/lib/prosody/prosody.version
 
 VOLUME ["/snikket"]
