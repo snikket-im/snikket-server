@@ -13,4 +13,14 @@
   copy:
     src: ../files/certbot.cron
     dest: /etc/cron.daily/certbot
-    mode: 0550
+    mode: 0555
+- name: Create letsencrypt group
+  group:
+    name: letsencrypt
+    system: yes
+- name: Create letsencrypt user
+  user:
+    name: letsencrypt
+    group: letsencrypt
+    system: yes
+    home: /snikket/letsencrypt
