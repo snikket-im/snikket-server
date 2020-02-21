@@ -39,4 +39,6 @@ fi
 install -o letsencrypt -g letsencrypt -m 750 -d /var/lib/letsencrypt;
 install -o letsencrypt -g letsencrypt -m 750 -d /var/log/letsencrypt;
 
+chown -R letsencrypt:letsencrypt /snikket/letsencrypt
+
 exec supervisord -c /etc/supervisor/supervisord.conf
