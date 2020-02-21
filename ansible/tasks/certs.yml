@@ -24,3 +24,10 @@
     group: letsencrypt
     system: yes
     home: /snikket/letsencrypt
+- name: Create directory for challenges
+  file:
+    state: directory
+    path: /var/www/.well-known
+    owner: letsencrypt
+    group: letsencrypt
+    mode: 0755
