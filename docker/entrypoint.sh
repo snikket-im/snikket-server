@@ -38,6 +38,7 @@ fi
 
 install -o letsencrypt -g letsencrypt -m 750 -d /var/lib/letsencrypt;
 install -o letsencrypt -g letsencrypt -m 750 -d /var/log/letsencrypt;
+install -o letsencrypt -g letsencrypt -m 755 -d /var/www/.well-known/acme-challenge;
 
 chown -R letsencrypt:letsencrypt /snikket/letsencrypt
 
