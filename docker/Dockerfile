@@ -11,8 +11,8 @@ ADD tools/smtp-url-to-msmtp.lua /usr/local/bin/smtp-url-to-msmtp
 RUN chmod 550 /usr/local/bin/smtp-url-to-msmtp
 
 ADD docker/entrypoint.sh /bin/entrypoint.sh
-RUN chmod 550 /bin/entrypoint.sh
-ENTRYPOINT ["/bin/sh", "/bin/entrypoint.sh"]
+RUN chmod 770 /bin/entrypoint.sh
+ENTRYPOINT ["/bin/entrypoint.sh"]
 
 ADD ansible /opt/ansible
 
