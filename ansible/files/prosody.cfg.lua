@@ -51,6 +51,7 @@ modules_enabled = {
 		"default_bookmarks";
 		"roster_allinall";
 		"update_check";
+		"turncredentials";
 
 	-- TODO...
 		--"groups"; -- Shared roster support
@@ -109,6 +110,9 @@ update_check_dns = "_{branch}.update.snikket.net"
 
 http_host = DOMAIN
 http_external_url = "https://"..DOMAIN.."/"
+
+turncredentials_host = DOMAIN
+turncredentials_secret = assert(io.open("/snikket/prosody/turn-auth-secret")):read("*a");
 
 VirtualHost (DOMAIN)
 	authentication = "internal_hashed"
