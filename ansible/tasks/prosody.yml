@@ -46,6 +46,8 @@
   service:
     name: prosody
     state: stopped
+- name: "Allow Prosody to bind service ports"
+  command: setcap 'cap_net_bind_service=+ep' /usr/bin/lua5.1
 
 - name: Install Mercurial
   apt:
