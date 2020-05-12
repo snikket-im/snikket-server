@@ -5,6 +5,13 @@
     name: coturn
     state: present
     install_recommends: yes
+
+- name: "Install dnsutils package"
+  apt:
+    name: dnsutils
+    state: present
+    install_recommends: no
+
 - name: "Disable coturn service"
   service:
     name: coturn
@@ -17,8 +24,3 @@
   copy:
     src: ../files/turnserver.conf
     dest: /etc/turnserver.conf
-- name: Deploy coturn start script
-  copy:
-    src: ../files/start-coturn.sh
-    dest: /usr/local/bin/
-    mode: 755

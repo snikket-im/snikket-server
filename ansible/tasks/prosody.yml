@@ -89,6 +89,7 @@
     - mod_default_bookmarks
     - mod_muc_defaults
     - mod_firewall
+    - mod_turncredentials
 
 
 - name: Install Bootstrap and JS libs
