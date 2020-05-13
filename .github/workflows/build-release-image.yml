@@ -3,7 +3,7 @@ name: Docker release image build
 on:
   push:
     tags:
-      - release/alpha.*
+      - release/*.*
 
 jobs:
   build:
