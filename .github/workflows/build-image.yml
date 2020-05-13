@@ -1,6 +1,9 @@
 name: Docker image build
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   build:
@@ -12,6 +15,8 @@ jobs:
       run: >-
         docker build . \
           --file docker/Dockerfile \
+          --buildarg=BUILD_SERIES=dev \
+          --buildarg=BUILD_ID="$(echo "$GITHUB_SHA" | head -c 12)" \
           --tag snikket/snikket:dev
     - name: Log into registry
       run: echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u snikket --password-stdin
