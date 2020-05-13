@@ -1,0 +1,27 @@
+name: Docker release image build
+
+on:
+  push:
+    tags:
+      - release/alpha.*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: >-
+        RELEASE_TAG="${GITHUB_REF#refs/tags/release/}"
+        RELEASE_SERIES="${RELEASE_TAG%.*}"
+        RELEASE_VER="${RELEASE_TAG#$RELEASE_SERIES.}"
+        docker build . \
+          --file docker/Dockerfile \
+          --buildarg=BUILD_SERIES="$RELEASE_SERIES" \
+          --buildarg=BUILD_ID="$RELEASE_VER" \
+          --tag snikket/snikket:"$RELEASE_SERIES"
+    - name: Log into registry
+      run: echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u snikket --password-stdin
+    - name: Push the Docker image
+      run: docker push snikket/snikket:dev
