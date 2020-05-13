@@ -18,8 +18,8 @@ jobs:
         RELEASE_VER="${RELEASE_TAG#$RELEASE_SERIES.}"
         docker build . \
           --file docker/Dockerfile \
-          --buildarg=BUILD_SERIES="$RELEASE_SERIES" \
-          --buildarg=BUILD_ID="$RELEASE_VER" \
+          --build-arg=BUILD_SERIES="$RELEASE_SERIES" \
+          --build-arg=BUILD_ID="$RELEASE_VER" \
           --tag snikket/snikket:"$RELEASE_SERIES"
     - name: Log into registry
       run: echo "${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}" | docker login -u snikket --password-stdin
