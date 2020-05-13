@@ -1,6 +1,6 @@
 FROM debian:buster-slim
 
-ARG BUILD_SERIES=alpha
+ARG BUILD_SERIES=dev
 ARG BUILD_ID=0
 
 # Install dependencies
