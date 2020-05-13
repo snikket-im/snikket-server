@@ -1,0 +1,24 @@
+#!/usr/bin/env lua
+
+package.path = package.path:gsub("([^;]*)(?[^;]*)","%1prosody/%2;%1%2");
+package.cpath = package.cpath:gsub("([^;]*)(?[^;]*)","%1prosody/%2;%1%2");
+
+package.loaded["net.server"] = require "net.server_epoll";
+local net = require "util.net";
+local ip = require "util.ip";
+local dns = require "net.dns";
+
+local addresses = net.local_addresses();
+
+local ip_addr = ip.new_ip(addresses[1]);
+
+if not ip_addr.private then
+	-- Not a private address, no mapping needed
+	print(ip_addr);
+else
+	local dns_record = dns.lookup(arg[1], ip_addr.proto == "IPv6" and "AAAA" or "A");
+	if #dns_record == 0 then
+		os.exit(1);
+	end
+	print(dns_record[1].a.."/"..tostring(ip_addr));
+end

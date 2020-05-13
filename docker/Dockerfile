@@ -23,6 +23,7 @@ RUN apt-get update \
         software-properties-common \
         gpg gpg-agent \
         ansible python-passlib python3-passlib \
+        libcap2-bin \
     && rm -rf /var/lib/apt/lists/* \
     && ansible-playbook -c local -i localhost, --extra-vars "ansible_python_interpreter=/usr/bin/python2" /opt/ansible/snikket.yml \
     && apt-get remove -y \
@@ -30,7 +31,7 @@ RUN apt-get update \
          software-properties-common \
          gpg gpg-agent \
          python-passlib python3-passlib \
-         mercurial \
+         mercurial libcap2-bin \
     && apt-get autoremove -y \
     && rm -rf /var/cache/*
 

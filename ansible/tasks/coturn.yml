@@ -1,0 +1,26 @@
+---
+
+- name: "Install coturn package"
+  apt:
+    name: coturn
+    state: present
+    install_recommends: yes
+
+- name: "Install dnsutils package"
+  apt:
+    name: dnsutils
+    state: present
+    install_recommends: no
+
+- name: "Disable coturn service"
+  service:
+    name: coturn
+    enabled: no
+- name: "Stop coturn if running"
+  service:
+    name: coturn
+    state: stopped
+- name: Configure coturn
+  copy:
+    src: ../files/turnserver.conf
+    dest: /etc/turnserver.conf

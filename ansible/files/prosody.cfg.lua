@@ -51,6 +51,7 @@ modules_enabled = {
 		"default_bookmarks";
 		"roster_allinall";
 		"update_check";
+		"turncredentials";
 
 	-- TODO...
 		--"groups"; -- Shared roster support
@@ -73,6 +74,9 @@ registration_watchers = {} -- Disable by default
 registration_notification = "New user registered: $username"
 
 reload_global_modules = { "http" }
+
+http_ports  = { ENV_SNIKKET_TWEAK_HTTP_PORT or 80 }
+https_ports = { ENV_SNIKKET_TWEAK_HTTPS_PORT or 443 }
 
 legacy_ssl_ports = { 5223 }
 
@@ -109,6 +113,9 @@ update_check_dns = "_{branch}.update.snikket.net"
 
 http_host = DOMAIN
 http_external_url = "https://"..DOMAIN.."/"
+
+turncredentials_host = DOMAIN
+turncredentials_secret = assert(io.open("/snikket/prosody/turn-auth-secret")):read("*a");
 
 VirtualHost (DOMAIN)
 	authentication = "internal_hashed"

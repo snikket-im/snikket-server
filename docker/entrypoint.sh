@@ -9,6 +9,10 @@ if [ -z "$SNIKKET_SMTP_URL" ]; then
 	SNIKKET_SMTP_URL="smtp://localhost:1025/;no-tls"
 fi
 
+if [ -z "$SNIKKET_EXTERNAL_IP" ]; then
+	SNIKKET_EXTERNAL_IP="$(dig +short $SNIKKET_DOMAIN)"
+fi
+
 echo "$SNIKKET_SMTP_URL" | smtp-url-to-msmtp > /etc/msmtprc
 
 echo "from snikket@$SNIKKET_DOMAIN" >> /etc/msmtprc
@@ -41,5 +45,10 @@ install -o letsencrypt -g letsencrypt -m 750 -d /var/log/letsencrypt;
 install -o letsencrypt -g letsencrypt -m 755 -d /var/www/.well-known/acme-challenge;
 
 chown -R letsencrypt:letsencrypt /snikket/letsencrypt
+
+## Generate secret for coturn auth if necessary
+if ! test -f /snikket/prosody/turn-auth-secret; then
+	head -c 32 /dev/urandom | sha256sum > /snikket/prosody/turn-auth-secret;
+fi
 
 exec supervisord -c /etc/supervisor/supervisord.conf
