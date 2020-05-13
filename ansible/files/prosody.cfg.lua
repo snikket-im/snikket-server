@@ -152,7 +152,7 @@ Component ("groups."..DOMAIN) "muc"
 		"muc_defaults";
 	}
 	restrict_room_creation = "local"
-	muc_local_only = { "general@"..DOMAIN }
+	muc_local_only = { "general@groups."..DOMAIN }
 	muc_room_default_persistent = true
 	muc_room_default_allow_member_invites = true
 
