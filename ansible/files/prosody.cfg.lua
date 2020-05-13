@@ -147,19 +147,18 @@ VirtualHost (DOMAIN)
 Component ("groups."..DOMAIN) "muc"
 	modules_enabled = {
 		"muc_mam";
+		"muc_local_only";
 		"vcard_muc";
 		"muc_defaults";
 	}
 	restrict_room_creation = "local"
+	muc_local_only = { "general@"..DOMAIN }
 	muc_room_default_persistent = true
 	muc_room_default_allow_member_invites = true
 
 	default_mucs = {
 		{
 			jid_node = "general";
-			affiliations = {
-				owner =  { "admin@"..DOMAIN };
-			};
 			config = {
 				name = "General Chat";
 				description = "Welcome to "..DOMAIN.." general chat!";

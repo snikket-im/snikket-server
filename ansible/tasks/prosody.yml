@@ -88,6 +88,7 @@
     - mod_bookmarks
     - mod_default_bookmarks
     - mod_muc_defaults
+    - mod_muc_local_only
     - mod_firewall
     - mod_turncredentials
 
