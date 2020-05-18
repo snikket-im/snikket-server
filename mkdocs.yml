@@ -1,0 +1,21 @@
+---
+
+site_name: Snikket Server Documentation
+docs_dir: docs
+theme: readthedocs
+
+nav:
+  - index.md
+  - Setup:
+    - setup/quickstart.md
+  - Advanced:
+    - advanced/dns.md
+    - advanced/firewall.md
+    - advanced/reverse_proxy.md
+
+markdown_extensions:
+  - admonition
+  - def_list
+  - footnotes
+  - toc:
+      permalink: true
