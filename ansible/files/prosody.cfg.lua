@@ -115,7 +115,7 @@ http_host = DOMAIN
 http_external_url = "https://"..DOMAIN.."/"
 
 turncredentials_host = DOMAIN
-turncredentials_secret = assert(io.open("/snikket/prosody/turn-auth-secret")):read("*a");
+turncredentials_secret = assert(io.open("/snikket/prosody/turn-auth-secret-v2")):read("*l");
 
 VirtualHost (DOMAIN)
 	authentication = "internal_hashed"

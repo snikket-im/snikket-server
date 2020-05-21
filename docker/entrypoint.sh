@@ -47,8 +47,13 @@ install -o letsencrypt -g letsencrypt -m 755 -d /var/www/.well-known/acme-challe
 chown -R letsencrypt:letsencrypt /snikket/letsencrypt
 
 ## Generate secret for coturn auth if necessary
-if ! test -f /snikket/prosody/turn-auth-secret; then
-	head -c 32 /dev/urandom | sha256sum > /snikket/prosody/turn-auth-secret;
+if ! test -f /snikket/prosody/turn-auth-secret-v2; then
+	tr -dc 'a-z0-9' < /dev/urandom | head -c32 > /snikket/prosody/turn-auth-secret-v2;
+fi
+
+# COMPAT w/ alpha.20200513: remove older format
+if test -f /snikket/prosody/turn-auth-secret; then
+	rm /snikket/prosody/turn-auth-secret;
 fi
 
 exec supervisord -c /etc/supervisor/supervisord.conf

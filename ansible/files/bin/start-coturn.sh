@@ -13,6 +13,6 @@ TURN_EXTERNAL_IP="$(snikket-turn-addresses "$SNIKKET_DOMAIN")"
 
 
 exec /usr/bin/turnserver -c /etc/turnserver.conf --prod \
-     --static-auth-secret="$(cat /snikket/prosody/turn-auth-secret)" \
+     --static-auth-secret="$(cat /snikket/prosody/turn-auth-secret-v2)" \
      --cert="$CERTFILE" --pkey "$KEYFILE" -r "$SNIKKET_DOMAIN" \
      -X "$TURN_EXTERNAL_IP"
