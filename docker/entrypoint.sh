@@ -48,7 +48,7 @@ chown -R letsencrypt:letsencrypt /snikket/letsencrypt
 
 ## Generate secret for coturn auth if necessary
 if ! test -f /snikket/prosody/turn-auth-secret-v2; then
-	tr -dc 'a-z0-9' < /dev/urandom | head -c32 > /snikket/prosody/turn-auth-secret-v2;
+	head -c 32 /dev/urandom | base64 > /snikket/prosody/turn-auth-secret-v2;
 fi
 
 # COMPAT w/ alpha.20200513: remove older format
