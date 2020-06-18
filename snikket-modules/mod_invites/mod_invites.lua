@@ -64,10 +64,16 @@ function create_account(account_username, additional_data) --luacheck: ignore 13
 	return create_invite("register", jid, true, additional_data);
 end
 
+-- Create invitation to reset the password for an account
+function create_account_reset(account_username) --luacheck: ignore 131/create_account_reset
+	return create_account(account_username, { allow_reset = account_username });
+end
+
 -- Create invitation to become a contact of a local user
 function create_contact(username, allow_registration, additional_data) --luacheck: ignore 131/create_contact
 	return create_invite("roster", username.."@"..module.host, allow_registration, additional_data);
 end
+
 
 local valid_invite_methods = {};
 local valid_invite_mt = { __index = valid_invite_methods };

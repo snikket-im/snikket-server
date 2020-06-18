@@ -143,6 +143,9 @@ module:hook("user-registering", function (event)
 		event.reason = "Registration on this server is through invitation only";
 		return;
 	end
+	if validated_invite.additional_data and validated_invite.additional_data.allow_reset then
+		event.allow_reset = validated_invite.additional_data.allow_reset;
+	end
 end);
 
 -- Make a *one-way* subscription. User will see when contact is online,
@@ -203,19 +206,30 @@ function module.command(arg)
 	assert(hosts[host], "Host "..tostring(host).." does not exist");
 	sm.initialize_host(host);
 
-	table.remove(arg, 1);
-	table.remove(arg, 1);
-
-	local roles;
-	if arg[1] == "--admin" then
-		roles = { ["prosody:admin"] = true };
-	elseif arg[1] == "--role" then
-		roles = { [arg[2]] = true };
-	end
-
+	-- Load mod_invites
 	invites = module:context(host):depends("invites");
 	module:context(host):depends("invites_page");
-	local invite = invites.create_account(nil, { roles = roles });
+
+	table.remove(arg, 1);
+	table.remove(arg, 1);
+
+	local invite, roles;
+	if arg[1] == "--reset" then
+		local nodeprep = require "util.encodings".stringprep.nodeprep;
+		local username = nodeprep(arg[2]);
+		if not username then
+			print("Please supply a valid username to generate a reset link for");
+			return;
+		end
+		invite = invites.create_account_reset(username);
+	else
+		if arg[1] == "--admin" then
+			roles = { ["prosody:admin"] = true };
+		elseif arg[1] == "--role" then
+			roles = { [arg[2]] = true };
+		end
+		invite = invites.create_account(nil, { roles = roles });
+	end
+
 	print(invite.landing_page or invite.uri);
 end
-
