@@ -174,5 +174,6 @@ Component ("groups."..DOMAIN) "muc"
 	}
 
 Component ("share."..DOMAIN) "http_upload"
+	http_upload_file_size_limit = 1024 * 1024 * 10 -- 10MB
 
 Include "/snikket/prosody/*.cfg.lua"
