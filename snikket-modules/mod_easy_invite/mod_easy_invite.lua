@@ -194,6 +194,15 @@ module:hook("user-registered", function (event)
 	end
 end);
 
+-- Equivalent of user-registered but for when the account already existed
+-- (i.e. password reset)
+module:hook("user-password-reset", function (event)
+	local validated_invite = event.validated_invite or (event.session and event.session.validated_invite);
+	if not validated_invite then
+		return;
+	end
+	validated_invite:use();
+end);
 
 local sm = require "core.storagemanager";
 function module.command(arg)
