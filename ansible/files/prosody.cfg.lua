@@ -52,6 +52,7 @@ modules_enabled = {
 		"roster_allinall";
 		"update_check";
 		"turncredentials";
+		"admin_shell";
 
 	-- TODO...
 		--"groups"; -- Shared roster support

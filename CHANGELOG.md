@@ -1,5 +1,16 @@
 # Snikket Server changelog
 
+## UNRELEASED
+
+- Add support for generating account recovery links
+- Fix group chat creation glitches
+- Increase file sharing limit from 1MB -> 10MB
+- Enable Prosody admin shell for debug purposes
+
+## alpha.20200525
+
+- Fix for the TURN service auth configuration that prevented some A/V calls from working
+
 ## alpha.20200513
 
 - Add STUN/TURN service to facilitate audio/video calls (see note below)
