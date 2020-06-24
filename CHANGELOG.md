@@ -1,6 +1,6 @@
 # Snikket Server changelog
 
-## UNRELEASED
+## alpha.20200624
 
 - Add support for generating account recovery links
 - Fix group chat creation glitches
