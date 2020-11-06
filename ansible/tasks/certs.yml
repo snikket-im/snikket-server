@@ -1,33 +1,7 @@
 ---
 
-- name: Install certbot
-  apt:
-    name: certbot
-    state: present
-    install_recommends: no
-- name: Create directory for certs
-  file:
-    state: directory
-    path: /etc/ssl/certbot
 - name: Install certbot cron script
   copy:
-    src: ../files/certbot.cron
-    dest: /etc/cron.daily/certbot
+    src: ../files/refresh-certs.cron
+    dest: /etc/cron.daily/refresh-certs
     mode: 0555
-- name: Create letsencrypt group
-  group:
-    name: letsencrypt
-    system: yes
-- name: Create letsencrypt user
-  user:
-    name: letsencrypt
-    group: letsencrypt
-    system: yes
-    home: /snikket/letsencrypt
-- name: Create directory for challenges
-  file:
-    state: directory
-    path: /var/www/.well-known
-    owner: letsencrypt
-    group: letsencrypt
-    mode: 0755

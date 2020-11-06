@@ -1,5 +1,23 @@
 local DOMAIN = assert(ENV_SNIKKET_DOMAIN, "Please set the SNIKKET_DOMAIN environment variable")
 
+if prosody.process_type == "prosody" and not prosody.config_loaded then
+	-- Wait at startup for certificates
+	local lfs, socket = require "lfs", require "socket";
+	local cert_path = "/etc/prosody/certs/"..DOMAIN..".crt";
+	local counter = 0;
+	while not lfs.attributes(cert_path, "mode") do
+		counter = counter + 1;
+		if counter == 1 or counter%6 == 0 then
+			print("Waiting for certificates...");
+		elseif counter > 60 then
+			print("No certificates found... exiting");
+			os.exit(1);
+		end
+		socket.sleep(5);
+	end
+	_G.ltn12 = require "ltn12";
+end
+
 daemonize = false
 network_backend = "epoll"
 

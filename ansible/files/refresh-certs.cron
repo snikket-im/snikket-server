@@ -1,0 +1,3 @@
+#!/bin/sh
+
+prosodyctl --root cert import /snikket/letsencrypt/live
