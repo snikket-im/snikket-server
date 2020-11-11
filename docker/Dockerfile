@@ -20,11 +20,12 @@ ADD snikket-modules /usr/local/lib/snikket-modules
 
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-        software-properties-common \
+        software-properties-common ca-certificates \
         gpg gpg-agent \
         ansible python-passlib python3-passlib \
         libcap2-bin \
     && rm -rf /var/lib/apt/lists/* \
+    && c_rehash \
     && ansible-playbook -c local -i localhost, --extra-vars "ansible_python_interpreter=/usr/bin/python2" /opt/ansible/snikket.yml \
     && apt-get remove -y \
          ansible \
