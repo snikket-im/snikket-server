@@ -96,6 +96,7 @@
     - mod_muc_local_only
     - mod_firewall
     - mod_turncredentials
+    - mod_admin_notify
 
 
 - name: Install Bootstrap and JS libs
@@ -120,4 +121,5 @@
     - mod_http_acme_challenge
     - mod_http_libjs
     - mod_update_check
+    - mod_update_notify
     - mod_authz_internal
