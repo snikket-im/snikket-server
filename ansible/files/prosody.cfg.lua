@@ -95,8 +95,10 @@ registration_notification = "New user registered: $username"
 
 reload_global_modules = { "http" }
 
-http_ports  = { ENV_SNIKKET_TWEAK_HTTP_PORT or 5280 }
-https_ports = { ENV_SNIKKET_TWEAK_HTTPS_PORT or 5281 }
+http_ports  = { ENV_SNIKKET_TWEAK_INTERNAL_HTTP_PORT or 5280 }
+http_interfaces = { "127.0.0.1" }
+
+https_ports = {};
 
 legacy_ssl_ports = { 5223 }
 
