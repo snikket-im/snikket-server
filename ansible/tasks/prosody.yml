@@ -97,7 +97,9 @@
     - mod_firewall
     - mod_turncredentials
     - mod_admin_notify
-
+    - mod_http_oauth2
+    - mod_http_admin_api
+    - mod_rest
 
 - name: Install Bootstrap and JS libs
   apt:

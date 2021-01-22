@@ -88,6 +88,11 @@ modules_enabled = {
 		"easy_invite";
 		"watchregistrations";
 		"firewall";
+
+	-- For the web portal
+		"http_oauth2";
+		"http_admin_api";
+		"rest";
 }
 
 registration_watchers = {} -- Disable by default
