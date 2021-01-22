@@ -75,6 +75,9 @@
   loop:
     - mod_smacks
     - mod_cloud_notify
+    - mod_cloud_notify_encrypted
+    - mod_cloud_notify_priority_tag
+    - mod_cloud_notify_filters
     - mod_invite
     - mod_block_registrations
     - mod_compact_resource

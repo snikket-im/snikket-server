@@ -50,7 +50,12 @@ modules_enabled = {
 		"register"; -- Allow users to register on this server using a client and change passwords
 		"mam"; -- Store messages in an archive and allow users to access it
 		"csi_simple"; -- Simple Mobile optimizations
-		"cloud_notify"; -- Push notifications
+
+	-- Push notifications
+		"cloud_notify";
+		"cloud_notify_encrypted";
+		"cloud_notify_priority_tag";
+		"cloud_notify_filters";
 
 	-- HTTP modules
 		"bosh"; -- Enable BOSH clients, aka "Jabber over HTTP"
