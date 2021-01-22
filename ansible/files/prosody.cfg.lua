@@ -115,7 +115,7 @@ legacy_ssl_ports = { 5223 }
 allow_registration = true
 registration_invite_only = true
 
-invites_page = ENV_SNIKKET_INVITE_URL or ("https://"..DOMAIN.."/invite?{token}");
+invites_page = ENV_SNIKKET_INVITE_URL or ("https://"..DOMAIN.."/_/invite?{token}");
 
 c2s_require_encryption = true
 s2s_require_encryption = true
@@ -150,7 +150,7 @@ update_check_dns = "_{branch}.update.snikket.net"
 update_check_interval = 21613 -- ~6h
 
 http_host = DOMAIN
-http_external_url = "https://"..DOMAIN.."/"
+http_external_url = "https://"..DOMAIN.."/_/"
 
 turncredentials_host = DOMAIN
 turncredentials_secret = assert(io.open("/snikket/prosody/turn-auth-secret-v2")):read("*l");

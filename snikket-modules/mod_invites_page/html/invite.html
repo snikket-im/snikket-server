@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Invite to {site_name} | Snikket</title>
 	<link rel="stylesheet" href="/share/bootstrap4/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/snikket.css">
+	<link rel="stylesheet" href="/css/snikket.css">
 	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -33,7 +33,7 @@
 			<h1 class="card-header rounded-lg rounded-lg">
 				Invite to {site_name}<br/>
 			</h1>
-			<div id="powered-by">Powered by <img src="/snikket-logo.svg"></div>
+			<div id="powered-by">Powered by <img src="/img/snikket-logo.svg"></div>
 			<div class="card-body" >
 				{inviter?<p>You have been invited to chat on {site_name} using Snikket,
 				a secure, privacy-friendly chat app.</p>}
@@ -119,7 +119,7 @@
 
 	<script src="/share/jquery/jquery.min.js"></script>
 	<script src="/share/bootstrap4/js/bootstrap.min.js"></script>
-	<script src="/qrcode.min.js"></script>
+	<script src="/js/qrcode.min.js"></script>
 	<script type="text/javascript">
 		$('#qr-modal').one('show.bs.modal', function (e) {
 			new QRCode(document.getElementById("qr-uri"), document.getElementById("uri-cta").getAttribute("href"));
