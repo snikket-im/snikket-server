@@ -213,6 +213,10 @@ Component ("groups."..DOMAIN) "muc"
 	}
 
 Component ("share."..DOMAIN) "http_upload"
+	-- For backwards compat, allow HTTP upload on the base domain
+	if ENV_SNIKKET_TWEAK_SHARE_DOMAIN ~= "1" then
+		http_host = "share."..DOMAIN
+	end
 	http_upload_file_size_limit = 1024 * 1024 * 10 -- 10MB
 
 Include "/snikket/prosody/*.cfg.lua"
