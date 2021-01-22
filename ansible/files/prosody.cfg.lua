@@ -149,8 +149,9 @@ update_notify_message_url = "https://snikket.org/notices/{branch}/{message}"
 update_check_dns = "_{branch}.update.snikket.net"
 update_check_interval = 21613 -- ~6h
 
+http_default_host = DOMAIN
 http_host = DOMAIN
-http_external_url = "https://"..DOMAIN.."/_/"
+http_external_url = "https://"..DOMAIN.."/"
 
 turncredentials_host = DOMAIN
 turncredentials_secret = assert(io.open("/snikket/prosody/turn-auth-secret-v2")):read("*l");
