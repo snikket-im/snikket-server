@@ -60,8 +60,6 @@ modules_enabled = {
 	-- HTTP modules
 		"bosh"; -- Enable BOSH clients, aka "Jabber over HTTP"
 		"websocket"; -- XMPP over WebSockets
-		"http_acme_challenge";
-		"http_libjs";
 
 	-- Other specific functionality
 		"limits"; -- Enable bandwidth limiting for XMPP connections

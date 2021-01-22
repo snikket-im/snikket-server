@@ -123,8 +123,6 @@
     - mod_invites_register
     - mod_invites_api
     - mod_easy_invite
-    - mod_http_acme_challenge
-    - mod_http_libjs
     - mod_update_check
     - mod_update_notify
     - mod_authz_internal
