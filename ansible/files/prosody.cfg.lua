@@ -125,6 +125,7 @@ allow_registration = true
 registration_invite_only = true
 
 invites_page = ENV_SNIKKET_INVITE_URL or ("https://"..DOMAIN.."/invite?{token}");
+invites_page_external = true
 
 c2s_require_encryption = true
 s2s_require_encryption = true
