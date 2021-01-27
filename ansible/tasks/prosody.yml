@@ -108,6 +108,7 @@
     - mod_invites_register
     - mod_invites_register_api
     - mod_invites_tracking
+    - mod_groups_internal
 
 - name: Enable wanted modules
   file:
