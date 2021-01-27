@@ -118,3 +118,9 @@
   loop:
     - mod_update_check
     - mod_update_notify
+
+- name: "Install lua-ossl for encrypted push notifications"
+  apt:
+    name: lua-luaossl
+    state: present
+    install_recommends: no
