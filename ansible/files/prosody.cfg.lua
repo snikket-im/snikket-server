@@ -84,13 +84,24 @@ modules_enabled = {
 		"welcome"; -- Welcome users who register accounts
 		"http_files"; -- Serve static files from a directory over HTTP
 		"reload_modules";
-		"landing_page";
+
+	-- Invites
+		"groups_migration";
+		"invites";
+		"invites_adhoc";
+		"invites_api";
+		"invites_groups";
 		"invites_page";
 		"invites_register";
+		"invites_register_api";
+		"invites_tracking";
+
 		"invites_api";
-		"easy_invite";
 		"watchregistrations";
 		"firewall";
+
+	-- Circles
+		"groups_migration";
 
 	-- For the web portal
 		"http_oauth2";
@@ -113,7 +124,7 @@ legacy_ssl_ports = { 5223 }
 allow_registration = true
 registration_invite_only = true
 
-invites_page = ENV_SNIKKET_INVITE_URL or ("https://"..DOMAIN.."/_/invite?{token}");
+invites_page = ENV_SNIKKET_INVITE_URL or ("https://"..DOMAIN.."/invite?{token}");
 
 c2s_require_encryption = true
 s2s_require_encryption = true

@@ -78,7 +78,6 @@
     - mod_cloud_notify_encrypted
     - mod_cloud_notify_priority_tag
     - mod_cloud_notify_filters
-    - mod_invite
     - mod_block_registrations
     - mod_compact_resource
     - mod_conversejs
@@ -86,7 +85,6 @@
     - mod_lastlog
     - mod_limit_auth
     - mod_password_policy
-    - mod_password_reset
     - mod_roster_allinall
     - mod_strict_https
     - mod_vcard_muc
@@ -95,21 +93,21 @@
     - mod_http_altconnect
     - mod_bookmarks
     - mod_default_bookmarks
-    - mod_muc_defaults
-    - mod_muc_local_only
     - mod_firewall
     - mod_turncredentials
     - mod_admin_notify
     - mod_http_oauth2
     - mod_http_admin_api
     - mod_rest
-
-- name: Install Bootstrap and JS libs
-  apt:
-    name:
-      - libjs-bootstrap4
-      - libjs-jquery
-    install_recommends: no
+    - mod_groups_migration
+    - mod_invites
+    - mod_invites_adhoc
+    - mod_invites_api
+    - mod_invites_groups
+    - mod_invites_page
+    - mod_invites_register
+    - mod_invites_register_api
+    - mod_invites_tracking
 
 - name: Enable wanted modules
   file:
@@ -117,12 +115,6 @@
     src: "/usr/local/lib/snikket-modules/{{item}}"
     dest: "/etc/prosody/modules/{{item}}"
   loop:
-    - mod_landing_page
-    - mod_invites
-    - mod_invites_page
-    - mod_invites_register
-    - mod_invites_api
-    - mod_easy_invite
     - mod_update_check
     - mod_update_notify
     - mod_authz_internal

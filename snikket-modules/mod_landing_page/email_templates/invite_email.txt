@@ -1,7 +1,0 @@
-TODO!
-
-Hello from {site_name}!
-
-You have been invited to join {site_name}. Simply click here to get started: {invite_page}
-
-If you already have a compatible app installed, you can click here instead: {invite_uri}
