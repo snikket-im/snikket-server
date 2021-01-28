@@ -1,26 +1,36 @@
 version: "3.3"
 
 services:
-  snikket_web:
+  snikket_proxy:
+    container_name: snikket-proxy
     image: snikket/snikket-web-proxy:dev
     env_file: snikket.conf
     network_mode: host
     volumes:
       - snikket_data:/snikket
-      - acme_challenges:/usr/share/nginx/html/.well-known/acme-challenge
+      - acme_challenges:/var/www/html/.well-known/acme-challenge
     restart: "unless-stopped"
   snikket_certs:
+    container_name: snikket-certs
     image: snikket/snikket-cert-manager:dev
     env_file: snikket.conf
     volumes:
-      - /var/lib/snikket:/snikket
+      - snikket_data:/snikket
       - acme_challenges:/var/www/.well-known/acme-challenge
     restart: "unless-stopped"
+  snikket_portal:
+    container_name: snikket-portal
+    image: snikket/snikket-web-portal:dev
+    network_mode: host
+    env_file: snikket.conf
+    restart: "unless-stopped"
+
   snikket_server:
+    container_name: snikket
     image: snikket/snikket:dev
     network_mode: host
     volumes:
-      - /var/lib/snikket:/snikket
+      - snikket_data:/snikket
     env_file: snikket.conf
     restart: "unless-stopped"
 
