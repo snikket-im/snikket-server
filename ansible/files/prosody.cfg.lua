@@ -188,17 +188,12 @@ VirtualHost (DOMAIN)
 		{ jid = "general@groups."..DOMAIN, name = "General Chat" };
 	}
 
-	welcome_message = [[Hi, welcome to Snikket on $host!
-
-]]
-..[[Thanks for joining. We've automatically added you to the "General Chat" group ]]
-..[[where you can chat with other members of $host. You'll find it under 'Bookmarks'.
-
-]]
-..[[Snikket is in its early stages right now, so thanks for trying it out, ]]
-..[[we hope you like it!
-
-]]..[[That's all for now, happy chatting!]]
+	welcome_message = [[Hi, welcome to Snikket on $host! Thanks for joining us.]]
+	.."\n\n"
+	..[[For help and enquiries related to this service you may contact the admin via email: ]]
+	..ENV_SNIKKET_ADMIN_EMAIL
+	.."\n\n"
+	..[[Happy chatting!]]
 
 Component ("groups."..DOMAIN) "muc"
 	modules_enabled = {
