@@ -124,6 +124,12 @@ legacy_ssl_ports = { 5223 }
 allow_registration = true
 registration_invite_only = true
 
+-- This disables in-app invites for non-admins
+-- TODO: The plan is to enable it once we can
+-- give the admin more fine-grained control
+-- over what happens when a user invites someone.
+allow_contact_invites = false
+
 invites_page = ENV_SNIKKET_INVITE_URL or ("https://"..DOMAIN.."/invite?{invite.token}");
 invites_page_external = true
 
