@@ -130,7 +130,7 @@ registration_invite_only = true
 -- over what happens when a user invites someone.
 allow_contact_invites = false
 
-invites_page = ENV_SNIKKET_INVITE_URL or ("https://"..DOMAIN.."/invite?{invite.token}");
+invites_page = ENV_SNIKKET_INVITE_URL or ("https://"..DOMAIN.."/invite/{invite.token}");
 invites_page_external = true
 
 c2s_require_encryption = true
