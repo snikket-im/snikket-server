@@ -1,1 +1,0 @@
-snikket:{{ lookup('password', '/tmp/mailhog-password length=15')|password_hash("bcrypt", lookup('password', '/tmp/mailhog-salt length=21 chars=letters,digits')+".") }}

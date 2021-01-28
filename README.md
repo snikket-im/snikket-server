@@ -30,21 +30,3 @@ Alternatively you can run docker manually with something like the following:
 ```console
 docker run --env-file=snikket.conf -p 80:5280 -p 443:5281 -p 5222:5222 -p 5269:5269 snikket
 ```
-
-## Development
-
-Dev images have a few additional features.
-
-### Local mail server
-
-Outgoing emails from dev images are captured by a local [MailHog](https://github.com/mailhog/MailHog)
-instance and are accessible in a dashboard served on port 8025. The dashboard requires authentication.
-The username is 'snikket' and the auto-generated password can be found with the following command:
-
-```console
-docker exec snikket_snikket_1 cat /tmp/mailhog-password
-```
-
-Replace `snikket_snikket_1` with the name of your running container if it differs.
-
-MailHog is not included in production images, which require a real SMTP server.
