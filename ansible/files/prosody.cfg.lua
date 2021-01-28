@@ -95,6 +95,7 @@ modules_enabled = {
 		"invites_register";
 		"invites_register_api";
 		"invites_tracking";
+		"invites_default_group";
 
 		"invites_api";
 		"watchregistrations";

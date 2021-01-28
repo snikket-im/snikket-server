@@ -118,6 +118,7 @@
   loop:
     - mod_update_check
     - mod_update_notify
+    - mod_invites_default_group
 
 - name: "Install lua-ossl for encrypted push notifications"
   apt:
