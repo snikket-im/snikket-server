@@ -21,12 +21,3 @@ The easiest way is to use docker-compose. Copy the file `snikket.conf.example` t
 ```console
 docker-compose up -d
 ```
-
-If you need to change port mappings or any other advanced options, you can edit the
-`docker-compse.yml` file.
-
-Alternatively you can run docker manually with something like the following:
-
-```console
-docker run --env-file=snikket.conf -p 80:5280 -p 443:5281 -p 5222:5222 -p 5269:5269 snikket
-```
