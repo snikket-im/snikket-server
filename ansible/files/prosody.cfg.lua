@@ -184,10 +184,6 @@ VirtualHost (DOMAIN)
 		invites_register = "/register";
 	}
 
-	default_bookmarks = {
-		{ jid = "general@groups."..DOMAIN, name = "General Chat" };
-	}
-
 	welcome_message = [[Hi, welcome to Snikket on $host! Thanks for joining us.]]
 	.."\n\n"
 	..[[For help and enquiries related to this service you may contact the admin via email: ]]
