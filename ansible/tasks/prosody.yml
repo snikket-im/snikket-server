@@ -109,6 +109,8 @@
     - mod_invites_register_api
     - mod_invites_tracking
     - mod_groups_internal
+    - mod_muc_defaults
+    - mod_muc_local_only
 
 - name: Enable wanted modules
   file:
