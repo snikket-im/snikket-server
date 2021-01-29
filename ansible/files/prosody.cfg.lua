@@ -18,7 +18,6 @@ if prosody.process_type == "prosody" and not prosody.config_loaded then
 	_G.ltn12 = require "ltn12";
 end
 
-daemonize = false
 network_backend = "epoll"
 
 plugin_paths = { "/etc/prosody/modules" }
