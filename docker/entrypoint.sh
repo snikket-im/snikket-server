@@ -5,6 +5,11 @@ if [ -z "$SNIKKET_DOMAIN" ]; then
   exit 1;
 fi
 
+if [ -z "$SNIKKET_ADMIN_EMAIL" ]; then
+  echo "Please provide SNIKKET_ADMIN_EMAIL";
+  exit 1;
+fi
+
 if [ -z "$SNIKKET_SMTP_URL" ]; then
 	SNIKKET_SMTP_URL="smtp://localhost:1025/;no-tls"
 fi
