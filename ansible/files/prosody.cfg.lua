@@ -168,6 +168,7 @@ update_check_interval = 21613 -- ~6h
 http_default_host = DOMAIN
 http_host = DOMAIN
 http_external_url = "https://"..DOMAIN.."/"
+http_max_content_size = 1024 * 1024 * 16 -- 16MB
 
 turncredentials_host = DOMAIN
 turncredentials_secret = assert(io.open("/snikket/prosody/turn-auth-secret-v2")):read("*l");
@@ -225,6 +226,6 @@ Component ("share."..DOMAIN) "http_upload"
 		http_host = "share."..DOMAIN
 		http_external_url = "https://share."..DOMAIN.."/"
 	end
-	http_upload_file_size_limit = 1024 * 1024 * 10 -- 10MB
+	http_upload_file_size_limit = 1024 * 1024 * 16 -- 16MB
 
 Include "/snikket/prosody/*.cfg.lua"
