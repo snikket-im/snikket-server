@@ -227,5 +227,6 @@ Component ("share."..DOMAIN) "http_upload"
 		http_external_url = "https://share."..DOMAIN.."/"
 	end
 	http_upload_file_size_limit = 1024 * 1024 * 16 -- 16MB
+	http_upload_expire_after = 60 * 60 * 24 * 7 -- 1 week
 
 Include "/snikket/prosody/*.cfg.lua"
