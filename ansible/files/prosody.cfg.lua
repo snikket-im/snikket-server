@@ -1,5 +1,7 @@
 local DOMAIN = assert(ENV_SNIKKET_DOMAIN, "Please set the SNIKKET_DOMAIN environment variable")
 
+local RETENTION_DAYS = tonumber(ENV_SNIKKET_RETENTION_DAYS) or 7;
+
 if prosody.process_type == "prosody" and not prosody.config_loaded then
 	-- Wait at startup for certificates
 	local lfs, socket = require "lfs", require "socket";
@@ -137,7 +139,7 @@ c2s_require_encryption = true
 s2s_require_encryption = true
 s2s_secure_auth = true
 
-archive_expires_after = "1w" -- Remove archived messages after 1 week
+archive_expires_after = ("%dd"):format(RETENTION_DAYS) -- Remove archived messages after N days
 
 -- Disable IPv6 by default because Docker does not
 -- have it enabled by default, and s2s to domains
@@ -227,6 +229,6 @@ Component ("share."..DOMAIN) "http_upload"
 		http_external_url = "https://share."..DOMAIN.."/"
 	end
 	http_upload_file_size_limit = 1024 * 1024 * 16 -- 16MB
-	http_upload_expire_after = 60 * 60 * 24 * 7 -- 1 week
+	http_upload_expire_after = 60 * 60 * 24 * RETENTION_DAYS -- N days
 
 Include "/snikket/prosody/*.cfg.lua"
