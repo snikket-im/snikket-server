@@ -24,7 +24,7 @@ function check_for_updates()
 	module:log("debug", "Checking for updates on %s...", record_name);
 	r:lookup(function (records)
 		if not records or #records == 0 then
-			module:log("warn", "Update check failed");
+			module:log("warn", "Update check failed for %s", record_name);
 			return;
 		end
 		local result = {};
