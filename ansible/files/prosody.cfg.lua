@@ -87,7 +87,6 @@ modules_enabled = {
 		"reload_modules";
 
 	-- Invites
-		"groups_migration";
 		"invites";
 		"invites_adhoc";
 		"invites_api";
@@ -98,8 +97,6 @@ modules_enabled = {
 		"invites_tracking";
 		"invites_default_group";
 
-		"invites_api";
-		"watchregistrations";
 		"firewall";
 
 	-- Circles
