@@ -5,7 +5,7 @@ if [ "$1" == "--qr" ]; then
 	SHOW_QR=1;
 fi
 
-URL=$( prosodyctl mod_easy_invite "$SNIKKET_DOMAIN" generate "$@" )
+URL=$(prosodyctl mod_invites generate "$SNIKKET_DOMAIN" "$@")
 
 echo ""
 echo "Your invite link: $URL"
