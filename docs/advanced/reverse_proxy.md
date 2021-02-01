@@ -63,8 +63,8 @@ server {
   ssl_certificate_key /path/to/key.pem;
 
   server_name chat.example.com;
-  server_name groups.example.com;
-  server_name share.example.com;
+  server_name groups.chat.example.com;
+  server_name share.chat.example.com;
 
   location / {
       proxy_pass http://localhost:5080/;
