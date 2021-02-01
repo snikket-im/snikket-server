@@ -71,7 +71,6 @@ modules_enabled = {
 		"http_altconnect";
 		"bookmarks";
 		"default_bookmarks";
-		"roster_allinall";
 		"update_check";
 		"update_notify";
 		"turncredentials";
