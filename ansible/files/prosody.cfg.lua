@@ -155,6 +155,8 @@ statistics = "internal"
 
 certificates = "certs"
 
+group_default_name = ENV_SNIKKET_SITE_NAME or DOMAIN
+
 -- Update check configuration
 software_name = "Snikket"
 update_notify_version_url = "https://snikket.org/updates/{branch}/{version}"
