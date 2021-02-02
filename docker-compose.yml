@@ -27,7 +27,7 @@ services:
 
   snikket_server:
     container_name: snikket
-    image: snikket/snikket:dev
+    image: snikket/snikket-server:dev
     network_mode: host
     volumes:
       - snikket_data:/snikket
