@@ -162,8 +162,11 @@ software_name = "Snikket"
 update_notify_version_url = "https://snikket.org/updates/{branch}/{version}"
 update_notify_support_url = "https://snikket.org/notices/{branch}/"
 update_notify_message_url = "https://snikket.org/notices/{branch}/{message}"
-update_check_dns = "_{branch}.update.snikket.net"
-update_check_interval = 21613 -- ~6h
+
+if ENV_SNIKKET_UPDATE_CHECK ~= "0" then
+	update_check_dns = "_{branch}.update.snikket.net"
+	update_check_interval = 21613 -- ~6h
+end
 
 http_default_host = DOMAIN
 http_host = DOMAIN

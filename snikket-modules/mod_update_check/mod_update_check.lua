@@ -20,6 +20,7 @@ do
 end
 
 function check_for_updates()
+	if not update_dns then return; end
 	local record_name = render_hostname(update_dns, version_info);
 	module:log("debug", "Checking for updates on %s...", record_name);
 	r:lookup(function (records)
@@ -43,5 +44,9 @@ function check_for_updates()
 end
 
 function module.load()
-	module:add_timer(5, check_for_updates);
+	if update_dns then
+		module:add_timer(5, check_for_updates);
+	else
+		module:log("warn", "Update notifications are disabled");
+	end
 end
