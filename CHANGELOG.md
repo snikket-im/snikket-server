@@ -22,7 +22,7 @@ then put the new one in its place. For example:
 mv docker-compose.yml docker-compose.old.yml
 wget -O docker-compose.yml https://snikket.org/service/resources/docker-compose.beta.yml
 docker-compose pull
-docker-compose up -d
+docker-compose up -d --remove-orphans
 ```
 
 You may also want to check out our new repository of scripts to help
