@@ -99,7 +99,9 @@ modules_enabled = {
 		"firewall";
 
 	-- Circles
+		"groups_internal";
 		"groups_migration";
+		"groups_muc_bookmarks";
 
 	-- For the web portal
 		"http_oauth2";
