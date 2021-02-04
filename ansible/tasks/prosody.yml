@@ -64,7 +64,7 @@
   hg:
     repo: https://hg.prosody.im/prosody-modules
     dest: /usr/local/lib/prosody-modules
-    revision: 94805a7e7b30
+    revision: b3e0295e14a3
     purge: yes
     update: yes
 - name: Enable wanted modules
@@ -109,6 +109,7 @@
     - mod_invites_register_api
     - mod_invites_tracking
     - mod_groups_internal
+    - mod_groups_muc_bookmarks
     - mod_muc_defaults
     - mod_muc_local_only
 
