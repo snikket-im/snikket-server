@@ -100,6 +100,7 @@ modules_enabled = {
 
 	-- Circles
 		"groups_migration";
+		"groups_muc_bookmarks";
 
 	-- For the web portal
 		"http_oauth2";
