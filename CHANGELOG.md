@@ -1,5 +1,13 @@
 # Snikket Server changelog
 
+## beta.20210205
+
+- Fix destruction of circle group chats when a circle
+    is deleted or fails to be created
+- Add circle group chats to bookmarks of newly-added members
+- Add trailing '/' to invite URLs for compatibility with some
+    URL parsers
+
 ## beta.20210202
 
 - Support for Raspberry Pi and other ARM-based systems
