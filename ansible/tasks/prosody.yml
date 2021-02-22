@@ -64,7 +64,7 @@
   hg:
     repo: https://hg.prosody.im/prosody-modules
     dest: /usr/local/lib/prosody-modules
-    revision: b3e0295e14a3
+    revision: 8ed1989e99f9
     purge: yes
     update: yes
 - name: Enable wanted modules
