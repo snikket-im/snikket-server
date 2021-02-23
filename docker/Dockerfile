@@ -14,6 +14,8 @@ ADD docker/entrypoint.sh /bin/entrypoint.sh
 RUN chmod 770 /bin/entrypoint.sh
 ENTRYPOINT ["/bin/entrypoint.sh"]
 
+HEALTHCHECK CMD lua -l socket -e 'assert(socket.connect(os.getenv"SNIKKET_TWEAK_INTERNAL_HTTP_INTERFACE" or "127.0.0.1",os.getenv"SNIKKET_TWEAK_INTERNAL_HTTP_PORT" or "5280"))'
+
 ADD ansible /opt/ansible
 
 ADD snikket-modules /usr/local/lib/snikket-modules
