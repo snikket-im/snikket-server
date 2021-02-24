@@ -192,7 +192,6 @@ end
 http_default_host = DOMAIN
 http_host = DOMAIN
 http_external_url = "https://"..DOMAIN.."/"
-http_max_content_size = 1024 * 1024 * 16 -- 16MB
 
 if ENV_SNIKKET_TWEAK_TURNSERVER ~= "0" or ENV_SNIKKET_TWEAK_TURNSERVER_DOMAIN then
 	turncredentials_host = ENV_SNIKKET_TWEAK_TURNSERVER_DOMAIN or DOMAIN
@@ -252,13 +251,16 @@ Component ("groups."..DOMAIN) "muc"
 		}
 	}
 
-Component ("share."..DOMAIN) "http_upload"
+Component ("share."..DOMAIN) "http_file_share"
 	-- For backwards compat, allow HTTP upload on the base domain
 	if ENV_SNIKKET_TWEAK_SHARE_DOMAIN ~= "1" then
 		http_host = "share."..DOMAIN
 		http_external_url = "https://share."..DOMAIN.."/"
 	end
-	http_upload_file_size_limit = 1024 * 1024 * 16 -- 16MB
-	http_upload_expire_after = 60 * 60 * 24 * RETENTION_DAYS -- N days
+	http_file_share_file_size_limit = 1024 * 1024 * 16 -- 16MB
+	http_file_share_expire_after = 60 * 60 * 24 * RETENTION_DAYS -- N days
+	http_paths = {
+		file_share = "/upload"
+	}
 
 Include (ENV_SNIKKET_TWEAK_EXTRA_CONFIG or "/snikket/prosody/*.cfg.lua")

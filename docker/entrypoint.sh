@@ -48,4 +48,8 @@ if test -f /snikket/prosody/turn-auth-secret; then
 	rm /snikket/prosody/turn-auth-secret;
 fi
 
+if test -d /snikket/prosody/http_upload; then
+	prosodyctl mod_migrate_http_upload "share.$SNIKKET_DOMAIN" "$SNIKKET_DOMAIN"
+fi
+
 exec supervisord -c /etc/supervisor/supervisord.conf
