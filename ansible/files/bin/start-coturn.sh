@@ -1,5 +1,10 @@
 #!/bin/sh
 
+if [ "$SNIKKET_TWEAK_TURNSERVER" = "0" ]; then
+	echo "TURN server disabled by environment, not launching.";
+	exit 0;
+fi
+
 CERTFILE="/snikket/letsencrypt/live/$SNIKKET_DOMAIN/fullchain.pem";
 KEYFILE="/snikket/letsencrypt/live/$SNIKKET_DOMAIN/privkey.pem";
 

@@ -175,8 +175,10 @@ http_host = DOMAIN
 http_external_url = "https://"..DOMAIN.."/"
 http_max_content_size = 1024 * 1024 * 16 -- 16MB
 
-turncredentials_host = DOMAIN
-turncredentials_secret = assert(io.open("/snikket/prosody/turn-auth-secret-v2")):read("*l");
+if ENV_SNIKKET_TWEAK_TURNSERVER ~= "0" then
+	turncredentials_host = DOMAIN
+	turncredentials_secret = assert(io.open("/snikket/prosody/turn-auth-secret-v2")):read("*l");
+end
 
 VirtualHost (DOMAIN)
 	authentication = "internal_hashed"
