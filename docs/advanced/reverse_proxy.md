@@ -109,3 +109,62 @@ protocols:
 );
 
 ```
+
+### apache
+
+**Note**: The following configuration is for reverse proxying from another machine 
+(other from the one hosting snikket containers). If the containers are on the same machine
+of the reverse proxy, you have to tweak HTTP/S ports as indicated before, and you don't need
+to proxy over SSL   		 
+
+```
+        <VirtualHost *:443>
+
+                ServerName chat.example.com
+                ServerAlias groups.chat.example.com
+                ServerAlias share.chat.example.com
+
+                ServerAdmin webmaster@localhost
+
+                DocumentRoot /var/www/chat
+
+                ErrorLog ${APACHE_LOG_DIR}/chat.example.com-ssl_error.log
+                CustomLog ${APACHE_LOG_DIR}/chat.example.com-ssl_access.log combined
+
+                SSLEngine on
+		
+		#
+                SSLCertificateFile /opt/chat/letsencrypt/chat.example.com/cert.pem
+                SSLCertificateKeyFile /opt/chat/letsencrypt/chat.example.com/privkey.pem
+                SSLCertificateChainFile /opt/chat/letsencrypt/chat.example.com/chain.pem
+
+                SSLProxyEngine On
+                ProxyPreserveHost On
+
+                ProxyPass           / https://chat.example.com/
+                ProxyPassReverse    / https://chat.example.com/
+
+        </VirtualHost>
+
+	<VirtualHost *:80>
+
+        	ServerName chat.example.com
+        	ServerAlias groups.chat.example.com
+        	ServerAlias share.chat.example.com
+
+        	ServerAdmin webmaster@localhost
+        
+		ScumentRoot /var/www/chat
+
+        	ProxyPreserveHost On
+
+        	ProxyPass           / http://chat.example.com/
+        	ProxyPassReverse    / http://chat.example.com/
+        
+        	ErrorLog ${APACHE_LOG_DIR}/chat.example.com_error.log
+        	CustomLog ${APACHE_LOG_DIR}/chat.example.com_access.log combined
+
+	</VirtualHost>
+
+```
+
