@@ -134,7 +134,7 @@ allow_contact_invites = false
 invites_page = ENV_SNIKKET_INVITE_URL or ("https://"..DOMAIN.."/invite/{invite.token}/");
 invites_page_external = true
 
-invites_boostrap_index = tonumber(ENV_TWEAK_SNIKKET_BOOTSTRAP_INDEX)
+invites_bootstrap_index = tonumber(ENV_TWEAK_SNIKKET_BOOTSTRAP_INDEX)
 invites_bootstrap_secret = ENV_TWEAK_SNIKKET_BOOTSTRAP_SECRET
 
 c2s_require_encryption = true
