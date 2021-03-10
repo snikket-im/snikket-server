@@ -67,7 +67,7 @@
     revision: 6d595857164a
     purge: yes
     update: yes
-- name: Enable wanted modules
+- name: Enable wanted modules (prosody-modules)
   file:
     state: link
     src: "/usr/local/lib/prosody-modules/{{item}}"
@@ -112,8 +112,9 @@
     - mod_groups_muc_bookmarks
     - mod_muc_defaults
     - mod_muc_local_only
+    - mod_http_host_status_check
 
-- name: Enable wanted modules
+- name: Enable wanted modules (snikket-modules)
   file:
     state: link
     src: "/usr/local/lib/snikket-modules/{{item}}"
