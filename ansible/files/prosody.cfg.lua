@@ -95,7 +95,7 @@ modules_enabled = {
 		"invites_register_api";
 		"invites_tracking";
 		"invites_default_group";
-		"invites_boostrap";
+		"invites_bootstrap";
 
 		"firewall";
 
