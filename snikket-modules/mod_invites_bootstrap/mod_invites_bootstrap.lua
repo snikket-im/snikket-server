@@ -48,7 +48,7 @@ local function handle_request(event)
 		timestamp = os.time();
 		result = invite.landing_page or invite.uri;
 	});
-	local record_ok, record_err = invites_bootstrap_store:set(bootstrap_records);
+	local record_ok, record_err = invites_bootstrap_store:set(nil, bootstrap_records);
 	if not record_ok then
 		module:log("error", "Failed to store bootstrap record: %s", record_err);
 		return 500;
