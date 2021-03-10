@@ -27,6 +27,8 @@ local function handle_request(event)
 		if current_index == last_bootstrap.index then
 			event.response.headers.Location = last_bootstrap.result;
 			return 303;
+		elseif current_index < last_bootstrap.index then
+			return 410;
 		end
 	end
 
