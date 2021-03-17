@@ -241,4 +241,4 @@ Component ("share."..DOMAIN) "http_upload"
 	http_upload_file_size_limit = 1024 * 1024 * 16 -- 16MB
 	http_upload_expire_after = 60 * 60 * 24 * RETENTION_DAYS -- N days
 
-Include "/snikket/prosody/*.cfg.lua"
+Include (ENV_SNIKKET_TWEAK_EXTRA_CONFIG or "/snikket/prosody/*.cfg.lua")
