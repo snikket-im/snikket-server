@@ -11,9 +11,12 @@
 - name: "Add Prosody package repo"
   apt_repository:
     repo: "deb https://packages.prosody.im/debian buster main"
+- name: "Detect dpkg architecture name"
+  shell: dpkg --print-architecture
+  register: dpkg_arch
 - name: "Install Prosody package"
   apt:
-    name: prosody-trunk
+    deb: "https://packages.prosody.im/debian/pool/main/p/{{ prosody.package }}/{{ prosody.package }}_1nightly{{ prosody.build }}-1~buster_{{ dpkg_arch.stdout }}.deb"
     state: present
     install_recommends: yes
 - name: "Deploy Prosody config"
@@ -64,7 +67,7 @@
   hg:
     repo: https://hg.prosody.im/prosody-modules
     dest: /usr/local/lib/prosody-modules
-    revision: b88f05c878ac
+    revision: "{{ prosody_modules.revision }}"
     purge: yes
     update: yes
 - name: Enable wanted modules (prosody-modules)

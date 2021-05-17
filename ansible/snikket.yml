@@ -4,6 +4,12 @@
 - hosts: all
   become: yes
   gather_facts: no
+  vars:
+    prosody:
+      package: "prosody-trunk"
+      build: "1436"
+    prosody_modules:
+      revision: "b88f05c878ac"
   tasks:
     - import_tasks: tasks/prosody.yml
     - import_tasks: tasks/supervisor.yml
