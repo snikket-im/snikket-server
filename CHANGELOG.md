@@ -1,5 +1,14 @@
 # Snikket Server changelog
 
+## beta.UNRELEASED
+
+- Allow custom HTTP bind interface
+- Add docker health checks
+- Fix warnings about obsolete letsencrypt user
+- Add bootstrap API to create initiatal invite in an automated way
+- Switch to libunbound for DNS resolution (more robust)
+- Add environment variables to disable/replace the built-in TURN service
+
 ## beta.20210205
 
 - Fix destruction of circle group chats when a circle
