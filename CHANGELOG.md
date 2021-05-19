@@ -1,6 +1,6 @@
 # Snikket Server changelog
 
-## beta.UNRELEASED
+## beta.20210519
 
 - Allow custom HTTP bind interface
 - Add docker health checks
