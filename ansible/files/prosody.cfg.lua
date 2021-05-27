@@ -109,6 +109,9 @@ modules_enabled = {
 		"http_oauth2";
 		"http_admin_api";
 		"rest";
+
+	-- Monitoring & maintenance
+		"measure_process";
 }
 
 registration_watchers = {} -- Disable by default
@@ -160,6 +163,17 @@ authorization = "internal"
 storage = "internal"
 statistics = "internal"
 
+if ENV_SNIKKET_TWEAK_PROMETHEUS == "1" then
+	-- When using Prometheus, it is desirable to let the prometheus scraping
+	-- drive the sampling of metrics
+	statistics_interval = "manual"
+else
+	-- When not using Prometheus, we need an interval so that the metrics can
+	-- be shown by the web portal. The HTTP admin API exposure does not force
+	-- a collection as it is only interested in very few specific metrics.
+	statistics_interval = 60
+end
+
 certificates = "certs"
 
 group_default_name = ENV_SNIKKET_SITE_NAME or DOMAIN
@@ -195,6 +209,12 @@ VirtualHost (DOMAIN)
 		invites_page = "/invite";
 		invites_register = "/register";
 	}
+
+	if ENV_SNIKKET_TWEAK_PROMETHEUS == "1" then
+		modules_enabled = {
+			"prometheus";
+		}
+	end
 
 	welcome_message = [[Hi, welcome to Snikket on $host! Thanks for joining us.]]
 	.."\n\n"
