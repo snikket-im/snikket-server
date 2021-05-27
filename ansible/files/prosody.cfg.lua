@@ -109,6 +109,9 @@ modules_enabled = {
 		"http_oauth2";
 		"http_admin_api";
 		"rest";
+
+	-- Monitoring & maintenance
+		"measure_process";
 }
 
 registration_watchers = {} -- Disable by default
@@ -159,6 +162,7 @@ authentication = "internal_hashed"
 authorization = "internal"
 storage = "internal"
 statistics = "internal"
+statistics_interval = 60
 
 certificates = "certs"
 
