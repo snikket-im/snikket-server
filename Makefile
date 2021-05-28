@@ -5,7 +5,7 @@ DOCS=$(docs/**.md)
 all: docker
 
 docker:
-	docker build -t snikket -f docker/Dockerfile .
+	docker build -t snikket .
 
 site: mkdocs.yml $(DOCS)
 	echo $(DOCS)
