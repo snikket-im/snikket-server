@@ -38,6 +38,6 @@ RUN apt-get update \
     && apt-get autoremove -y \
     && rm -rf /var/cache/*
 
-RUN echo "Snikket $BUILD_SERIES.$BUILD_ID" > /usr/lib/prosody/prosody.version
+RUN echo "Snikket $BUILD_SERIES $BUILD_ID" > /usr/lib/prosody/prosody.version
 
 VOLUME ["/snikket"]

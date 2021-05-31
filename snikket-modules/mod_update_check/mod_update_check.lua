@@ -12,10 +12,11 @@ local check_interval = module:get_option_number("update_check_interval", 86400);
 local version_info = {};
 
 do
-	local version = prosody.version;
-	local branch, bugfix = version:match("(%S+)%.(%d+)$");
-	if branch then
-		version_info.branch, version_info.level = branch, bugfix;
+	local version_string = prosody.version;
+	-- "dev 128-00000", "release v2021.05r2"
+	local series, version = version_string:match("(%w+) (%S+)$");
+	if series then
+		version_info.branch, version_info.level = series, version;
 	end
 end
 
