@@ -112,13 +112,13 @@ protocols:
 
 ### apache
 
-**Note**: The following configuration is for reverse proxying from another machine 
+**Note**: The following configuration is for reverse proxying from another machine
 (other from the one hosting Snikket containers). A prerequisite is a mechanism to sync
 Snikket-managed letsencrypt TLS key and cert to `/opt/chat/letsencrypt`. This is required because
 Apache 2.4 is not able to revproxying based on SNI, routing encrypted TLS directly to the Snikket machine.
 If the containers are on the same machine
 of the reverse proxy, you have to tweak HTTP/S ports as indicated before, and you don't need
-to proxy over SSL. 
+to proxy over SSL.
 
 ```
         <VirtualHost *:443>
@@ -135,7 +135,7 @@ to proxy over SSL.
                 CustomLog ${APACHE_LOG_DIR}/chat.example.com-ssl_access.log combined
 
                 SSLEngine on
-		
+
 		#
                 SSLCertificateFile /opt/chat/letsencrypt/chat.example.com/cert.pem
                 SSLCertificateKeyFile /opt/chat/letsencrypt/chat.example.com/privkey.pem
@@ -156,14 +156,14 @@ to proxy over SSL.
         	ServerAlias share.chat.example.com
 
         	ServerAdmin webmaster@localhost
-        
+
 		DocumentRoot /var/www/chat
 
         	ProxyPreserveHost On
 
         	ProxyPass           / http://chat.example.com/
         	ProxyPassReverse    / http://chat.example.com/
-        
+
         	ErrorLog ${APACHE_LOG_DIR}/chat.example.com_error.log
         	CustomLog ${APACHE_LOG_DIR}/chat.example.com_access.log combined
 
