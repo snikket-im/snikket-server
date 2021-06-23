@@ -20,7 +20,7 @@ need to instruct it to forward Snikket traffic to Snikket.
 It is important to get certificates correct when deploying Snikket behind a reverse
 proxy. Snikket needs to obtain certificates from Let's Encrypt in order to secure
 the non-HTTP services it provides. Be careful that your reverse proxy does not
-requests from Let's Encrypt that are intended for the Snikket service.
+intercept requests from Let's Encrypt that are intended for the Snikket service.
 
 # Configuration
 
