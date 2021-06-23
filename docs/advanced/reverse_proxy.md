@@ -56,6 +56,18 @@ server {
   listen 80;
   listen [::]:80;
 
+  server_name chat.example.com;
+  server_name groups.chat.example.com;
+  server_name share.chat.example.com;
+
+  location / {
+      proxy_pass http://localhost:5080/;
+      proxy_set_header      Host              $host;
+      proxy_set_header      X-Forwarded-For   $proxy_add_x_forwarded_for;
+  }
+}
+
+server {
   # Accept HTTPS connections
   listen [::]:443 ssl ipv6only=on;
   listen 443 ssl;
@@ -67,12 +79,21 @@ server {
   server_name share.chat.example.com;
 
   location / {
-      proxy_pass http://localhost:5080/;
-      proxy_set_header  Host            $host;
-      proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_pass https://localhost:5080/;
+      proxy_set_header      Host              $host;
+      proxy_set_header      X-Forwarded-For   $proxy_add_x_forwarded_for;
+      # REMOVE THIS IF YOU CHANGE `localhost` TO ANYTHING ELSE ABOVE
+      proxy_ssl_verify      off;
+      proxy_set_header      X-Forwarded-Proto https;
+      proxy_ssl_server_name on;
   }
 }
 ```
+
+**Note:** You may modify the first server block to include a redirect to HTTPS
+instead of proxying plain-text HTTP traffic. When doing that, take care to
+proxy `.well-known/acme-challenge` even in plain text to allow Snikket to
+obtain certificates.
 
 ### sslh
 
