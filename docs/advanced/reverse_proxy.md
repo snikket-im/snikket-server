@@ -20,7 +20,7 @@ need to instruct it to forward Snikket traffic to Snikket.
 It is important to get certificates correct when deploying Snikket behind a reverse
 proxy. Snikket needs to obtain certificates from Let's Encrypt in order to secure
 the non-HTTP services it provides. Be careful that your reverse proxy does not
-requests from Let's Encrypt that are intended for the Snikket service.
+intercept requests from Let's Encrypt that are intended for the Snikket service.
 
 # Configuration
 
@@ -56,6 +56,21 @@ server {
   listen 80;
   listen [::]:80;
 
+  server_name chat.example.com;
+  server_name groups.chat.example.com;
+  server_name share.chat.example.com;
+
+  location / {
+      proxy_pass http://localhost:5080/;
+      proxy_set_header      Host              $host;
+      proxy_set_header      X-Forwarded-For   $proxy_add_x_forwarded_for;
+
+      # A bit of headroom over the 16MB accepted by Prosody.
+      client_max_body_size 20MB;
+  }
+}
+
+server {
   # Accept HTTPS connections
   listen [::]:443 ssl ipv6only=on;
   listen 443 ssl;
@@ -67,12 +82,24 @@ server {
   server_name share.chat.example.com;
 
   location / {
-      proxy_pass http://localhost:5080/;
-      proxy_set_header  Host            $host;
-      proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_pass https://localhost:5080/;
+      proxy_set_header      Host              $host;
+      proxy_set_header      X-Forwarded-For   $proxy_add_x_forwarded_for;
+      # REMOVE THIS IF YOU CHANGE `localhost` TO ANYTHING ELSE ABOVE
+      proxy_ssl_verify      off;
+      proxy_set_header      X-Forwarded-Proto https;
+      proxy_ssl_server_name on;
+
+      # A bit of headroom over the 16MB accepted by Prosody.
+      client_max_body_size 20MB;
   }
 }
 ```
+
+**Note:** You may modify the first server block to include a redirect to HTTPS
+instead of proxying plain-text HTTP traffic. When doing that, take care to
+proxy `.well-known/acme-challenge` even in plain text to allow Snikket to
+obtain certificates.
 
 ### sslh
 
@@ -112,13 +139,13 @@ protocols:
 
 ### apache
 
-**Note**: The following configuration is for reverse proxying from another machine 
+**Note**: The following configuration is for reverse proxying from another machine
 (other from the one hosting Snikket containers). A prerequisite is a mechanism to sync
 Snikket-managed letsencrypt TLS key and cert to `/opt/chat/letsencrypt`. This is required because
 Apache 2.4 is not able to revproxying based on SNI, routing encrypted TLS directly to the Snikket machine.
 If the containers are on the same machine
 of the reverse proxy, you have to tweak HTTP/S ports as indicated before, and you don't need
-to proxy over SSL. 
+to proxy over SSL.
 
 ```
         <VirtualHost *:443>
@@ -135,7 +162,7 @@ to proxy over SSL.
                 CustomLog ${APACHE_LOG_DIR}/chat.example.com-ssl_access.log combined
 
                 SSLEngine on
-		
+
 		#
                 SSLCertificateFile /opt/chat/letsencrypt/chat.example.com/cert.pem
                 SSLCertificateKeyFile /opt/chat/letsencrypt/chat.example.com/privkey.pem
@@ -156,14 +183,14 @@ to proxy over SSL.
         	ServerAlias share.chat.example.com
 
         	ServerAdmin webmaster@localhost
-        
+
 		DocumentRoot /var/www/chat
 
         	ProxyPreserveHost On
 
         	ProxyPass           / http://chat.example.com/
         	ProxyPassReverse    / http://chat.example.com/
-        
+
         	ErrorLog ${APACHE_LOG_DIR}/chat.example.com_error.log
         	CustomLog ${APACHE_LOG_DIR}/chat.example.com_access.log combined
 
