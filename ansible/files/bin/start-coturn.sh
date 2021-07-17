@@ -16,7 +16,11 @@ done
 
 TURN_EXTERNAL_IP="$(snikket-turn-addresses "$SNIKKET_DOMAIN")"
 
+min_port="${SNIKKET_TWEAK_TURNSERVER_MIN_PORT:-49152}"
+max_port="${SNIKKET_TWEAK_TURNSERVER_MAX_PORT:-65535}"
+
 exec /usr/bin/turnserver -c /etc/turnserver.conf --prod \
      --static-auth-secret="$(cat /snikket/prosody/turn-auth-secret-v2)" \
      --cert="$CERTFILE" --pkey "$KEYFILE" -r "$SNIKKET_DOMAIN" \
+     --min-port "$min_port" --max-port "$max_port" \
      -X "$TURN_EXTERNAL_IP"
