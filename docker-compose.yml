@@ -6,6 +6,9 @@ services:
     image: snikket/snikket-web-proxy:dev
     env_file: snikket.conf
     network_mode: host
+    ports:
+      - "80"
+      - "443"
     volumes:
       - snikket_data:/snikket
       - acme_challenges:/var/www/html/.well-known/acme-challenge
@@ -33,6 +36,15 @@ services:
       - snikket_data:/snikket
     env_file: snikket.conf
     restart: "unless-stopped"
+    ports:
+      - "5222"
+      - "5269"
+      - "5000"
+      - "3478"
+      - "3479"
+      - "5349"
+      - "5350"
+      - "49152-65535"
 
 volumes:
   acme_challenges:
