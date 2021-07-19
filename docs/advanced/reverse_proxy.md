@@ -82,7 +82,7 @@ server {
   server_name share.chat.example.com;
 
   location / {
-      proxy_pass https://localhost:5080/;
+      proxy_pass https://localhost:5443/;
       proxy_set_header      Host              $host;
       proxy_set_header      X-Forwarded-For   $proxy_add_x_forwarded_for;
       # REMOVE THIS IF YOU CHANGE `localhost` TO ANYTHING ELSE ABOVE
