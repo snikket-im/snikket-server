@@ -66,7 +66,7 @@ server {
       proxy_set_header      X-Forwarded-For   $proxy_add_x_forwarded_for;
 
       # A bit of headroom over the 16MB accepted by Prosody.
-      client_max_body_size 20MB;
+      client_max_body_size 20M;
   }
 }
 
@@ -91,7 +91,7 @@ server {
       proxy_ssl_server_name on;
 
       # A bit of headroom over the 16MB accepted by Prosody.
-      client_max_body_size 20MB;
+      client_max_body_size 20M;
   }
 }
 ```
