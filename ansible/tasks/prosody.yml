@@ -142,44 +142,8 @@
     state: present
     install_recommends: no
 
-- name: "Fetch luaunbound source"
-  get_url:
-    #url: https://code.zash.se/dl/luaunbound/luaunbound-0.5.tar.gz
-    url: https://matthewwild.co.uk/uploads/luaunbound-0.5.tar.gz
-    sha256sum: a6564ac1cca6bb350576eb2a5cfa03adb0aafd4f99d6cd491bd8028d046c62a7
-    dest: /tmp/luaunbound-0.5.tar.gz
-
-- name: "Extract luaunbound"
-  unarchive:
-    src: /tmp/luaunbound-0.5.tar.gz
-    remote_src: yes
-    dest: /tmp
-
-- name: "Install libunbound-dev"
-  apt:
-    name:
-      - libunbound8
-      - libunbound-dev
-      - liblua5.2-dev
-    state: present
-
-- name: "Build luaunbound"
-  make:
-    chdir: /tmp/luaunbound-0.5
-
 - name: "Install luaunbound"
-  make:
-    chdir: /tmp/luaunbound-0.5
-    target: install
-
-- name: "Remove luaunbound source"
-  file:
-    path: /tmp/luaunbound-0.5
-    state: absent
-
-- name: "Remove libunbound-dev"
   apt:
-    name:
-      - libunbound-dev
-      - liblua5.2-dev
-    state: absent
+    name: lua-unbound
+    state: present
+    install_recommends: no
