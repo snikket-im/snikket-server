@@ -28,7 +28,7 @@ RUN apt-get update \
         libcap2-bin build-essential\
     && c_rehash \
     && ansible-playbook -c local -i localhost, --extra-vars "ansible_python_interpreter=/usr/bin/python2" /opt/ansible/snikket.yml \
-    && apt-get remove -y \
+    && apt-get remove --purge -y \
          ansible \
          software-properties-common \
          gpg gpg-agent \
