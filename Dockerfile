@@ -26,7 +26,6 @@ RUN apt-get update \
         gpg gpg-agent \
         ansible python-passlib python3-passlib \
         libcap2-bin build-essential\
-    && rm -rf /var/lib/apt/lists/* \
     && c_rehash \
     && ansible-playbook -c local -i localhost, --extra-vars "ansible_python_interpreter=/usr/bin/python2" /opt/ansible/snikket.yml \
     && apt-get remove -y \
@@ -36,6 +35,7 @@ RUN apt-get update \
          python-passlib python3-passlib \
          mercurial libcap2-bin build-essential \
     && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/cache/*
 
 RUN echo "Snikket $BUILD_SERIES $BUILD_ID" > /usr/lib/prosody/prosody.version
