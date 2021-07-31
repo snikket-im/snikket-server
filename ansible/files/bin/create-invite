@@ -3,6 +3,7 @@
 SHOW_QR=0
 if [ "$1" == "--qr" ]; then
 	SHOW_QR=1;
+	shift;
 fi
 
 URL=$(prosodyctl mod_invites generate "$SNIKKET_DOMAIN" "$@")
