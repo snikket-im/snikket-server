@@ -24,15 +24,15 @@ RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         software-properties-common ca-certificates \
         gpg gpg-agent \
-        ansible python-passlib python3-passlib \
+        ansible python3-passlib \
         libcap2-bin build-essential\
     && c_rehash \
-    && ansible-playbook -c local -i localhost, --extra-vars "ansible_python_interpreter=/usr/bin/python2" /opt/ansible/snikket.yml \
+    && ansible-playbook -c local -i localhost, --extra-vars "ansible_python_interpreter=/usr/bin/python3" /opt/ansible/snikket.yml \
     && apt-get remove --purge -y \
          ansible \
          software-properties-common \
          gpg gpg-agent \
-         python-passlib python3-passlib \
+         python3-passlib \
          mercurial libcap2-bin build-essential \
          python3 python3.7-minimal \
     && apt-get autoremove -y \
