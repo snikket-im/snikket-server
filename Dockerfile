@@ -28,12 +28,13 @@ RUN apt-get update \
         libcap2-bin build-essential\
     && c_rehash \
     && ansible-playbook -c local -i localhost, --extra-vars "ansible_python_interpreter=/usr/bin/python3" /opt/ansible/snikket.yml \
-    && apt-get remove -y \
+    && apt-get remove --purge -y \
          ansible \
          software-properties-common \
          gpg gpg-agent \
          python3-passlib \
          mercurial libcap2-bin build-essential \
+         python3 python3.7-minimal \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/cache/*
