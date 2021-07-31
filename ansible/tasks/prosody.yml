@@ -11,13 +11,10 @@
 - name: "Add Prosody package repo"
   apt_repository:
     filename: prosody
-    repo: "deb https://packages.prosody.im/debian bullseye main"
-- name: "Detect dpkg architecture name"
-  shell: dpkg --print-architecture
-  register: dpkg_arch
+    repo: "deb https://packages.prosody.im/debian buster/snapshots/{{ prosody.snapshot }} main"
 - name: "Install Prosody package"
   apt:
-    deb: "https://packages.prosody.im/debian/pool/main/p/{{ prosody.package }}/{{ prosody.package }}_1nightly{{ prosody.build }}-1~bullseye_{{ dpkg_arch.stdout }}.deb"
+    name: "{{ prosody.package }}"
     state: present
     install_recommends: yes
 - name: "Deploy Prosody config"
