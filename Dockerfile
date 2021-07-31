@@ -34,7 +34,6 @@ RUN apt-get update \
          gpg gpg-agent \
          python3-passlib \
          mercurial libcap2-bin build-essential \
-         python3 python3.7-minimal \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/cache/*
