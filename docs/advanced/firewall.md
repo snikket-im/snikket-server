@@ -21,6 +21,37 @@ Snikket currently requires the following ports to be open/forwarded:
  | 5349/5350     | Audio/Video Data Proxy Negotiations and IP Discovery over TLS <br /> (STUN/TURN over TLS) |
 
 
- |**UDP only**   |                                                                                    |
- | :------------ | :----------------------------------------------------------------------------------|
- | 49152-65535   | Audio/Video Data Proxy (Turn Data)                                                 |
+ |**UDP only**  |                                                                                    |
+ | :----------- | :----------------------------------------------------------------------------------|
+ | 49152-65535  | Audio/Video Data Proxy (Turn Data, see below)                                      |
+
+
+## Changing the turnserver port range
+
+The STUN/TURN server is required for audio/video (A/V) calls to work reliably on all kinds of "difficult" client networks. For this, a relay connection is established which routes the (encrypted) A/V data via your Snikket server. As generally the number of concurrent calls is not known and it needs to compete with ports already in use on the machine, the TURN server defaults to a range with a high number of ports (about 16 thousand). See below for recommendations on picking a smaller number of ports.
+
+However, some appliances will not allow forwarding a large range of UDP ports as normally required for TURN. If you have to forward ports through such an appliance, you can tweak the port range used by the STUN/TURN server using the following two configuration options:
+
+* `SNIKKET_TWEAK_TURNSERVER_MIN_PORT`: Set the lower bound of the port range (default: 49152)
+* `SNIKKET_TWEAK_TURNSERVER_MAX_PORT`: Set the upper bound of the port range (default: 65535)
+
+Both numbers must be larger than 1024 and smaller than or equal to 65535. Keeping them above 40000 is generally recommended for network standards reasons. Obviously, the min number must be less than or equal to the max number.
+
+Example for a range of 1024 ports (in your snikket.conf):
+
+```
+SNIKKET_TWEAK_TURNSERVER_MIN_PORT=60000
+SNIKKET_TWEAK_TURNSERVER_MAX_PORT=61023
+```
+
+Make sure to restart the `snikket` container after changing this option and ideally test A/V calls with two phones on different mobile data providers (those are generally most tricky to get working).
+
+### How many ports does the TURN service need?
+
+In general, you can safely assume that a call will never need more than four ports at the same time. That means that with 200 ports, you could in theory initiate up to 50 concurrent calls on your Snikket instance.
+
+However, these ports are a system-wide resource. A port may only be used by a single application at the same time (this is an oversimplification). That means that if your server machine is "rather busy", "many" of the ports in the range you designate for the TURN service may be in use already by other applications. This in turn means that a call may randomly fail to establish based on whether enough ports are available in the range you chose.
+
+Unless you are running an *extremely* busy service on your server, you should be fine if you plan wih 10% headroom. <!-- I checked how many "high ports" (5 digits) were open on the search.jabber.network xmppd at a random point in time, and they were just 800. Given that the high port range has 50k ports and that most users are not going to run a busy service as that, it should be fine. -->
+
+That means that if you have 20 users and want to allow them to start calls at the same time (ignoring *who* they'd call), you should plan for 80 ports, plus 10% head room, gives you about 90 ports.
