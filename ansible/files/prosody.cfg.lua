@@ -77,6 +77,10 @@ modules_enabled = {
 		"turncredentials";
 		"admin_shell";
 
+	-- Spam/abuse management
+		"spam_reporting"; -- Allow users to report spam/abuse
+		"watch_spam_reports"; -- Alert admins of spam/abuse reports by users
+
 	-- TODO...
 		--"groups"; -- Shared roster support
 		--"server_contact_info"; -- Publish contact information for this service
