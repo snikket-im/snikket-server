@@ -140,7 +140,8 @@
 
 - name: "Fetch luaunbound source"
   get_url:
-    url: https://code.zash.se/dl/luaunbound/luaunbound-0.5.tar.gz
+    #url: https://code.zash.se/dl/luaunbound/luaunbound-0.5.tar.gz
+    url: https://matthewwild.co.uk/uploads/luaunbound-0.5.tar.gz
     sha256sum: a6564ac1cca6bb350576eb2a5cfa03adb0aafd4f99d6cd491bd8028d046c62a7
     dest: /tmp/luaunbound-0.5.tar.gz
 
