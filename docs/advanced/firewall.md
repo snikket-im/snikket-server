@@ -55,3 +55,29 @@ However, these ports are a system-wide resource. A port may only be used by a si
 Unless you are running an *extremely* busy service on your server, you should be fine if you plan wih 10% headroom. <!-- I checked how many "high ports" (5 digits) were open on the search.jabber.network xmppd at a random point in time, and they were just 800. Given that the high port range has 50k ports and that most users are not going to run a busy service as that, it should be fine. -->
 
 That means that if you have 20 users and want to allow them to start calls at the same time (ignoring *who* they'd call), you should plan for 80 ports, plus 10% head room, gives you about 90 ports.
+
+## Configuring UFW to Allow Ports for Snikket
+
+[UFW](https://wiki.ubuntu.com/UncomplicatedFirewall), the Uncomplicated Firewall, is a user-friendly interface to the more complicated iptables commands that control a Linux systems's firewall. 
+
+It is possible to manually add each of the above ports with `ufw` commands like the following: `# ufw allow 5000/tcp comment 'File Transfer Proxy (proxy65)'`, however, doing so is tedious and clutters the output of `# ufw status`. A better way is to create a custom ufw application, which we will call "Snikket" and have ufw add rules for that application. This is not only easier and declarative but also has the advantage of yielding a clean `# ufw status` report that looks as follows:
+
+```
+To       Action    From 
+--       ------    ----
+Snikket  ALLOW     Anywhere
+```
+
+Create the following file at `/etc/ufw/applications.d/ufw-snikket`. I have opted to open UDP ports 6000-6200 in the following example, but you should change this to reflect which TURN ports your Snikket configuration specifies.
+
+```
+[Snikket]
+title=Snikket Server
+description=Simple XMPP Server
+ports=80/tcp|443/tcp|5222/tcp|5269/tcp|5000/tcp|3478|3479|5349|5350|6000:6200/udp
+```
+
+Add the new rule:
+`# ufw allow snikket`
+
+Running `# ufw status` should now show Snikket as a rule. If you want to see all the specific ports that have been allowed by adding this rule you can run `# ufw status verbose`.
