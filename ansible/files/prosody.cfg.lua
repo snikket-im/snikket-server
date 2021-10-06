@@ -1,6 +1,7 @@
 local DOMAIN = assert(ENV_SNIKKET_DOMAIN, "Please set the SNIKKET_DOMAIN environment variable")
 
 local RETENTION_DAYS = tonumber(ENV_SNIKKET_RETENTION_DAYS) or 7;
+local MAX_FILE_SIZE_MB = tonumber(ENV_SNIKKET_TWEAK_MAX_FILE_SIZE_MB) or 16;
 
 if prosody.process_type == "prosody" and not prosody.config_loaded then
 	-- Wait at startup for certificates
@@ -261,7 +262,7 @@ Component ("share."..DOMAIN) "http_file_share"
 		http_host = "share."..DOMAIN
 		http_external_url = "https://share."..DOMAIN.."/"
 	end
-	http_file_share_size_limit = 1024 * 1024 * 16 -- 16MB
+	http_file_share_size_limit = 1024 * 1024 * MAX_FILE_SIZE_MB -- N MB
 	http_file_share_expire_after = 60 * 60 * 24 * RETENTION_DAYS -- N days
 	http_paths = {
 		file_share = "/upload"

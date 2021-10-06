@@ -72,6 +72,16 @@ The TCP port on which the internal HTTP API listens on. The default is `5280`. D
 
 The IP address on which the internal HTTP API listens on. The default is `127.0.0.1`, so that the API is only accessible from the same server. Changing this may be a security risk as some general system information is accessible without authentication.
 
+### `SNIKKET_TWEAK_MAX_FILE_SIZE_MB`
+
+The maximum file size users can upload to this server (per file) in units of MiB (1048576 bytes). The default is 16 (so 16 MiB maximum file size).
+
+Files are stored for `SNIKKET_RETENTION_DAYS` days on the server, so increasing this limit also increases the storage use (even though users could simply upload many small files to exhaust storage, a larger limit likely encourages uploading larger files). As with text messages, uploaded files are by default encrypted by the apps, so they are not stored without encryption at the server.
+
+On the other hand, users may expect to be able to share large files (for instance, videos) even in groups (where peer-to-peer transfer is not available), so some instances will want to increase it.
+
+(In the future, there may be a way to set a daily and overall quota, at which point the options may be promoted to non-tweak level.)
+
 ### `SNIKKET_INVITE_URL`
 
 The URL template for invitation links. The server needs to know under which address the invitation service is hosted.
