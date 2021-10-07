@@ -1,11 +1,12 @@
 local DOMAIN = assert(ENV_SNIKKET_DOMAIN, "Please set the SNIKKET_DOMAIN environment variable")
+local XMPP_DOMAIN = ENV_SNIKKET_TWEAK_XMPP_DOMAIN or ENV_SNIKKET_DOMAIN;
 
 local RETENTION_DAYS = tonumber(ENV_SNIKKET_RETENTION_DAYS) or 7;
 
 if prosody.process_type == "prosody" and not prosody.config_loaded then
 	-- Wait at startup for certificates
 	local lfs, socket = require "lfs", require "socket";
-	local cert_path = "/etc/prosody/certs/"..DOMAIN..".crt";
+	local cert_path = "/etc/prosody/certs/"..XMPP_DOMAIN..".crt";
 	local counter = 0;
 	while not lfs.attributes(cert_path, "mode") do
 		counter = counter + 1;
@@ -180,7 +181,7 @@ end
 
 certificates = "certs"
 
-group_default_name = ENV_SNIKKET_SITE_NAME or DOMAIN
+group_default_name = ENV_SNIKKET_SITE_NAME or XMPP_DOMAIN
 
 -- Update check configuration
 software_name = "Snikket"
@@ -202,7 +203,7 @@ if ENV_SNIKKET_TWEAK_TURNSERVER ~= "0" or ENV_SNIKKET_TWEAK_TURNSERVER_DOMAIN th
 	turncredentials_secret = ENV_SNIKKET_TWEAK_TURNSERVER_SECRET or assert(io.open("/snikket/prosody/turn-auth-secret-v2")):read("*l");
 end
 
-VirtualHost (DOMAIN)
+VirtualHost (XMPP_DOMAIN)
 	authentication = "internal_hashed"
 
 	http_files_dir = "/var/www"
@@ -226,7 +227,7 @@ VirtualHost (DOMAIN)
 	.."\n\n"
 	..[[Happy chatting!]]
 
-Component ("groups."..DOMAIN) "muc"
+Component ("groups."..XMPP_DOMAIN) "muc"
 	modules_enabled = {
 		"muc_mam";
 		"muc_local_only";
@@ -234,7 +235,7 @@ Component ("groups."..DOMAIN) "muc"
 		"muc_defaults";
 	}
 	restrict_room_creation = "local"
-	muc_local_only = { "general@groups."..DOMAIN }
+	muc_local_only = { "general@groups."..XMPP_DOMAIN }
 	muc_room_default_persistent = true
 	muc_room_default_allow_member_invites = true
 
@@ -243,7 +244,7 @@ Component ("groups."..DOMAIN) "muc"
 			jid_node = "general";
 			config = {
 				name = "General Chat";
-				description = "Welcome to "..DOMAIN.." general chat!";
+				description = "Welcome to "..XMPP_DOMAIN.." general chat!";
 				change_subject = false;
 				history_length = 30;
 				members_only = false;
@@ -255,7 +256,7 @@ Component ("groups."..DOMAIN) "muc"
 		}
 	}
 
-Component ("share."..DOMAIN) "http_file_share"
+Component ("share."..XMPP_DOMAIN) "http_file_share"
 	-- For backwards compat, allow HTTP upload on the base domain
 	if ENV_SNIKKET_TWEAK_SHARE_DOMAIN ~= "1" then
 		http_host = "share."..DOMAIN
