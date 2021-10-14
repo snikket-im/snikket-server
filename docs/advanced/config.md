@@ -35,6 +35,21 @@ On the other hand, storing too many messages on the server causes impacts on ser
 
 Changing this option to a lower value will delete messages from the server. Changing this option to a higher value will allow messages existing on the server to be retained for longer.
 
+### `SNIKKET_UPLOAD_STORAGE_GB`
+
+Use this option to place a limit on the amount of storage Snikket will use for files shared by users. You can use this to prevent your server's disk capacity being consumed if users upload many large files. By default there is no limit.
+
+If the limit is reached, users will be unable to upload new files until older files are cleared by Snikket after the configured retention period (or the limit is increased).
+
+Example:
+
+```
+# Allow no more than 1.5GB disk space to be used by uploaded files
+SNIKKET_UPLOAD_STORAGE_GB=1.5
+```
+
+The amount of file storage used is affected by the configured retention period (7 days by default) - i.e. longer retention periods will mean files are stored for longer, and more space will be used. Take this into account when choosing a value.
+
 ### `SNIKKET_LOGLEVEL`
 
 Control the detail level of the log output of the snikket server.
