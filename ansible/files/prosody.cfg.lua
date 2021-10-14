@@ -263,6 +263,9 @@ Component ("share."..DOMAIN) "http_file_share"
 	end
 	http_file_share_size_limit = 1024 * 1024 * 100 -- 100MB
 	http_file_share_expire_after = 60 * 60 * 24 * RETENTION_DAYS -- N days
+	if ENV_SNIKKET_UPLOAD_STORAGE_GB and tonumber(ENV_SNIKKET_UPLOAD_STORAGE_GB) then
+		http_file_share_global_quota = 1024 * 1024 * 1024 * tonumber(ENV_SNIKKET_UPLOAD_STORAGE_GB)
+	end
 	http_paths = {
 		file_share = "/upload"
 	}
