@@ -261,7 +261,7 @@ Component ("share."..DOMAIN) "http_file_share"
 		http_host = "share."..DOMAIN
 		http_external_url = "https://share."..DOMAIN.."/"
 	end
-	http_file_share_size_limit = 1024 * 1024 * 16 -- 16MB
+	http_file_share_size_limit = 1024 * 1024 * 100 -- 100MB
 	http_file_share_expire_after = 60 * 60 * 24 * RETENTION_DAYS -- N days
 	http_paths = {
 		file_share = "/upload"
