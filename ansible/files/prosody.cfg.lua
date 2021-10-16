@@ -55,9 +55,7 @@ modules_enabled = {
 
 	-- Push notifications
 		"cloud_notify";
-		"cloud_notify_encrypted";
-		"cloud_notify_priority_tag";
-		"cloud_notify_filters";
+		"cloud_notify_extensions";
 
 	-- HTTP modules
 		"bosh"; -- Enable BOSH clients, aka "Jabber over HTTP"
