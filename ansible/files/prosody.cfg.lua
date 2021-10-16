@@ -233,6 +233,7 @@ Component ("groups."..DOMAIN) "muc"
 		"muc_local_only";
 		"vcard_muc";
 		"muc_defaults";
+		"muc_offline_delivery";
 	}
 	restrict_room_creation = "local"
 	muc_local_only = { "general@groups."..DOMAIN }
