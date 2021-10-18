@@ -76,6 +76,7 @@ modules_enabled = {
 		"turncredentials";
 		"admin_shell";
 		"snikket_client_id";
+		"snikket_ios_preserve_push";
 
 	-- Spam/abuse management
 		"spam_reporting"; -- Allow users to report spam/abuse

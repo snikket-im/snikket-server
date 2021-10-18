@@ -133,6 +133,7 @@
     - mod_invites_default_group
     - mod_invites_bootstrap
     - mod_snikket_client_id
+    - mod_snikket_ios_preserve_push
 
 - name: "Install lua-ossl for encrypted push notifications"
   apt:
