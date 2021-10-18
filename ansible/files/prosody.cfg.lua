@@ -75,6 +75,7 @@ modules_enabled = {
 		"update_notify";
 		"turncredentials";
 		"admin_shell";
+		"snikket_client_id";
 
 	-- Spam/abuse management
 		"spam_reporting"; -- Allow users to report spam/abuse
