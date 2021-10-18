@@ -10,6 +10,7 @@
     url: "https://packages.prosody.im/debian/pubkey.asc"
 - name: "Add Prosody package repo"
   apt_repository:
+    filename: prosody
     repo: "deb https://packages.prosody.im/debian buster main"
 - name: "Detect dpkg architecture name"
   shell: dpkg --print-architecture
