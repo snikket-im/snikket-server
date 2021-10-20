@@ -121,5 +121,5 @@ Once you have fixed any problems, you can force a new attempt with the
 following command:
 
 ```
-docker-compose exec snikket_certs su letsencrypt -- -c "certbot renew --config-dir /snikket/letsencrypt --cert-path /etc/ssl/certbot --force-renew
+docker-compose exec snikket_certs su letsencrypt -- -c "certbot renew --config-dir /snikket/letsencrypt --cert-path /etc/ssl/certbot --force-renew"
 ```
