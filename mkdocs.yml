@@ -8,6 +8,7 @@ nav:
   - index.md
   - Setup:
     - setup/quickstart.md
+    - setup/troubleshooting.md
   - Advanced:
     - advanced/dns.md
     - advanced/firewall.md
