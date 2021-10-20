@@ -31,10 +31,10 @@ For the server, you can use a VPS from a provider such as [DigitalOcean](https:/
 or you can use a physical device such as a Raspberry Pi. Note that if you run your server at home (which is _really_ cool!) you may need to forward some ports on your
 router.
 
-{{< infobox warning >}}
-**Important:** Snikket provides a built-in web server that must be accessible on port 80. Therefore this guide assumes you are _not_ running any existing
-websites on the same server. We are working to remove this requirement in a future version.
-{{< /infobox >}}
+!!! warning
+
+    **Important:** Snikket provides a built-in web server that must be accessible on port 80. Therefore this guide assumes you are _not_ running any existing
+    websites on the same server. We are working to remove this requirement in a future version.
 
 ## Get Started
 
@@ -172,6 +172,4 @@ Follow the link to open the invitation, and follow the instructions get signed i
 You can create as many links as you want and share them with people. Each link can
 only be used once. Don't forget to drop the `--admin` part to create normal user accounts!
 
-{{< infobox primary >}}
 That's it! How did it go? Let us know at feedback@snikket.org
-{{< /infobox >}}
