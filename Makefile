@@ -1,6 +1,6 @@
-.PHONY: all docker
+.PHONY: all docker site
 
-DOCS=$(docs/**.md)
+DOCS := $(docs/**.md)
 
 all: docker
 
@@ -9,7 +9,7 @@ docker:
 
 site: mkdocs.yml $(DOCS)
 	echo $(DOCS)
-	mkdocs
+	mkdocs build
 
 docs/_po/snikket-server-docs.pot: po4a.conf $(DOCS)
 	po4a \
