@@ -11,6 +11,7 @@ module:hook("resource-bind", function (event)
 	local client_id = session.client_id;
 	if not client_id then return; end
 	local push_registrations = push_store:get(session.username);
+	if not push_registrations then return; end
 	for push_identifier, push_registration in pairs(push_registrations) do
 		if push_registration.client_id == client_id then
 			session.push_identifier = push_identifier;
