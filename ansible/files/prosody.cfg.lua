@@ -75,6 +75,7 @@ modules_enabled = {
 		"update_notify";
 		"turncredentials";
 		"admin_shell";
+		"isolate_host";
 		"snikket_client_id";
 		"snikket_ios_preserve_push";
 
@@ -202,6 +203,9 @@ if ENV_SNIKKET_TWEAK_TURNSERVER ~= "0" or ENV_SNIKKET_TWEAK_TURNSERVER_DOMAIN th
 	turncredentials_host = ENV_SNIKKET_TWEAK_TURNSERVER_DOMAIN or DOMAIN
 	turncredentials_secret = ENV_SNIKKET_TWEAK_TURNSERVER_SECRET or assert(io.open("/snikket/prosody/turn-auth-secret-v2")):read("*l");
 end
+
+-- Allow restricted users access to push notification servers
+isolate_except_domains = { "push.snikket.net", "push-ios.snikket.net" }
 
 VirtualHost (DOMAIN)
 	authentication = "internal_hashed"
