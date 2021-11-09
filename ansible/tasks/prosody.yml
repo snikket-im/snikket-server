@@ -122,6 +122,7 @@
     - mod_prometheus
     - mod_spam_reporting
     - mod_watch_spam_reports
+    - mod_isolate_host
 
 - name: Enable wanted modules (snikket-modules)
   file:
@@ -135,6 +136,7 @@
     - mod_invites_bootstrap
     - mod_snikket_client_id
     - mod_snikket_ios_preserve_push
+    - mod_snikket_restricted_users
 
 - name: "Install lua-ossl for encrypted push notifications"
   apt:

@@ -75,6 +75,7 @@ modules_enabled = {
 		"update_notify";
 		"turncredentials";
 		"admin_shell";
+		"isolate_host";
 		"snikket_client_id";
 		"snikket_ios_preserve_push";
 
@@ -140,6 +141,9 @@ registration_invite_only = true
 -- over what happens when a user invites someone.
 allow_contact_invites = false
 
+-- Disallow restricted users to create invitations to the server
+deny_user_invites_by_roles = { "prosody:restricted" }
+
 invites_page = ENV_SNIKKET_INVITE_URL or ("https://"..DOMAIN.."/invite/{invite.token}/");
 invites_page_external = true
 
@@ -203,6 +207,9 @@ if ENV_SNIKKET_TWEAK_TURNSERVER ~= "0" or ENV_SNIKKET_TWEAK_TURNSERVER_DOMAIN th
 	turncredentials_secret = ENV_SNIKKET_TWEAK_TURNSERVER_SECRET or assert(io.open("/snikket/prosody/turn-auth-secret-v2")):read("*l");
 end
 
+-- Allow restricted users access to push notification servers
+isolate_except_domains = { "push.snikket.net", "push-ios.snikket.net" }
+
 VirtualHost (DOMAIN)
 	authentication = "internal_hashed"
 
@@ -234,11 +241,15 @@ Component ("groups."..DOMAIN) "muc"
 		"vcard_muc";
 		"muc_defaults";
 		"muc_offline_delivery";
+		"snikket_restricted_users";
 	}
 	restrict_room_creation = "local"
 	muc_local_only = { "general@groups."..DOMAIN }
-	muc_room_default_persistent = true
+
+	-- Default configuration for rooms (typically overwritten by the client)
 	muc_room_default_allow_member_invites = true
+	muc_room_default_persistent = true
+	muc_room_default_public = false
 
 	default_mucs = {
 		{
