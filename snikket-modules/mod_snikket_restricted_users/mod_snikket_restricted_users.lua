@@ -26,13 +26,13 @@ local function load_groups_host(module)
 	end
 
 	module:hook("muc-config-submitted/muc#roomconfig_publicroom", function (event)
-		if not is_restricted(event.stanza.attr.from) then return; end
+		if not is_restricted(event.actor) then return; end
 		-- Don't allow modification of this value by restricted users
 		return true;
 	end, 5);
 
 	module:hook("muc-config-form", function (event)
-		if not is_restricted(event.stanza.attr.from) then return; end -- Don't restrict admins
+		if not is_restricted(event.actor) then return; end -- Don't restrict admins
 		-- Hide the option from the config form for restricted users
 		local form = event.form;
 		for i = #form, 1, -1 do
