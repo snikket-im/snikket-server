@@ -141,6 +141,9 @@ registration_invite_only = true
 -- over what happens when a user invites someone.
 allow_contact_invites = false
 
+-- Disallow restricted users to create invitations to the server
+deny_user_invites_by_roles = { "prosody:restricted" }
+
 invites_page = ENV_SNIKKET_INVITE_URL or ("https://"..DOMAIN.."/invite/{invite.token}/");
 invites_page_external = true
 
