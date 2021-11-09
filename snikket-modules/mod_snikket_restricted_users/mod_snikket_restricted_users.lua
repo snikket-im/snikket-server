@@ -2,6 +2,8 @@ local jid_bare = require "util.jid".bare;
 local um_get_roles = require "core.usermanager".get_roles;
 
 local function load_main_host(module)
+	-- Check whether a user should be isolated from remote JIDs
+	-- If not, set a session flag that allows them to bypass mod_isolate_host
 	local function check_user_isolated(event)
 		local session = event.session;
 		if not session.no_host_isolation then
@@ -14,6 +16,8 @@ local function load_main_host(module)
 		end
 	end
 
+	-- Add low-priority hook to run after the check_user_isolated default
+	-- behaviour in mod_isolate_host
 	module:hook("resource-bind", check_user_isolated, -0.5);
 end
 
