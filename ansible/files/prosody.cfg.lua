@@ -263,8 +263,13 @@ Component ("share."..DOMAIN) "http_file_share"
 		http_host = "share."..DOMAIN
 		http_external_url = "https://share."..DOMAIN.."/"
 	end
-	http_file_share_size_limit = 1024 * 1024 * 100 -- 100MB
+
+	-- 128 bits (i.e. 16 bytes) is the maximum length of a GCM auth tag, which
+	-- is appended to encrypted uploads according to XEP-0454. This ensures we
+	-- allow files up to the size limit even if they are encrypted.
+	http_file_share_size_limit = (1024 * 1024 * 100) + 16 -- 100MB + 16 bytes
 	http_file_share_expire_after = 60 * 60 * 24 * RETENTION_DAYS -- N days
+
 	if UPLOAD_STORAGE_GB then
 		http_file_share_global_quota = 1024 * 1024 * 1024 * UPLOAD_STORAGE_GB
 	end
