@@ -238,6 +238,7 @@ Component ("groups."..DOMAIN) "muc"
 		"vcard_muc";
 		"muc_defaults";
 		"muc_offline_delivery";
+		"snikket_restricted_users";
 	}
 	restrict_room_creation = "local"
 	muc_local_only = { "general@groups."..DOMAIN }
