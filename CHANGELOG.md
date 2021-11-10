@@ -1,5 +1,21 @@
 # Snikket Server changelog
 
+## UNRELEASED
+
+- Increase shared file size limit from 16MB to 100MB
+- Allow configurable storage quota for shared files
+- Initial support for "limited" user accounts
+- Support for group chat notifications on iOS
+- Configurable port range for TURN service
+- Ability to see basic server metrics in the web admin interface
+- Support for advanced monitoring/alerting via Prometheus
+
+### Upgrading
+
+If you are using a reverse proxy in front of Snikket, ensure it can
+handle the new upload limit (for example, in nginx the `client_max_body_size`
+option).
+
 ## beta.20210519
 
 - Allow custom HTTP bind interface
