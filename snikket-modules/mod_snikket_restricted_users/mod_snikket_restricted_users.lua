@@ -9,7 +9,8 @@ local function load_main_host(module)
 		if not session.no_host_isolation then
 			local bare_jid = jid_bare(session.full_jid);
 			local roles = um_get_roles(bare_jid, module.host);
-			if roles and not roles["prosody:restricted"] then
+			if roles == false then return; end
+			if not roles or not roles["prosody:restricted"] then
 				-- Bypass isolation for all unrestricted users
 				session.no_host_isolation = true;
 			end
