@@ -29,6 +29,11 @@ data_path = "/snikket/prosody"
 
 pidfile = "/var/run/prosody/prosody.pid"
 
+-- Aggressive GC to reduce resource consumption. These values are not
+-- incredibly scientific, but should be good for a small private server.
+-- They should be reviewed on the upgrade to Lua 5.4.
+gc = { threshold = 100, speed = 750 }
+
 modules_enabled = {
 
 	-- Generally required
