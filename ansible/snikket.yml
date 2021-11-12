@@ -7,7 +7,7 @@
   vars:
     prosody:
       package: "prosody-trunk"
-      build: "1535"
+      build: "1537"
     prosody_modules:
       revision: "8bd36bba2292"
   tasks:
