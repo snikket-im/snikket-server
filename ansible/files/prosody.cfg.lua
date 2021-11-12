@@ -85,6 +85,7 @@ modules_enabled = {
 		"isolate_host";
 		"snikket_client_id";
 		"snikket_ios_preserve_push";
+		"snikket_restricted_users";
 
 	-- Spam/abuse management
 		"spam_reporting"; -- Allow users to report spam/abuse
