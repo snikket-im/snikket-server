@@ -29,6 +29,8 @@ data_path = "/snikket/prosody"
 
 pidfile = "/var/run/prosody/prosody.pid"
 
+admin_shell_prompt = ("prosody [%s]> "):format(DOMAIN)
+
 -- Aggressive GC to reduce resource consumption. These values are not
 -- incredibly scientific, but should be good for a small private server.
 -- They should be reviewed on the upgrade to Lua 5.4.
