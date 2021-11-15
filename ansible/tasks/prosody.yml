@@ -117,6 +117,7 @@
     - mod_groups_muc_bookmarks
     - mod_muc_defaults
     - mod_muc_local_only
+    - mod_muc_offline_delivery
     - mod_http_host_status_check
     - mod_measure_process
     - mod_prometheus
