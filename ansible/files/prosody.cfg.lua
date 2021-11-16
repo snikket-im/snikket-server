@@ -250,6 +250,7 @@ Component ("groups."..DOMAIN) "muc"
 		"muc_defaults";
 		"muc_offline_delivery";
 		"snikket_restricted_users";
+		"muc_auto_reserve_nicks";
 	}
 	restrict_room_creation = "local"
 	muc_local_only = { "general@groups."..DOMAIN }
@@ -258,6 +259,10 @@ Component ("groups."..DOMAIN) "muc"
 	muc_room_default_allow_member_invites = true
 	muc_room_default_persistent = true
 	muc_room_default_public = false
+
+	-- Enable push notifications for offline group members by default
+	-- (this also requires mod_muc_auto_reserve_nicks in practice)
+	muc_offline_delivery_default = true
 
 	default_mucs = {
 		{
