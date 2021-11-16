@@ -124,6 +124,7 @@
     - mod_spam_reporting
     - mod_watch_spam_reports
     - mod_isolate_host
+    - mod_muc_auto_reserve_nicks
 
 - name: Enable wanted modules (snikket-modules)
   file:
