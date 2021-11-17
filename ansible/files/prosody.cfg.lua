@@ -86,6 +86,7 @@ modules_enabled = {
 		"snikket_client_id";
 		"snikket_ios_preserve_push";
 		"snikket_restricted_users";
+		"lastlog2";
 
 	-- Spam/abuse management
 		"spam_reporting"; -- Allow users to report spam/abuse
@@ -126,6 +127,7 @@ modules_enabled = {
 
 	-- Monitoring & maintenance
 		"measure_process";
+		"measure_active_users";
 }
 
 registration_watchers = {} -- Disable by default
