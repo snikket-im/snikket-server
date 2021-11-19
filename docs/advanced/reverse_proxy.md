@@ -137,6 +137,89 @@ protocols:
 
 ```
 
+### Caddy
+
+To use Caddy with Snikket, you need to
+1. Forward HTTP traffic on port 80 with hostnames chat.example.com, groups.chat.example.com
+and share.chat.example.com to Snikket's port 5080.
+1. Forward HTTPS traffic on port 443 with the above SNIs to Snikket's port 5443 *without*
+terminating TLS, since Snikket obtains certificates by itself.
+
+The below steps are optional, but allow you to run encrypted XMPP through the HTTPS port,
+similar to [sslh](https://github.com/snikket-im/snikket-server/blob/master/docs/advanced/reverse_proxy.md#sslh).
+Of course, you will need to add additional DNS records; see [advanced DNS](dns.md).
+1. Forward encrypted XMPP traffic on port 443 to Snikket's port 5223.
+1. Forward unencrypted XMPP traffic on port 443 to Snikket's port 5222.
+
+Caddy, by design, operates on the HTTP layer 7, while TLS passthrough can only be done by a
+layer 4 TCP server. Fortunately, a [Caddy layer 4 plugin](https://github.com/mholt/caddy-l4)
+is available, but it only supports JSON configurations. The following YAML file, when converted
+to JSON, should work. It includes the optional steps as well.
+```yaml
+apps:
+  layer4:
+    servers:
+      srv0:
+        listen:
+        - ":80"
+        - ":443"
+        routes:
+        - match:  # HTTP traffic received on port 80
+          - http:
+            - host:
+              - chat.example.com
+              - groups.chat.example.com
+              - share.chat.example.com
+          handle:
+          - handler: proxy
+            upstreams:
+            - dial:
+              - localhost:5080
+        - match:  # Encrypted XMPP traffic received on 443
+          - tls:
+              alpn:
+              - xmpp-client
+          handle:
+          - handler: proxy
+            upstreams:
+            - dial:
+              - localhost:5223
+        - match:  # Encrypted HTTPS traffic received on 443
+          - tls:
+              sni:
+              - chat.example.com
+              - groups.chat.example.com
+              - share.chat.example.com
+          handle:
+          - handler: proxy
+            upstreams:
+            - dial:
+              - localhost:5443
+        - match:  # Unencrypted XMPP traffic received on 443 (will use STARTTLS) 
+          - xmpp: {}
+          handle:
+          - handler: proxy
+            upstreams:
+            - dial:
+              - localhost:5222
+        - handle:
+          # forward unmatched traffic on port 443 to 1337
+          # where Caddy layer7 is running
+          - handler: proxy
+            upstreams:
+            - dial:
+              - localhost:1337
+  http:
+    https_port: 1337
+    servers:
+      srv1:
+        listen:
+        - ":1337"
+        routes: [
+          # layer 7 / HTTP routes go here
+        ]
+```
+
 ### apache
 
 **Note**: The following configuration is for reverse proxying from another machine
@@ -197,4 +280,3 @@ to proxy over SSL.
 	</VirtualHost>
 
 ```
-
