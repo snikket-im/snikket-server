@@ -110,16 +110,38 @@ for more information on correctly configuring reverse proxies.
 
 ### Certificate debugging commands
 
-If everything looks okay and you're not sure what the problem could be,
-you can get the error message from the debug log:
+#### Checking for errors
+
+If you think you have everything set up correctly and you're not sure what the
+problem could be, check the error log:
+
+```
+docker-compose exec snikket_certs cat /var/log/letsencrypt/errors.log
+```
+
+If you get a "No such file or directory" error when running the above command,
+inspect the debug log instead:
 
 ```
 docker-compose exec snikket_certs cat /var/log/letsencrypt/letsencrypt.log | grep detail
 ```
 
+#### Trying again
+
 Once you have fixed any problems, you can force a new attempt with the
 following command:
 
 ```
+docker-compose exec snikket_certs /etc/cron.daily/certbot
+```
+
+If that command says that no certificates are due for renewal, but you need to
+trigger a renewal anyway, run:
+
+```
 docker-compose exec snikket_certs su letsencrypt -- -c "certbot renew --config-dir /snikket/letsencrypt --cert-path /etc/ssl/certbot --force-renew"
 ```
+
+Note that Let's Encrypt has strict [rate limits](https://letsencrypt.org/docs/rate-limits/) -
+do not run these commands more often than necessary, or you may find yourself
+unable to get new certificates for a while.
