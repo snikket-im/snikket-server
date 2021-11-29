@@ -233,7 +233,7 @@ VirtualHost (DOMAIN)
 
 	if ENV_SNIKKET_TWEAK_PROMETHEUS == "1" then
 		modules_enabled = {
-			"prometheus";
+			"http_openmetrics";
 		}
 	end
 
