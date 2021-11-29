@@ -128,6 +128,7 @@ modules_enabled = {
 	-- Monitoring & maintenance
 		"measure_process";
 		"measure_active_users";
+		"measure_lua";
 }
 
 registration_watchers = {} -- Disable by default

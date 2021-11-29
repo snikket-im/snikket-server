@@ -126,6 +126,7 @@
     - mod_isolate_host
     - mod_muc_auto_reserve_nicks
     - mod_measure_active_users
+    - mod_measure_lua
 
 - name: Enable wanted modules (snikket-modules)
   file:
