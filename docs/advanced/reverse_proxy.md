@@ -146,37 +146,37 @@ protocols:
 ```
 <VirtualHost *:80>
 
-      	ServerName  chat.example.com
-       	ServerAlias groups.chat.example.com
-       	ServerAlias share.chat.example.com
+        ServerName  chat.example.com
+        ServerAlias groups.chat.example.com
+        ServerAlias share.chat.example.com
 
-       	ProxyPreserveHost On
+        ProxyPreserveHost On
 
-	ProxyPass 	 / http://127.0.0.1:5080/
-	ProxyPassReverse / http://127.0.0.1:5080/
+        ProxyPass           / http://127.0.0.1:5080/
+        ProxyPassReverse    / http://127.0.0.1:5080/
 
 </VirtualHost>
 
 <VirtualHost *:443>
 
-	ServerName  chat.example.com
-	ServerAlias groups.chat.example.com
-	ServerAlias share.chat.example.com
+        ServerName  chat.example.com
+        ServerAlias groups.chat.example.com
+        ServerAlias share.chat.example.com
 
-	SSLEngine on
-	SSLProxyEngine On
-	ProxyPreserveHost On
-	SSLProxyVerify None
-	SSLProxyCheckPeerCN Off
-	SSLProxyCheckPeerName Off
-	
-	SSLCertificateFile /path/to/certifolder/cert.pem
-	SSLCertificateKeyFile /path/to/certifolder/privkey.pem
-	SSLCertificateChainFile /path/to/certifolder/chain.pem
- 
- 	ProxyPass           / https://127.0.0.1:5443/
-	ProxyPassReverse    / https://127.0.0.1:5443/
-	
+        SSLEngine On
+        SSLProxyEngine On
+        ProxyPreserveHost On
+        SSLProxyVerify None
+        SSLProxyCheckPeerCN Off
+        SSLProxyCheckPeerName Off
+
+        SSLCertificateFile /path/to/certifolder/cert.pem
+        SSLCertificateKeyFile /path/to/certifolder/privkey.pem
+        SSLCertificateChainFile /path/to/certifolder/chain.pem
+
+        ProxyPass           / https://127.0.0.1:5443/
+        ProxyPassReverse    / https://127.0.0.1:5443/
+
 </VirtualHost>
 
 ```
@@ -202,8 +202,8 @@ to proxy over SSL.
 
                 ErrorLog ${APACHE_LOG_DIR}/chat.example.com-ssl_error.log
                 CustomLog ${APACHE_LOG_DIR}/chat.example.com-ssl_access.log combined
-		
-		SSLEngine on
+
+                SSLEngine on
 
                 SSLCertificateFile /opt/chat/letsencrypt/chat.example.com/cert.pem
                 SSLCertificateKeyFile /opt/chat/letsencrypt/chat.example.com/privkey.pem
@@ -217,24 +217,24 @@ to proxy over SSL.
 
         </VirtualHost>
 
-	<VirtualHost *:80>
+        <VirtualHost *:80>
 
-        	ServerName chat.example.com
-        	ServerAlias groups.chat.example.com
-        	ServerAlias share.chat.example.com
+                ServerName chat.example.com
+                ServerAlias groups.chat.example.com
+                ServerAlias share.chat.example.com
 
-        	ServerAdmin webmaster@localhost
-		DocumentRoot /var/www/chat
+                ServerAdmin webmaster@localhost
+                DocumentRoot /var/www/chat
 
-        	ProxyPreserveHost On
+                ProxyPreserveHost On
 
-        	ProxyPass           / http://chat.example.com/	
-		ProxyPassReverse    / http://chat.example.com/
+                ProxyPass           / http://chat.example.com/	
+                ProxyPassReverse    / http://chat.example.com/
 
-        	ErrorLog ${APACHE_LOG_DIR}/chat.example.com_error.log
-        	CustomLog ${APACHE_LOG_DIR}/chat.example.com_access.log combined
-		
-	</VirtualHost>
+                ErrorLog ${APACHE_LOG_DIR}/chat.example.com_error.log
+                CustomLog ${APACHE_LOG_DIR}/chat.example.com_access.log combined
+
+        </VirtualHost>
 
 ```
 
