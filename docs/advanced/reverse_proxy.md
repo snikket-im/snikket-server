@@ -137,7 +137,49 @@ protocols:
 
 ```
 
-### apache
+### apache2
+
+**Note**: enable the needed apache2 mods, if you have not already:
+`a2enmod proxy proxy_http proxy_wstunnel ssl`
+
+
+```
+<VirtualHost *:80>
+
+      	ServerName  chat.example.com
+       	ServerAlias groups.chat.example.com
+       	ServerAlias share.chat.example.com
+
+       	ProxyPreserveHost On
+
+	ProxyPass 	 / http://127.0.0.1:5080/
+	ProxyPassReverse / http://127.0.0.1:5080/
+
+</VirtualHost>
+
+<VirtualHost *:443>
+
+	ServerName  chat.example.com
+	ServerAlias groups.chat.example.com
+	ServerAlias share.chat.example.com
+
+	SSLEngine on
+	SSLProxyEngine On
+	ProxyPreserveHost On
+	SSLProxyVerify None
+	SSLProxyCheckPeerCN Off
+	SSLProxyCheckPeerName Off
+	
+	SSLCertificateFile /path/to/certifolder/cert.pem
+	SSLCertificateKeyFile /path/to/certifolder/privkey.pem
+	SSLCertificateChainFile /path/to/certifolder/chain.pem
+ 
+ 	ProxyPass           / https://127.0.0.1:5443/
+	ProxyPassReverse    / https://127.0.0.1:5443/
+	
+</VirtualHost>
+
+```
 
 **Note**: The following configuration is for reverse proxying from another machine
 (other from the one hosting Snikket containers). A prerequisite is a mechanism to sync
@@ -160,10 +202,9 @@ to proxy over SSL.
 
                 ErrorLog ${APACHE_LOG_DIR}/chat.example.com-ssl_error.log
                 CustomLog ${APACHE_LOG_DIR}/chat.example.com-ssl_access.log combined
+		
+		SSLEngine on
 
-                SSLEngine on
-
-		#
                 SSLCertificateFile /opt/chat/letsencrypt/chat.example.com/cert.pem
                 SSLCertificateKeyFile /opt/chat/letsencrypt/chat.example.com/privkey.pem
                 SSLCertificateChainFile /opt/chat/letsencrypt/chat.example.com/chain.pem
@@ -183,17 +224,16 @@ to proxy over SSL.
         	ServerAlias share.chat.example.com
 
         	ServerAdmin webmaster@localhost
-
 		DocumentRoot /var/www/chat
 
         	ProxyPreserveHost On
 
-        	ProxyPass           / http://chat.example.com/
-        	ProxyPassReverse    / http://chat.example.com/
+        	ProxyPass           / http://chat.example.com/	
+		ProxyPassReverse    / http://chat.example.com/
 
         	ErrorLog ${APACHE_LOG_DIR}/chat.example.com_error.log
         	CustomLog ${APACHE_LOG_DIR}/chat.example.com_access.log combined
-
+		
 	</VirtualHost>
 
 ```
