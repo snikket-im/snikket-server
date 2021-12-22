@@ -242,15 +242,15 @@ to proxy over SSL.
 #### Basic
 For a simple configuration that only proxies the Snikket web portal, the following Caddyfile can be used.
 ```
-http://example.com,
-http://groups.example.com,
-http://share.example.com {
+http://chat.example.com,
+http://groups.chat.example.com,
+http://share.chat.example.com {
 	reverse_proxy localhost:5080
 }
 
-example.com,
-groups.example.com,
-share.example.com {
+chat.example.com,
+groups.chat.example.com,
+share.chat.example.com {
 	reverse_proxy https://localhost:5443 {
 		transport http {
 			tls_insecure_skip_verify
@@ -260,7 +260,9 @@ share.example.com {
 ```
 
 #### Advanced
-The advanced configuration allows for Caddy to be used as a "multiplexer", that is, serving HTTPS and encrypted XMPP traffic through the same port. This can be used to get around some very restrictive firewalls, similar to [`sslh`](#sslh). The configuration also forwards port 80 to 5080 (which `sslh` cannot do). However, since Caddy, by design is a layer 7 (HTTP) proxy, an additional layer 4 plugin is needed.
+<details>
+  <summary>Click to show</summary>
+The advanced configuration allows for Caddy to be used as a "multiplexer", that is, serving HTTPS and encrypted XMPP traffic through the same port. This can be used to get around some very restrictive firewalls, similar to [`sslh`](#sslh). The configuration also forwards port 80 to 5080 (which `sslh` cannot do). However, since Caddy, by design, is a layer 7 (HTTP) proxy, an additional layer 4 plugin is needed.
 
 Download [xcaddy](https://github.com/caddyserver/xcaddy) and build Caddy with the [layer4](https://github.com/mholt/caddy-l4) plugin. Also include the [YAML plugin](https://github.com/abiosoft/caddy-yaml), since the layer4 plugin does not support Caddyfile ([yet](https://github.com/mholt/caddy-l4/issues/16)).
 ```bash
@@ -294,9 +296,6 @@ The `config.yaml` needs to
 1. Forward unencrypted XMPP traffic on port 443 to port 5222 (which uses STARTTLS).
 1. Forward the remaining traffic on port 443 to Caddy's standard HTTPS proxy.
 1. Lastly, continue to run as a standard HTTP/S proxy.
-
-<details>
-  <summary>config.yaml</summary>
 
 ```yaml
 ---
@@ -394,6 +393,5 @@ apps:
                 - dial: localhost:1026
           terminal: true
 ```
-</details>
-
 <br>In case you are using Docker, don't forget to [add the `host.docker.internal` extra host](https://stackoverflow.com/questions/48546124/what-is-linux-equivalent-of-host-docker-internal/61001152) and replace `localhost` with `host.docker.internal` in `config.yaml`.
+</details>
