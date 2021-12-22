@@ -228,7 +228,7 @@ to proxy over SSL.
 
                 ProxyPreserveHost On
 
-                ProxyPass           / http://chat.example.com/	
+                ProxyPass           / http://chat.example.com/
                 ProxyPassReverse    / http://chat.example.com/
 
                 ErrorLog ${APACHE_LOG_DIR}/chat.example.com_error.log
@@ -238,3 +238,160 @@ to proxy over SSL.
 
 ```
 
+### Caddy
+#### Basic
+For a simple configuration that only proxies the Snikket web portal, the following Caddyfile can be used.
+```
+http://chat.example.com,
+http://groups.chat.example.com,
+http://share.chat.example.com {
+	reverse_proxy localhost:5080
+}
+
+chat.example.com,
+groups.chat.example.com,
+share.chat.example.com {
+	reverse_proxy https://localhost:5443 {
+		transport http {
+			tls_insecure_skip_verify
+		}
+	}
+}
+```
+
+#### Advanced
+<details>
+  <summary>Click to show</summary>
+The advanced configuration allows for Caddy to be used as a "multiplexer", that is, serving HTTPS and encrypted XMPP traffic through the same port. This can be used to get around some very restrictive firewalls, similar to [`sslh`](#sslh). The configuration also forwards port 80 to 5080 (which `sslh` cannot do). However, since Caddy, by design, is a layer 7 (HTTP) proxy, an additional layer 4 plugin is needed.
+
+Download [xcaddy](https://github.com/caddyserver/xcaddy) and build Caddy with the [layer4](https://github.com/mholt/caddy-l4) plugin. Also include the [YAML plugin](https://github.com/abiosoft/caddy-yaml), since the layer4 plugin does not support Caddyfile ([yet](https://github.com/mholt/caddy-l4/issues/16)).
+```bash
+xcaddy build \
+  --with github.com/mholt/caddy-l4 \
+  --with github.com/abiosoft/caddy-yaml
+```
+Run Caddy with
+```bash
+caddy run --config config.yaml --adapter yaml
+```
+
+Alternatively, if you use Caddy with Docker, use the following Dockerfile. Make sure that the folder containing `config.yaml` is mounted as `/etc/caddy` inside the container.
+```dockerfile
+FROM caddy:builder AS builder
+
+RUN xcaddy build \
+    --with github.com/mholt/caddy-l4 \
+    --with github.com/abiosoft/caddy-yaml
+
+FROM caddy:latest
+
+COPY --from=builder /usr/bin/caddy /usr/bin/caddy
+
+CMD ["caddy", "run", "--config", "/etc/caddy/config.yaml", "--adapter", "yaml"]
+```
+The `config.yaml` needs to
+1. Forward HTTP traffic (on port 80) with Snikket hostnames to port 5080, and redirect other HTTP traffic to HTTPS. This is done by `srv1` in the example.
+1. Forward HTTPS traffic (on port 443) with Snikket hostnames to port 5443 *without* terminating TLS, since Snikket obtains certificates by itself.
+1. Forward encrypted XMPP traffic on port 443 to port 5223.
+1. Forward unencrypted XMPP traffic on port 443 to port 5222 (which uses STARTTLS).
+1. Forward the remaining traffic on port 443 to Caddy's standard HTTPS proxy.
+1. Lastly, continue to run as a standard HTTP/S proxy.
+
+```yaml
+---
+apps:
+  layer4:             # layer4 plugin
+    servers:
+      srv0:
+        listen:
+        - ":443"      # the l4 plugin listens only on port 443
+                      # for port 80 we use the http app
+        routes:
+        - match:
+          - tls:      # match encrypted XMPP traffic
+              alpn:
+              - xmpp-client
+          handle:
+          - handler: proxy
+            upstreams:
+            - dial:   # and send to Snikket's encrypted XMPP port
+              - localhost:5223
+        - match:
+          - tls:
+              sni:    # match HTTPS traffic containing Snikket hostnames
+              - chat.example.com
+              - groups.chat.example.com
+              - share.chat.example.com
+          handle:
+          - handler: proxy
+            upstreams:
+            - dial:   # and send to Snikket's HTTPS port
+              - localhost:5443
+        - match:
+          - xmpp: {}  # match unencrypted XMPP traffic
+          handle:
+          - handler: proxy
+            upstreams:
+            - dial:   # and send to Snikket (will use STARTLS)
+              - localhost:5222
+        - handle:     # no `match` here, so it matches all leftover traffic
+          - handler: proxy
+            upstreams:
+            - dial:   # send it to Caddy's HTTPS proxy, defined below
+              - 127.0.0.1:1337
+  http:
+    https_port: 1337  # needed for HTTPS to work
+    servers:
+      srv1:
+        listen:
+        - ":80"       # handles Snikket HTTP traffic, and redirects
+                      # other HTTP traffic to HTTPS
+        routes:
+          - match:
+            - host:   # send Snikket's HTTP traffic to Snikket's HTTP port
+                      # this is needed to let Snikket obtain certificates
+              - chat.example.com
+              - groups.chat.example.com
+              - share.chat.example.com
+            handle:
+            - handler: subroute
+              routes:
+              - handle:
+                - handler: reverse_proxy
+                  upstreams:
+                  - dial: localhost:5080
+            terminal: true  # stop processing
+          - handle:   # redirect leftover traffic to HTTPS
+            - handler: static_response
+              headers:
+                Location:
+                - https://{http.request.host}{http.request.uri}
+      srv2:
+        listen:
+        - "127.0.0.1:1337"  # bind to localhost only
+        routes:       # replace the below with your regular Caddy config (two standard examples are provided below)
+        - match:      # this host will reverse proxy to port 1025
+          - host:
+            - reverse-proxy-1025.example.com
+          handle:
+          - handler: subroute
+            routes:
+            - handle:
+              - handler: reverse_proxy
+                upstreams:
+                - dial: localhost:1025
+          terminal: true
+        - match:      # this host will proxy to port 1026
+          - host:
+            - reverse-proxy-1026.example.com
+          handle:
+          - handler: subroute
+            routes:
+            - handle:
+              - handler: reverse_proxy
+                upstreams:
+                - dial: localhost:1026
+          terminal: true
+```
+<br>In case you are using Docker, don't forget to [add the `host.docker.internal` extra host](https://stackoverflow.com/questions/48546124/what-is-linux-equivalent-of-host-docker-internal/61001152) and replace `localhost` with `host.docker.internal` in `config.yaml`.
+</details>
