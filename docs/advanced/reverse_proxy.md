@@ -139,6 +139,8 @@ protocols:
 
 ### apache2
 
+#### Basic
+
 **Note**: enable the needed apache2 mods, if you have not already:
 `a2enmod proxy proxy_http proxy_wstunnel ssl`
 
@@ -180,15 +182,15 @@ protocols:
 </VirtualHost>
 
 ```
+#### Advanced
 
-**Note**: The following configuration is for reverse proxying from another machine
-(other from the one hosting Snikket containers). A prerequisite is a mechanism to sync
-Snikket-managed letsencrypt TLS key and cert to `/opt/chat/letsencrypt`. This is required because
-Apache 2.4 is not able to revproxying based on SNI, routing encrypted TLS directly to the Snikket machine.
-If the containers are on the same machine
-of the reverse proxy, you have to tweak HTTP/S ports as indicated before, and you don't need
-to proxy over SSL.
+The following configuration is for reverse proxying from another machine (other from the one hosting Snikket containers). If Snikket is running on the same machine as the reverse proxy, use the basic configuration instead.
 
+<details>
+	<summary>Click to show</summary>
+
+A prerequisite is a mechanism to sync Snikket-managed letsencrypt TLS key and cert to `/opt/chat/letsencrypt`. This is required because Apache 2.4 is not able to revproxying based on SNI, routing encrypted TLS directly to the Snikket machine.
+	
 ```
         <VirtualHost *:443>
 
@@ -237,6 +239,7 @@ to proxy over SSL.
         </VirtualHost>
 
 ```
+</details>
 
 ### Caddy
 #### Basic
