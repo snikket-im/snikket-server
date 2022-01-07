@@ -97,7 +97,6 @@
     - mod_email
     - mod_http_altconnect
     - mod_bookmarks
-    - mod_default_bookmarks
     - mod_firewall
     - mod_turncredentials
     - mod_admin_notify
