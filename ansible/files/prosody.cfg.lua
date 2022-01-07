@@ -77,7 +77,6 @@ modules_enabled = {
 		"email";
 		"http_altconnect";
 		"bookmarks";
-		"default_bookmarks";
 		"update_check";
 		"update_notify";
 		"turncredentials";
