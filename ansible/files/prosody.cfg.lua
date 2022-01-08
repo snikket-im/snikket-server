@@ -139,7 +139,7 @@ http_interfaces = { ENV_SNIKKET_TWEAK_INTERNAL_HTTP_INTERFACE or "127.0.0.1" }
 
 https_ports = {};
 
-legacy_ssl_ports = { 5223 }
+c2s_direct_tls_ports = { 5223 }
 
 allow_registration = true
 registration_invite_only = true
