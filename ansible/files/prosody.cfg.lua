@@ -182,6 +182,7 @@ storage = "internal"
 statistics = "internal"
 
 if ENV_SNIKKET_TWEAK_PROMETHEUS == "1" then
+	-- TODO rename to OPENMETRICS
 	-- When using Prometheus, it is desirable to let the prometheus scraping
 	-- drive the sampling of metrics
 	statistics_interval = "manual"
@@ -232,7 +233,7 @@ VirtualHost (DOMAIN)
 
 	if ENV_SNIKKET_TWEAK_PROMETHEUS == "1" then
 		modules_enabled = {
-			"prometheus";
+			"http_openmetrics";
 		}
 	end
 
