@@ -32,7 +32,7 @@ function check_for_updates()
 		local result = {};
 		for _, record in ipairs(records) do
 			if record.txt then
-				local key, val = record.txt:match("(%S+)=(%S+)");
+				local key, val = tostring(record.txt):match("(%S+)=(%S+)");
 				if key then
 					result[key] = val;
 				end
