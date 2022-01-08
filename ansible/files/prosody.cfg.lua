@@ -267,6 +267,9 @@ Component ("groups."..DOMAIN) "muc"
 	-- Enable push notifications for offline group members by default
 	-- (this also requires mod_muc_auto_reserve_nicks in practice)
 	muc_offline_delivery_default = true
+	-- Include form in MUC registration query result (required for app
+	-- to detect whether push notifications are enabled)
+	muc_registration_include_form = true
 
 	default_mucs = {
 		{
