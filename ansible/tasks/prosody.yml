@@ -77,7 +77,6 @@
     src: "/usr/local/lib/prosody-modules/{{item}}"
     dest: "/etc/prosody/modules/{{item}}"
   loop:
-    - mod_smacks
     - mod_cloud_notify
     - mod_cloud_notify_extensions
     - mod_cloud_notify_encrypted
@@ -96,8 +95,6 @@
     - mod_reload_modules
     - mod_email
     - mod_http_altconnect
-    - mod_bookmarks
-    - mod_default_bookmarks
     - mod_firewall
     - mod_turncredentials
     - mod_admin_notify
@@ -105,12 +102,9 @@
     - mod_http_admin_api
     - mod_rest
     - mod_groups_migration
-    - mod_invites
-    - mod_invites_adhoc
     - mod_invites_api
     - mod_invites_groups
     - mod_invites_page
-    - mod_invites_register
     - mod_invites_register_api
     - mod_invites_tracking
     - mod_groups_internal
@@ -125,6 +119,8 @@
     - mod_isolate_host
     - mod_muc_auto_reserve_nicks
     - mod_measure_active_users
+    - mod_measure_lua
+    - mod_measure_malloc
 
 - name: Enable wanted modules (snikket-modules)
   file:

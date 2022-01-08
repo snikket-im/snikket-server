@@ -77,7 +77,6 @@ modules_enabled = {
 		"email";
 		"http_altconnect";
 		"bookmarks";
-		"default_bookmarks";
 		"update_check";
 		"update_notify";
 		"turncredentials";
@@ -128,6 +127,8 @@ modules_enabled = {
 	-- Monitoring & maintenance
 		"measure_process";
 		"measure_active_users";
+		"measure_lua";
+		"measure_malloc";
 }
 
 registration_watchers = {} -- Disable by default
@@ -140,7 +141,7 @@ http_interfaces = { ENV_SNIKKET_TWEAK_INTERNAL_HTTP_INTERFACE or "127.0.0.1" }
 
 https_ports = {};
 
-legacy_ssl_ports = { 5223 }
+c2s_direct_tls_ports = { 5223 }
 
 allow_registration = true
 registration_invite_only = true
@@ -183,6 +184,7 @@ storage = "internal"
 statistics = "internal"
 
 if ENV_SNIKKET_TWEAK_PROMETHEUS == "1" then
+	-- TODO rename to OPENMETRICS
 	-- When using Prometheus, it is desirable to let the prometheus scraping
 	-- drive the sampling of metrics
 	statistics_interval = "manual"
