@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -e
 
 if [ "$SNIKKET_TWEAK_TURNSERVER" = "0" ]; then
 	echo "TURN server disabled by environment, not launching.";
