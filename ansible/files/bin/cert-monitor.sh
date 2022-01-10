@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh -e
 
 CERT_PATH="/snikket/letsencrypt/live/$SNIKKET_DOMAIN/fullchain.pem"
 
