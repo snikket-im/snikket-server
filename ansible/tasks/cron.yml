@@ -13,3 +13,8 @@
     - apt-compat
     - dpkg
     - passwd
+
+- name: "Add to supervisord"
+  file:
+    path: /etc/supervisor/conf.d/anacron.conf
+    src: ../files/supervisor-anacron.conf
