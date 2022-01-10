@@ -7,9 +7,9 @@
   vars:
     prosody:
       package: "prosody-trunk"
-      build: "1590"
+      build: "1592"
     prosody_modules:
-      revision: "5fadb991003d"
+      revision: "fdf50c4d23a3"
   tasks:
     - import_tasks: tasks/prosody.yml
     - import_tasks: tasks/supervisor.yml
