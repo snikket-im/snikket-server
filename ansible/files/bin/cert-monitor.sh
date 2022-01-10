@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CERT_PATH="/snikket/letsencrypt/live/$SNIKKET_DOMAIN/cert.pem"
+CERT_PATH="/snikket/letsencrypt/live/$SNIKKET_DOMAIN/fullchain.pem"
 
 if test -f "$CERT_PATH"; then
 	prosodyctl --root cert import /snikket/letsencrypt/live
