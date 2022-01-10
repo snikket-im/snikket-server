@@ -5,8 +5,8 @@ if [ "$SNIKKET_TWEAK_TURNSERVER" = "0" ]; then
 	exit 0;
 fi
 
-CERTFILE="/snikket/letsencrypt/live/$SNIKKET_DOMAIN/fullchain.pem";
-KEYFILE="/snikket/letsencrypt/live/$SNIKKET_DOMAIN/privkey.pem";
+CERTFILE="/etc/prosody/certs/$SNIKKET_DOMAIN.crt";
+KEYFILE="/etc/prosody/certs/$SNIKKET_DOMAIN.key";
 
 echo "Waiting for certificates to become available..."
 while ! test -f "$CERTFILE" -a -f "$KEYFILE"; do
