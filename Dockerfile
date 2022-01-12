@@ -25,7 +25,7 @@ RUN apt-get update \
         software-properties-common ca-certificates \
         gpg gpg-agent \
         ansible python3-passlib \
-        libcap2-bin build-essential\
+        libcap2-bin build-essential patch \
     && c_rehash \
     && ansible-playbook -c local -i localhost, --extra-vars "ansible_python_interpreter=/usr/bin/python3" /opt/ansible/snikket.yml \
     && apt-get remove --purge -y \
@@ -38,6 +38,9 @@ RUN apt-get update \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/cache/*
+
+ADD docker/1.patch /opt/1.patch
+RUN patch -p1 -i /opt/1.patch -d /usr/share/lua/5.1/prosody/
 
 RUN echo "Snikket $BUILD_SERIES $BUILD_ID" > /usr/lib/prosody/prosody.version
 
