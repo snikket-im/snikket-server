@@ -121,6 +121,7 @@
     - mod_measure_active_users
     - mod_measure_lua
     - mod_measure_malloc
+    - mod_http_xep227
 
 - name: Enable wanted modules (snikket-modules)
   file:
