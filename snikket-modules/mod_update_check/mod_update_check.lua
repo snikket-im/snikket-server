@@ -13,10 +13,10 @@ local version_info = {};
 
 do
 	local version_string = prosody.version;
-	-- "dev 128-00000", "release v2021.05r2"
+	-- "dev 128-00000", "release v2021.05r2", "release beta.20220119"
 	local series, version = version_string:match("(%w+) (%S+)$");
 	if series then
-		version_info.branch, version_info.level = series, version;
+		version_info.branch, version_info.level = series, version:match("%d+%.?%d*");
 	end
 end
 
