@@ -90,7 +90,7 @@ module:hook("update-check/result", function (event)
 		return;
 	end
 
-	if msg_latest and not have_notified(branch, "msg", msg_latest) then
+	if msg_latest and msg_latest > 0 and not have_notified(branch, "msg", msg_latest) then
 		module:log_status("info", "New announcement");
 		admin_notify(render_text(message_notification, {
 			software = software_name;
