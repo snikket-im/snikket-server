@@ -54,31 +54,6 @@ Each web server is different, so here we provide some example configuration snip
 for the most common servers. Feel free to contribute any that you would like to see
 included!
 
-### Generic/other
-
-This page includes sample configuration for various popular reverse proxy
-software already. However if yours is not listed, or you need to better understand
-Snikket's requirements, this section will help you understand how your proxy
-needs to be configured.
-
-A valid reverse proxy in front of Snikket should do the following:
-
-- Listen on port 80, and forward requests to the 3 domains to Snikket's HTTP
-  port (the one you configured using `SNIKKET_TWEAK_HTTP_PORT`) (Snikket
-  will handle redirecting HTTP to HTTPS when necessary)
-- Listen on port 443, and forward requests to the 3 Snikket domains to Snikket's
-  HTTPS port (the one you configured using `SNIKKET_TWEAK_HTTPS_PORT`).
-- You may need to disable certificate verification of the 'upstream' server
-  (Snikket) in your reverse proxy, unless you can tell it to verify against the
-  real hostname instead of e.g. 'localhost'.
-- HTTP headers:
-  - You must ensure that the original 'Host' header is preserved (e.g.
-    'chat.example.com', not 'localhost')
-  - Relay the original client's IP address in the `X-Forwarded-For` header
-  - For HTTPS requests, include an `X-Forwarded-Proto: https` header
-- If your proxy enforces any limits on the HTTP request body size, ensure it
-  is at least 104857616 bytes (this is 100MB + 16 bytes).
-
 ### Nginx
 
 ```
@@ -132,45 +107,7 @@ instead of proxying plain-text HTTP traffic. When doing that, take care to
 proxy `.well-known/acme-challenge` even in plain text to allow Snikket to
 obtain certificates.
 
-### sslh
-
-sslh is a little different to the other servers listed here, as it is not a web server. However it is able
-to route encrypted traffic (such as HTTPS and even some kinds of XMPP traffic) to different places.
-
-The snippet below lists the rules required to forward all of Snikket's traffic to Snikket. Don't forget that
-Snikket will also need port 80 forwarded to 5080 somehow (otherwise it won't be able to obtain certificates).
-
-Unlike the other solutions here, this approach also allows you to run encrypted XMPP through the HTTPS port.
-To take full advantage of this feature, you will need to add additional DNS records. See [advanced DNS](dns.md)
-for more information.
-
-This configuration requires sslh 1.18 or higher.
-
-```
-listen:
-(
-    { host: "0.0.0.0"; port: "443"; },
-);
-
-protocols:
-(
-     ## Snikket rules
-     # Send encrypted XMPP traffic directly to Snikket (this must be above the HTTPS rules)
-     { name: "tls";     host: "127.0.0.1"; port: "5223"; alpn_protocols: [ "xmpp-client" ]; },
-     # Send HTTPS traffic to Snikket's HTTPS port
-     { name: "tls";     host: "127.0.0.1"; port: "5443"; sni_hostnames:  [ "chat.example.com", "groups.chat.example.com", "share.chat.example.com" ] },
-     # Send unencrypted XMPP traffic to Snikket (will use STARTTLS)
-     { name: "xmpp";    host: "127.0.0.1"; port: "5222"; },
-
-     ## Other rules
-     # Add rules here to forward any other hosts/protocols to non-Snikket destinations
-);
-
-```
-
 ### apache2
-
-#### Basic
 
 **Note**: enable the needed apache2 mods, if you have not already:
 `a2enmod proxy proxy_http proxy_wstunnel ssl`
@@ -213,12 +150,96 @@ protocols:
 </VirtualHost>
 
 ```
-#### Advanced
 
-The following configuration is for reverse proxying from another machine (other from the one hosting Snikket containers). If Snikket is running on the same machine as the reverse proxy, use the basic configuration instead.
+### Caddy
+#### Basic
+For a simple configuration that only proxies the Snikket web portal, the following Caddyfile can be used.
+```
+http://chat.example.com,
+http://groups.chat.example.com,
+http://share.chat.example.com {
+	reverse_proxy localhost:5080
+}
 
-<details>
-	<summary>Click to show</summary>
+chat.example.com,
+groups.chat.example.com,
+share.chat.example.com {
+	reverse_proxy https://localhost:5443 {
+		transport http {
+			tls_insecure_skip_verify
+		}
+	}
+}
+```
+
+## Other setups
+
+### Generic instructions
+
+This page includes sample configuration for various popular reverse proxy
+software already. However if yours is not listed, or you need to better understand
+Snikket's requirements, this section will help you understand how your proxy
+needs to be configured.
+
+A valid reverse proxy in front of Snikket should do the following:
+
+- Listen on port 80, and forward requests to the 3 domains to Snikket's HTTP
+  port (the one you configured using `SNIKKET_TWEAK_HTTP_PORT`) (Snikket
+  will handle redirecting HTTP to HTTPS when necessary)
+- Listen on port 443, and forward requests to the 3 Snikket domains to Snikket's
+  HTTPS port (the one you configured using `SNIKKET_TWEAK_HTTPS_PORT`).
+- You may need to disable certificate verification of the 'upstream' server
+  (Snikket) in your reverse proxy, unless you can tell it to verify against the
+  real hostname instead of e.g. 'localhost'.
+- HTTP headers:
+  - You must ensure that the original 'Host' header is preserved (e.g.
+    'chat.example.com', not 'localhost')
+  - Relay the original client's IP address in the `X-Forwarded-For` header
+  - For HTTPS requests, include an `X-Forwarded-Proto: https` header
+- If your proxy enforces any limits on the HTTP request body size, ensure it
+  is at least 104857616 bytes (this is 100MB + 16 bytes).
+
+### sslh
+
+sslh is a little different to the other servers listed here, as it is not a web server. However it is able
+to route encrypted traffic (such as HTTPS and even some kinds of XMPP traffic) to different places.
+
+The snippet below lists the rules required to forward all of Snikket's traffic to Snikket. Don't forget that
+Snikket will also need port 80 forwarded to 5080 somehow (otherwise it won't be able to obtain certificates).
+
+Unlike the other solutions here, this approach also allows you to run encrypted XMPP through the HTTPS port.
+To take full advantage of this feature, you will need to add additional DNS records. See [advanced DNS](dns.md)
+for more information.
+
+This configuration requires sslh 1.18 or higher.
+
+```
+listen:
+(
+    { host: "0.0.0.0"; port: "443"; },
+);
+
+protocols:
+(
+     ## Snikket rules
+     # Send encrypted XMPP traffic directly to Snikket (this must be above the HTTPS rules)
+     { name: "tls";     host: "127.0.0.1"; port: "5223"; alpn_protocols: [ "xmpp-client" ]; },
+     # Send HTTPS traffic to Snikket's HTTPS port
+     { name: "tls";     host: "127.0.0.1"; port: "5443"; sni_hostnames:  [ "chat.example.com", "groups.chat.example.com", "share.chat.example.com" ] },
+     # Send unencrypted XMPP traffic to Snikket (will use STARTTLS)
+     { name: "xmpp";    host: "127.0.0.1"; port: "5222"; },
+
+     ## Other rules
+     # Add rules here to forward any other hosts/protocols to non-Snikket destinations
+);
+
+```
+
+### Advanced apache2 setup
+
+{{< panel style="note" >}}
+The following configuration is for reverse proxying from another machine (other from the one hosting Snikket containers). If Snikket is running on the same machine as the reverse proxy, use the [basic configuration](#apache2) instead.
+{{< /panel >}}
 
 A prerequisite is a mechanism to sync Snikket-managed letsencrypt TLS key and cert to `/opt/chat/letsencrypt`. This is required because Apache 2.4 is not able to revproxying based on SNI, routing encrypted TLS directly to the Snikket machine.
 	
@@ -270,33 +291,19 @@ A prerequisite is a mechanism to sync Snikket-managed letsencrypt TLS key and ce
         </VirtualHost>
 
 ```
-</details>
 
-### Caddy
-#### Basic
-For a simple configuration that only proxies the Snikket web portal, the following Caddyfile can be used.
-```
-http://chat.example.com,
-http://groups.chat.example.com,
-http://share.chat.example.com {
-	reverse_proxy localhost:5080
-}
+### Advanced Caddy setup
 
-chat.example.com,
-groups.chat.example.com,
-share.chat.example.com {
-	reverse_proxy https://localhost:5443 {
-		transport http {
-			tls_insecure_skip_verify
-		}
-	}
-}
-```
+This advanced configuration allows for Caddy to be used as a "multiplexer", that is,
+serving HTTPS and encrypted XMPP traffic through the same port. This can be used to get
+around some very restrictive firewalls, similar to [`sslh`](#sslh). The configuration
+also forwards port 80 to 5080 (which `sslh` cannot do). However, since Caddy, by design,
+is a layer 7 (HTTP) proxy, an additional layer 4 plugin is needed.
 
-#### Advanced
-<details>
-  <summary>Click to show</summary>
-The advanced configuration allows for Caddy to be used as a "multiplexer", that is, serving HTTPS and encrypted XMPP traffic through the same port. This can be used to get around some very restrictive firewalls, similar to [`sslh`](#sslh). The configuration also forwards port 80 to 5080 (which `sslh` cannot do). However, since Caddy, by design, is a layer 7 (HTTP) proxy, an additional layer 4 plugin is needed.
+{{< panel style="note" >}}
+If you only need a simple Caddy setup so Snikket can share HTTP/HTTPS ports with
+other services, see the [basic Caddy configuration](#caddy) instead.
+{{< /panel >}}
 
 Download [xcaddy](https://github.com/caddyserver/xcaddy) and build Caddy with the [layer4](https://github.com/mholt/caddy-l4) plugin. Also include the [YAML plugin](https://github.com/abiosoft/caddy-yaml), since the layer4 plugin does not support Caddyfile ([yet](https://github.com/mholt/caddy-l4/issues/16)).
 ```bash
@@ -305,11 +312,13 @@ xcaddy build \
   --with github.com/abiosoft/caddy-yaml
 ```
 Run Caddy with
+
 ```bash
 caddy run --config config.yaml --adapter yaml
 ```
 
 Alternatively, if you use Caddy with Docker, use the following Dockerfile. Make sure that the folder containing `config.yaml` is mounted as `/etc/caddy` inside the container.
+
 ```dockerfile
 FROM caddy:builder AS builder
 
@@ -323,6 +332,7 @@ COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 
 CMD ["caddy", "run", "--config", "/etc/caddy/config.yaml", "--adapter", "yaml"]
 ```
+
 The `config.yaml` needs to
 1. Forward HTTP traffic (on port 80) with Snikket hostnames to port 5080, and redirect other HTTP traffic to HTTPS. This is done by `srv1` in the example.
 1. Forward HTTPS traffic (on port 443) with Snikket hostnames to port 5443 *without* terminating TLS, since Snikket obtains certificates by itself.
@@ -427,5 +437,5 @@ apps:
                 - dial: localhost:1026
           terminal: true
 ```
-<br>In case you are using Docker, don't forget to [add the `host.docker.internal` extra host](https://stackoverflow.com/questions/48546124/what-is-linux-equivalent-of-host-docker-internal/61001152) and replace `localhost` with `host.docker.internal` in `config.yaml`.
-</details>
+
+In case you are using Docker, don't forget to [add the `host.docker.internal` extra host](https://stackoverflow.com/questions/48546124/what-is-linux-equivalent-of-host-docker-internal/61001152) and replace `localhost` with `host.docker.internal` in `config.yaml`.

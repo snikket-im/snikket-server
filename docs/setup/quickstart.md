@@ -96,7 +96,7 @@ as an easy way to launch and configure Snikket.
 As per the [installation instructions](https://docs.docker.com/compose/install/) (see the 'Linux' tab there), install
 `docker-compose` with the following commands:
 
-```
+```bash
 sudo curl -L "https://github.com/docker/compose/releases/download/1.25.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod a+x /usr/local/bin/docker-compose
 ```
@@ -107,14 +107,14 @@ This is exciting, we're so close!
 
 Create a configuration directory and switch to it:
 
-```
+```bash
 mkdir /etc/snikket
 cd /etc/snikket
 ```
 
 And then download our `docker-compose.yml` file:
 
-```
+```bash
 curl -o docker-compose.yml https://snikket.org/service/resources/docker-compose.beta.yml
 ```
 
@@ -122,7 +122,7 @@ Now create another file called `snikket.conf` in the same directory, using a tex
 
 This file is where your configuration goes. There are just a couple of options you need:
 
-```
+```bash
 # The primary domain of your Snikket instance
 SNIKKET_DOMAIN=chat.example.com
 
@@ -149,7 +149,7 @@ When you're done, come back here and continue with the final launch step!
 
 Here we go! Run:
 
-```
+```bash
 docker-compose up -d
 ```
 
@@ -159,7 +159,7 @@ soon as it has created certificates, it will redirect to HTTPS and show you a lo
 
 Now to set up your first account. To create yourself an admin account, run the following command:
 
-```
+```bash
 docker exec snikket create-invite --admin --group default
 ```
 
