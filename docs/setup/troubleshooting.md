@@ -1,5 +1,6 @@
 ---
 title: "Troubleshooting"
+weight: 30
 ---
 
 # Self-hosted Snikket troubleshooting
@@ -15,7 +16,7 @@ problems you might encounter, and how to solve them.
 If this page stays for more than a few minutes, there was probably an
 issue obtaining certificates for your Snikket service. For more
 information on diagnosing certificate issues, see the
-['Certificates' section](#certificates) later on this page.
+['Certificates' section](#certificate-problems) later on this page.
 
 ### Unable to share large files
 
