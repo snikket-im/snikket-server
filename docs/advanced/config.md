@@ -1,10 +1,13 @@
-# Advanced Configuration
+---
+title: Advanced configuration
+---
 
+{{< lead >}}
 In most situations, the configuration options shown in the example config in
-[snikket-selfhosted](https://github.com/snikket-im/snikket-selfhosted/blob/main/snikket.conf.example) should suffice. In some cases of more complex requirements (such as running behind a reverse proxy), it may be required to tweak more options.
+[snikket-selfhosted](https://github.com/snikket-im/snikket-selfhosted/blob/main/snikket.conf.example) should suffice. In some cases of more complex requirements (such as running behind a [reverse proxy](reverse_proxy/)), it may be required to tweak more options. They are described here.
+{{< /lead >}}
 
-## Note well
-
+{{< panel style="warning" title="Note well" >}}
 - **Some of these options may break your setup**
 
   Do not set them unless you know what you're doing. Particularly the options with `TWEAK` in their name are to be looked at carefully.
@@ -14,6 +17,7 @@ In most situations, the configuration options shown in the example config in
   There is no guarantee about any of the options documented *only* here. Some are experimental, some are reserved for specific uncommon use cases (for which the support may be dropped eventually), others only exist to glue Snikket components together and should not be touched at all.
 
 Also, it is very likely not complete.
+{{< /panel >}}
 
 ## Configuration Option Reference
 
