@@ -1,26 +1,53 @@
 ---
-title: "Upgrading your Snikket server"
+title: Upgrading your Snikket instance
+linktitle: Upgrading
+description: "Upgrading your Snikket instance is easy."
 date: 2021-05-19T14:32:02Z
+weight: 20
 ---
 
-Upgrading to a new Snikket release is typically very easy.
+We periodically announce new releases of the Snikket server software on our
+[blog][], [Mastodon][] and [Twitter][]. You will also receive [update
+notifications][] directly from your instance when it is time to upgrade.
+
+Upgrading to a new Snikket release is typically very easy. The correct process
+to use depends on the method you initially used to set up your Snikket
+instance. Each method is explained here.
+
+## Snikket quick-start
+
+If you are using a version installed from the [original quick-start][] guide
+on the website, use these commands:
+
+```
+    cd /etc/snikket
+    docker-compose pull
+    docker-compose up -d
+```
 
 ## snikket-selfhosted
 
 If you installed Snikket using the [snikket-selfhosted][] scripts, simply run:
 
+```
     cd /opt/snikket
     git pull
     ./scripts/update.sh
+```
 
-## Snikket quickstart
+## Snikket hosting
 
-If you're using a version installed from the [original quickstart][] guide on
-the website, use these commands instead:
+If you're using our hosting service, you can upgrade by visiting your
+[hosting dashboard][] and clicking the 'Update' button next to your instance.
 
-    cd /etc/snikket
-    docker-compose pull
-    docker-compose up -d
+**Note:** Updates are not always available on the hosted platform immediately
+after release. If the 'Update' button is not present, try again later.
+Typically you will receive a notification when an update is available.
 
 [snikket-selfhosted]: https://github.com/snikket-im/snikket-selfhosted
-[original quickstart]: https://snikket.org/service/quickstart/
+[original quick-start]: https://snikket.org/service/quickstart/
+[hosting dashboard]: https://my.snikket.org/
+[blog]: https://snikket.org/blog/
+[Mastodon]: https://fosstodon.org/@snikket_im
+[Twitter]: https://twitter.com/snikket_im
+[update notifications]: ../../advanced/update_notifications/

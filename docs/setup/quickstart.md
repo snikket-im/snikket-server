@@ -1,24 +1,18 @@
 ---
-title: "Quick-start guide"
-date: 2020-01-14T16:32:02Z
+title: "Snikket quick-start guide"
+subtitle: "How to set up a self-hosted Snikket instance"
+linktitle: "Quick-start"
+description: "This guide will help you set up your self-hosted Snikket instance."
+date: 2022-01-25T12:32:02Z
+weight: 10
 ---
 
-# Introduction
-
-Hi, welcome! This is a guide to help you set up your own [Snikket service](/service/). Once it is set up,
+{{< lead >}}
+Hi, welcome! In this guide we will help you set up your own instance of [Snikket](/service/). Once it is set up,
 you will be able to invite others to join you using the [Snikket app](/app/) and chat over your own
 private messaging server!
-
 Right, let's get started...
-
-!!! warning
-
-    Heads up! Snikket is currently in its early stages (we launched at FOSDEM 2020!). Although you can
-    use Snikket today, there are many features that are still to come, and we're working on improving the setup
-    experience.
-    
-    If you have any questions, feedback, or words of encouragement, we'd love to hear from you! Email us at
-    feedback@snikket.org.
+{{< /lead >}}
 
 ## Requirements
 
@@ -31,10 +25,9 @@ For the server, you can use a VPS from a provider such as [DigitalOcean](https:/
 or you can use a physical device such as a Raspberry Pi. Note that if you run your server at home (which is _really_ cool!) you may need to forward some ports on your
 router.
 
-!!! warning
-
-    **Important:** Snikket provides a built-in web server that must be accessible on port 80. Therefore this guide assumes you are _not_ running any existing
-    websites on the same server. We are working to remove this requirement in a future version.
+**Note:** Snikket provides a built-in web server that must be accessible on port 80. This guide assumes you are _not_ running any existing
+websites on the same server. If you are running other HTTP services on the same server, refer to our [reverse proxy](../..//advanced/reverse_proxy/)
+documentation after you complete step 3.
 
 ## Get Started
 
@@ -44,11 +37,11 @@ First you need to find your server's public ("external") IP address. If you are 
 At a pinch you can use an online service, e.g. by running `curl -4 ifconfig.co` in your terminal.
 
 Now, add an A record for your IP address on the domain you want to run Snikket on. In the examples I'm going to use 'chat.example.com' as the domain,
-and '10.0.0.2' as the IP address. This will be the primary domain for your Snikket service.
+and '203.0.113.123' as the IP address. This will be the primary domain for your Snikket instance.
 
 ```
 # Domain           TTL  Class  Type  Target
-chat.example.com.  300  IN     A     10.0.0.2
+chat.example.com.  300  IN     A     203.0.113.123
 ```
 
 How to add records depends on where your DNS is hosted. Here are links to guides for a few common providers:
@@ -70,6 +63,13 @@ share.chat.example.com   300  IN     CNAME  chat.example.com.
 ```
 
 These subdomains provide group chat functionality and file-sharing respectively.
+
+{{< panel style="info">}}
+**Check that firewall!**
+If you're setting up Snikket at home, or behind a router or firewall, now is a good time to check that you have all the [required ports open
+](../../advanced/firewall/) or forwarded. If you're using a VPS and there is no
+firewall, you're fine... onto the next step!
+{{< /panel >}}
 
 ### Step 2: Docker
 
@@ -112,32 +112,15 @@ mkdir /etc/snikket
 cd /etc/snikket
 ```
 
-And then create a new file there called `docker-compose.yml` using a text editor (such as nano, or vim).
+And then download our `docker-compose.yml` file:
 
 ```
-nano docker-compose.yml
+curl -o docker-compose.yml https://snikket.org/service/resources/docker-compose.beta.yml
 ```
 
-And here is what you should put in the file:
+Now create another file called `snikket.conf` in the same directory, using a text editor (such as nano, or vim).
 
-```
-version: "3.3"
-
-services:
-  snikket:
-    container_name: snikket
-    image: snikket/snikket:alpha
-    env_file: snikket.conf
-    restart: unless-stopped
-    network_mode: host
-    volumes:
-      - snikket_data:/snikket
-
-volumes:
-  snikket_data:
-```
-
-Now create another file in the same directory, `snikket.conf` with the following contents:
+This file is where your configuration goes. There are just a couple of options you need:
 
 ```
 # The primary domain of your Snikket instance
@@ -148,7 +131,19 @@ SNIKKET_DOMAIN=chat.example.com
 SNIKKET_ADMIN_EMAIL=you@example.com
 ```
 
-Change the values to match your setup.
+Change the values to match your setup, save the file, and exit.
+
+{{< panel style="info">}}
+**Do you need to reverse proxy?**
+
+Earlier we mentioned that Snikket needs access to the HTTP+HTTPS ports on the server. If you already
+have websites or other web services on the server where you are installing Snikket, **now is
+the time to configure your reverse proxy** to share web traffic with your Snikket instance.
+Luckily we have you covered with our little [reverse proxy guide](../../advanced/reverse_proxy/),
+which includes example configuration for a range of web servers and proxy software.
+
+When you're done, come back here and continue with the final launch step!
+{{< /panel >}}
 
 ### Step 4: Launch
 
@@ -159,12 +154,13 @@ docker-compose up -d
 ```
 
 The first time you run this command docker will download Snikket. In a moment it should complete,
-and Snikket should be running.
+and Snikket should be running and accessible via the web (e.g. `http://chat.example.com/`). As
+soon as it has created certificates, it will redirect to HTTPS and show you a login page.
 
 Now to set up your first account. To create yourself an admin account, run the following command:
 
 ```
-docker exec snikket create-invite --admin
+docker exec snikket create-invite --admin --group default
 ```
 
 Follow the link to open the invitation, and follow the instructions get signed in.
@@ -172,4 +168,11 @@ Follow the link to open the invitation, and follow the instructions get signed i
 You can create as many links as you want and share them with people. Each link can
 only be used once. Don't forget to drop the `--admin` part to create normal user accounts!
 
-That's it! How did it go? Let us know at feedback@snikket.org
+Once you've created your admin account, you can also log in to the web management portal
+online by visiting `https://chat.example.com/` in your browser (obviously put your own
+domain in there!).
+
+{{< panel style="success" >}}
+That's it! How did it go? Let us know at feedback@snikket.org. Also if you want to support
+the project, consider a small [donation](/donate/) to help keep us working on it!
+{{< /panel >}}

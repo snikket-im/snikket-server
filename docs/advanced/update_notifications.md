@@ -1,4 +1,6 @@
-# Update notifications
+---
+title: Update notifications
+---
 
 This is an informational technical document about the update notification
 system in Snikket server.
@@ -20,7 +22,7 @@ To preserve your privacy, private Snikket servers do not make requests
 directly to our servers. Instead we put the necessary information about
 current releases and security updates into our DNS records.
 
-## Why did you choose DNS?
+### Why did you choose DNS?
 
 The obvious choice was HTTP, and this is how most traffic on the internet
 is conveyed these days. But we opted for DNS due to the following advantages:
@@ -60,7 +62,7 @@ sign the data provided in our DNS records.
 It is also possible that we will move to another mechanism in the future, if
 a more suitable one can be found.
 
-## The details
+### The details
 
 Snikket releases are organized into 'channels', e.g. 'dev', 'alpha', 'beta',
 'stable'. Your server will work out the channel it belongs to, and make a DNS

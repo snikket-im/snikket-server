@@ -1,5 +1,6 @@
 ---
 title: "Troubleshooting"
+weight: 30
 ---
 
 # Self-hosted Snikket troubleshooting

@@ -1,19 +1,21 @@
 ---
 title: Reverse proxies
+subtitle: Running Snikket behind a reverse proxy
 ---
 
-# Running Snikket behind a reverse proxy
-
+{{< lead >}}
 The default Snikket setup assumes that there is no other HTTP/HTTPS server
 running. If you already have another web server running for example, you will
-need to instruct it to forward Snikket traffic to Snikket.
+need to instruct it to forward Snikket traffic to Snikket. This page provides
+guides and example configuration to help you with this.
+{{< /lead >}}
 
-!!! note
-
-    A quick note about non-HTTP services. Snikket includes a number of non-HTTP
-    services which cannot be routed through a HTTP reverse proxy. This includes
-    XMPP, STUN and TURN. The documentation here applies to redirecting the HTTP
-    and HTTPS ports (80 and 443) through a reverse proxy only.
+{{< panel style="warning" >}}
+**A quick note about non-HTTP services:** Snikket includes a number of non-HTTP
+services which cannot be routed through a HTTP reverse proxy. This includes
+XMPP, STUN and TURN. The documentation here applies to redirecting the HTTP
+and HTTPS ports (80 and 443) through a reverse proxy only.
+{{< /panel >}}
 
 # Certificates
 
@@ -21,6 +23,10 @@ It is important to get certificates correct when deploying Snikket behind a reve
 proxy. Snikket needs to obtain certificates from Let's Encrypt in order to secure
 the non-HTTP services it provides. Be careful that your reverse proxy does not
 intercept requests from Let's Encrypt that are intended for the Snikket service.
+
+The reverse proxy will generally need its own certificates, which can be obtained
+in the usual manner using certbot or another ACME client on your host system (basically,
+however you normally would obtain certificates for a website/service on your setup).
 
 # Configuration
 
@@ -48,6 +54,31 @@ Each web server is different, so here we provide some example configuration snip
 for the most common servers. Feel free to contribute any that you would like to see
 included!
 
+### Generic/other
+
+This page includes sample configuration for various popular reverse proxy
+software already. However if yours is not listed, or you need to better understand
+Snikket's requirements, this section will help you understand how your proxy
+needs to be configured.
+
+A valid reverse proxy in front of Snikket should do the following:
+
+- Listen on port 80, and forward requests to the 3 domains to Snikket's HTTP
+  port (the one you configured using `SNIKKET_TWEAK_HTTP_PORT`) (Snikket
+  will handle redirecting HTTP to HTTPS when necessary)
+- Listen on port 443, and forward requests to the 3 Snikket domains to Snikket's
+  HTTPS port (the one you configured using `SNIKKET_TWEAK_HTTPS_PORT`).
+- You may need to disable certificate verification of the 'upstream' server
+  (Snikket) in your reverse proxy, unless you can tell it to verify against the
+  real hostname instead of e.g. 'localhost'.
+- HTTP headers:
+  - You must ensure that the original 'Host' header is preserved (e.g.
+    'chat.example.com', not 'localhost')
+  - Relay the original client's IP address in the `X-Forwarded-For` header
+  - For HTTPS requests, include an `X-Forwarded-Proto: https` header
+- If your proxy enforces any limits on the HTTP request body size, ensure it
+  is at least 104857616 bytes (this is 100MB + 16 bytes).
+
 ### Nginx
 
 ```
@@ -65,8 +96,8 @@ server {
       proxy_set_header      Host              $host;
       proxy_set_header      X-Forwarded-For   $proxy_add_x_forwarded_for;
 
-      # A bit of headroom over the 16MB accepted by Prosody.
-      client_max_body_size 20M;
+      # This is the maximum size of uploaded files in Snikket
+      client_max_body_size 104857616; # 100MB + 16 bytes
   }
 }
 
@@ -90,8 +121,8 @@ server {
       proxy_set_header      X-Forwarded-Proto https;
       proxy_ssl_server_name on;
 
-      # A bit of headroom over the 16MB accepted by Prosody.
-      client_max_body_size 20M;
+      # This is the maximum size of uploaded files in Snikket
+      client_max_body_size 104857616; # 100MB + 16 bytes
   }
 }
 ```
