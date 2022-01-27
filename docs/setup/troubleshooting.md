@@ -117,6 +117,7 @@ If you think you have everything set up correctly and you're not sure what the
 problem could be, check the error log:
 
 ```
+cd /etc/snikket
 docker-compose exec snikket_certs cat /var/log/letsencrypt/errors.log
 ```
 
@@ -124,6 +125,7 @@ If you get a "No such file or directory" error when running the above command,
 inspect the debug log instead:
 
 ```
+cd /etc/snikket
 docker-compose exec snikket_certs cat /var/log/letsencrypt/letsencrypt.log | grep detail
 ```
 
@@ -133,6 +135,7 @@ Once you have fixed any problems, you can force a new attempt with the
 following command:
 
 ```
+cd /etc/snikket
 docker-compose exec snikket_certs /etc/cron.daily/certbot
 ```
 
@@ -140,6 +143,7 @@ If that command says that no certificates are due for renewal, but you need to
 trigger a renewal anyway, run:
 
 ```
+cd /etc/snikket
 docker-compose exec snikket_certs su letsencrypt -- -c "certbot renew --config-dir /snikket/letsencrypt --cert-path /etc/ssl/certbot --force-renew"
 ```
 
