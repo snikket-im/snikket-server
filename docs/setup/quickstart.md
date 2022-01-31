@@ -88,6 +88,15 @@ for a range of operating systems. Follow the guide for your system:
 - [Fedora](https://docs.docker.com/install/linux/docker-ce/fedora/)
 - [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
 
+{{< panel style="warning" >}}
+**Warning for Debian 10 (or Raspbian 10) ("buster") Raspberry Pi and other ARM devices**
+
+There is a compatibility issue with the version of a package supplied with your OS that
+affects newer Docker images, including Snikket. Before proceeding with the setup, consult
+[the advice in our troubleshooting guide](../troubleshooting/#problems-on-debianraspbian-10-buster-on-raspberry-pi-or-arm-devices)
+so you can avoid any problems.
+{{< /panel >}}
+
 #### docker-compose
 
 The Docker folks also provide a handy tool called `docker-compose` which is not installed by default. We're going to use it
