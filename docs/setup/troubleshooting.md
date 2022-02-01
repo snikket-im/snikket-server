@@ -1,9 +1,8 @@
 ---
 title: "Troubleshooting"
+subtitle: Self-hosted Snikket troubleshooting
 weight: 30
 ---
-
-# Self-hosted Snikket troubleshooting
 
 Problems with your Snikket setup? Don't worry! Most people don't experience
 any issues, but if you do, it's likely something simple. This page describes
@@ -59,6 +58,45 @@ responsible for this domain":
   left over from a previous XMPP installation on the same domain. If you
   recently modified your DNS records, you may need to wait a while for
   DNS caches to expire the old records.
+
+### Problems on Debian/Raspbian 10 ("buster") on Raspberry Pi or ARM devices
+
+If you use Debian or Raspbian version 10 ("buster") on a Raspberry Pi or other
+ARM-based system, you may experience Snikket's containers failing to start with
+errors such as `"Operation Not Permitted"` or `"init_interp_main: can't initialize time"`.
+
+#### Cause
+
+Docker uses a system library called `libseccomp2` to isolate the main system
+from the containers. The version of that system library shipped with Raspbian
+Buster by default cannot handle certain time-related operations and it
+unfortunately returns an error code which confuses the things attempting to
+use it.
+
+#### Solution
+
+There are two options to fix this:
+
+- You can upgrade your system to Raspbian (or Debian) 11 ("bullseye"). This will ship with a newer `libseccomp2` by default which does not have that issue.
+- Alternatively, you can install an updated `libseccomp2` package from [backports](https://backports.debian.org/Instructions/) without upgrading your entire system. To do so, run:
+
+   ```
+   apt-get install libseccomp2/buster-backports
+   ```
+
+   If that command prints `E: Release 'buster-backports' for 'libseccomp2' was not found`
+   or similar, you need to enable backports first. To do so, follow the [Instructions
+   on the Debian Backports](https://backports.debian.org/Instructions/) page up
+   to and including "Add Backports to sources.list". **Make sure to enter
+   "buster-backports" and not "bullseye-backports" into your sources.list!**
+
+   Now, you should be able to run the above command with success. You may have
+   to restart the docker daemon or the containers after this, using:
+
+   ```
+   systemctl restart docker
+   docker-compose up -d  # <- run this in your snikket directory
+   ```
 
 ## Certificate problems
 

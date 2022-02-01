@@ -14,6 +14,14 @@ Upgrading to a new Snikket release is typically very easy. The correct process
 to use depends on the method you initially used to set up your Snikket
 instance. Each method is explained here.
 
+
+{{< panel style="warning" >}}
+**Important note for ARM or Raspberry Pi users:** Some compatibility issues
+have been observed with the new release on systems running Debian or Raspbian
+10 ("buster") or older. For further advice on this issue, see our
+[troubleshooting guide](../troubleshooting/#problems-on-debianraspbian-10-buster-on-raspberry-pi-or-arm-devices).
+{{< /panel >}}
+
 ## Snikket quick-start
 
 If you are using a version installed from the [original quick-start][] guide
