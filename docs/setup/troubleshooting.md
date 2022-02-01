@@ -1,9 +1,8 @@
 ---
 title: "Troubleshooting"
+subtitle: Self-hosted Snikket troubleshooting
 weight: 30
 ---
-
-# Self-hosted Snikket troubleshooting
 
 Problems with your Snikket setup? Don't worry! Most people don't experience
 any issues, but if you do, it's likely something simple. This page describes
