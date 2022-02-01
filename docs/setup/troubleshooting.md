@@ -67,10 +67,11 @@ errors such as `"Operation Not Permitted"` or `"init_interp_main: can't initiali
 
 #### Cause
 
-Docker uses a system library called `libseccomp2` to isolate the main system the
-containers. The version of that system library shipped with Raspbian Buster by
-default cannot handle certain time-related operations and it unfortunately
-returns an error code which confuses the things attempting to use it.
+Docker uses a system library called `libseccomp2` to isolate the main system
+from the containers. The version of that system library shipped with Raspbian
+Buster by default cannot handle certain time-related operations and it
+unfortunately returns an error code which confuses the things attempting to
+use it.
 
 #### Solution
 
