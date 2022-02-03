@@ -153,7 +153,11 @@ allow_contact_invites = false
 -- Disallow restricted users to create invitations to the server
 deny_user_invites_by_roles = { "prosody:restricted" }
 
-invites_page = ENV_SNIKKET_INVITE_URL or ("https://"..DOMAIN.."/invite/{invite.token}/");
+invites_page = ENV_SNIKKET_INVITE_URL or require"socket.url".build {
+	scheme = "https";
+	host = DOMAIN;
+	port = ENV_SNIKKET_TWEAK_HTTPS_PORT;
+} .. "/invite/{invite.token}/";
 invites_page_external = true
 
 invites_bootstrap_index = tonumber(ENV_TWEAK_SNIKKET_BOOTSTRAP_INDEX)
@@ -210,7 +214,11 @@ end
 
 http_default_host = DOMAIN
 http_host = DOMAIN
-http_external_url = "https://"..DOMAIN.."/"
+http_external_url = require"socket.url".build {
+	scheme = "https";
+	host = DOMAIN;
+	port = ENV_SNIKKET_TWEAK_HTTPS_PORT;
+}
 
 if ENV_SNIKKET_TWEAK_TURNSERVER ~= "0" or ENV_SNIKKET_TWEAK_TURNSERVER_DOMAIN then
 	turncredentials_host = ENV_SNIKKET_TWEAK_TURNSERVER_DOMAIN or DOMAIN
@@ -290,7 +298,11 @@ Component ("share."..DOMAIN) "http_file_share"
 	-- For backwards compat, allow HTTP upload on the base domain
 	if ENV_SNIKKET_TWEAK_SHARE_DOMAIN ~= "1" then
 		http_host = "share."..DOMAIN
-		http_external_url = "https://share."..DOMAIN.."/"
+		http_external_url = require"socket.url".build {
+			scheme = "https";
+			host = "share." .. DOMAIN;
+			port = ENV_SNIKKET_TWEAK_HTTPS_PORT;
+		}
 	end
 
 	-- 128 bits (i.e. 16 bytes) is the maximum length of a GCM auth tag, which
