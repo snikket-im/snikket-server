@@ -92,7 +92,6 @@
     - mod_roster_allinall
     - mod_strict_https
     - mod_vcard_muc
-    - mod_reload_modules
     - mod_email
     - mod_http_altconnect
     - mod_firewall

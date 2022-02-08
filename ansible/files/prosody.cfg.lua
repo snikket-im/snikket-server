@@ -99,7 +99,6 @@ modules_enabled = {
 		--"motd"; -- Send a message to users when they log in
 		"welcome"; -- Welcome users who register accounts
 		"http_files"; -- Serve static files from a directory over HTTP
-		"reload_modules";
 
 	-- Invites
 		"invites";
@@ -134,8 +133,6 @@ modules_enabled = {
 
 registration_watchers = {} -- Disable by default
 registration_notification = "New user registered: $username"
-
-reload_global_modules = { "http" }
 
 http_ports  = { ENV_SNIKKET_TWEAK_INTERNAL_HTTP_PORT or 5280 }
 http_interfaces = { ENV_SNIKKET_TWEAK_INTERNAL_HTTP_INTERFACE or "127.0.0.1" }
