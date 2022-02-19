@@ -129,6 +129,7 @@ modules_enabled = {
 		"measure_active_users";
 		"measure_lua";
 		"measure_malloc";
+		"portcheck";
 }
 
 registration_watchers = {} -- Disable by default
