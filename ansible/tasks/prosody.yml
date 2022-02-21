@@ -149,3 +149,9 @@
     name: lua-readline
     state: present
     install_recommends: no
+
+- name: "Install DNS root data (for DNSSEC keys)"
+  apt:
+    name: dns-root-data
+    state: present
+    install_recommends: no
