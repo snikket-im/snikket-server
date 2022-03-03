@@ -4,10 +4,12 @@ package.path = package.path:gsub("([^;]*)(?[^;]*)","%1prosody/%2;%1%2");
 package.cpath = package.cpath:gsub("([^;]*)(?[^;]*)","%1prosody/%2;%1%2");
 
 package.loaded["net.server"] = require "net.server_epoll";
+
 local net = require "util.net";
 local ip = require "util.ip";
-local dns = require "net.dns";
+local dns = require "net.unbound".dns;
 
+local host_name = assert(arg[1], "no domain specified");
 local addresses = net.local_addresses();
 
 local ip_addr = ip.new_ip(addresses[1]);
@@ -18,19 +20,11 @@ if not ip_addr.private then
 	os.exit(0)
 end
 
--- follow at most 3 CNAMEs (arbitrary choice)
-local final_record = arg[1];
-for i=1,3 do
-	local reply = dns.lookup(final_record, "CNAME");
-	if not reply or #reply== 0 then
-		break
-	end
-	local dest = reply[1].cname;
-	io.stderr:write(string.format("following CNAME %s -> %s\n", final_record, dest))
-	final_record = dest;
-end
-local dns_record = dns.lookup(final_record, ip_addr.proto == "IPv6" and "AAAA" or "A")
+local dns_record = dns.lookup(host_name, ip_addr.proto == "IPv6" and "AAAA" or "A")
 if not dns_record or #dns_record == 0 then
+	io.stderr:write(("ERROR: No external address found for %s on %s\n"):format(ip_addr.proto, host_name));
 	os.exit(1);
 end
-print(dns_record[1].a.."/"..tostring(ip_addr));
+
+local external_ip = assert(dns_record[1].a or dns_record[1].aaaa, "Unable to resolve external IP from DNS");
+print(external_ip.."/"..tostring(ip_addr));
