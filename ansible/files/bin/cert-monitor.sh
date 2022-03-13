@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DOMAIN=${SNIKKET_TWEAK_XMPP_DOMAIN:-SNIKKET_DOMAIN}
+DOMAIN=${SNIKKET_TWEAK_XMPP_DOMAIN:-$SNIKKET_DOMAIN}
 CERT_PATH="/snikket/letsencrypt/live/$DOMAIN/cert.pem"
 
 if test -f "$CERT_PATH"; then
