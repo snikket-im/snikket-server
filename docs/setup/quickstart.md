@@ -25,6 +25,9 @@ For the server, you can use a VPS from a provider such as [DigitalOcean](https:/
 or you can use a physical device such as a Raspberry Pi. Note that if you run your server at home (which is _really_ cool!) you may need to forward some ports on your
 router.
 
+If you don't have a domain name yet, see the FAQ ["Do I need to register a domain name to use Snikket?"](https://snikket.org/faq/#q-do-i-need-to-register-a-domain-name-to-use-snikket)
+for some advice.
+
 **Note:** Snikket provides a built-in web server that must be accessible on port 80. This guide assumes you are _not_ running any existing
 websites on the same server. If you are running other HTTP services on the same server, refer to our [reverse proxy](../..//advanced/reverse_proxy/)
 documentation after you complete step 3.
@@ -32,6 +35,14 @@ documentation after you complete step 3.
 ## Get Started
 
 ### Step 1: DNS
+
+You need to set up DNS records so that the Snikket apps can look up and connect to your server.
+
+{{< panel style="info">}}
+**Hosting at home?**
+If you plan to host your Snikket instance at home, check with your ISP whether you have a static or dynamic IP address on your home connection.
+For advice on setting up Snikket with a dynamic IP, see ["Can I host Snikket if I have a dynamic IP address?"](https://snikket.org/faq/#q-can-i-host-snikket-if-i-have-a-dynamic-ip-address).
+{{< /panel >}}
 
 First you need to find your server's public ("external") IP address. If you are using a hosted server, this may be shown in your management dashboard.
 At a pinch you can use an online service, e.g. by running `curl -4 ifconfig.co` in your terminal.
