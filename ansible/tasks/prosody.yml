@@ -11,7 +11,7 @@
 - name: "Add Prosody package repo"
   apt_repository:
     filename: prosody
-    repo: "deb https://packages.prosody.im/debian buster/snapshots/{{ prosody.snapshot }} main"
+    repo: "deb https://packages.prosody.im/debian bullseye/snapshots/{{ prosody.snapshot }} main"
 - name: "Install Prosody package"
   apt:
     name: "{{ prosody.package }}"
