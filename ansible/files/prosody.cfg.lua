@@ -80,7 +80,7 @@ modules_enabled = {
 		"bookmarks";
 		"update_check";
 		"update_notify";
-		"turncredentials";
+		"turn_external";
 		"admin_shell";
 		"isolate_host";
 		"snikket_client_id";
@@ -213,8 +213,8 @@ http_host = DOMAIN
 http_external_url = "https://"..DOMAIN.."/"
 
 if ENV_SNIKKET_TWEAK_TURNSERVER ~= "0" or ENV_SNIKKET_TWEAK_TURNSERVER_DOMAIN then
-	turncredentials_host = ENV_SNIKKET_TWEAK_TURNSERVER_DOMAIN or DOMAIN
-	turncredentials_secret = ENV_SNIKKET_TWEAK_TURNSERVER_SECRET or assert(io.open("/snikket/prosody/turn-auth-secret-v2")):read("*l");
+	turn_external_host = ENV_SNIKKET_TWEAK_TURNSERVER_DOMAIN or DOMAIN
+	turn_external_secret = ENV_SNIKKET_TWEAK_TURNSERVER_SECRET or assert(io.open("/snikket/prosody/turn-auth-secret-v2")):read("*l");
 end
 
 -- Allow restricted users access to push notification servers
