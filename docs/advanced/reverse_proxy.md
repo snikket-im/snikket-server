@@ -98,6 +98,12 @@ server {
 
       # This is the maximum size of uploaded files in Snikket
       client_max_body_size 104857616; # 100MB + 16 bytes
+
+      # For BOSH and WebSockets
+      proxy_set_header Connection $http_connection;
+      proxy_set_header Upgrade $http_upgrade;
+      proxy_read_timeout 900s;
+
   }
 }
 ```
@@ -146,6 +152,13 @@ obtain certificates.
 
         ProxyPass           / https://127.0.0.1:5443/
         ProxyPassReverse    / https://127.0.0.1:5443/
+
+        <IfModule mod_proxy_wstunnel.c>
+        ProxyTimeout 900
+        <Location "/xmpp-websocket">
+            ProxyPass "wss://127.0.0.1:5443//xmpp-websocket"
+        </Location>
+        </IfModule>
 
 </VirtualHost>
 
