@@ -115,8 +115,13 @@ obtain certificates.
 
 ### apache2
 
-**Note**: enable the needed apache2 mods, if you have not already:
-`a2enmod proxy proxy_http proxy_wstunnel ssl`
+**Notes**: 
+
+- enable the needed apache2 mods, if you have not already: `a2enmod proxy proxy_http proxy_wstunnel ssl`
+	
+- add the below code to your main sites-available .conf. Be sure not to replace
+the original `<VirtualHost *:80>` `<VirtualHost *:443>` elements. Instead, you should paste the
+following code, with modifications so it matches your domain etc., below the existing configuration in the .conf file.
 
 
 ```
