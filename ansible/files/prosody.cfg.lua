@@ -267,6 +267,9 @@ Component ("groups."..DOMAIN) "muc"
 	restrict_room_creation = "local"
 	muc_local_only = { "general@groups."..DOMAIN }
 
+	authorization = "delegate"
+	authz_delegate_to = DOMAIN
+
 	-- Default configuration for rooms (typically overwritten by the client)
 	muc_room_default_allow_member_invites = true
 	muc_room_default_persistent = true

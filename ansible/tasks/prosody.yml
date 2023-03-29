@@ -115,6 +115,7 @@
     - mod_measure_malloc
     - mod_http_xep227
     - mod_portcheck
+    - mod_authz_delegate
 
 - name: Enable wanted modules (snikket-modules)
   file:
