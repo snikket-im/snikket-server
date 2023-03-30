@@ -161,6 +161,12 @@ c2s_require_encryption = true
 s2s_require_encryption = true
 s2s_secure_auth = true
 
+add_permissions = {
+	["prosody:user"] = {
+		"xmpp:federate";
+	};
+}
+
 archive_expires_after = ("%dd"):format(RETENTION_DAYS) -- Remove archived messages after N days
 
 -- Disable IPv6 by default because Docker does not

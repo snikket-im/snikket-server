@@ -1,27 +1,5 @@
 local um_get_jid_role = require "core.usermanager".get_jid_role;
 
--- TODO replace by permission configuration
-
-local function load_main_host(module)
-	-- Check whether a user should be isolated from remote JIDs
-	-- If not, set a session flag that allows them to bypass mod_isolate_host
-	local function check_user_isolated(event)
-		local session = event.session;
-		if not session.no_host_isolation then
-			local role = session.role;
-			if not role then return; end
-			if role.name ~= "prosody:restricted" then
-				-- Bypass isolation for all unrestricted users
-				session.no_host_isolation = true;
-			end
-		end
-	end
-
-	-- Add low-priority hook to run after the check_user_isolated default
-	-- behaviour in mod_isolate_host
-	module:hook("resource-bind", check_user_isolated, -0.5);
-end
-
 local function load_groups_host(module)
 	local primary_host = module.host:gsub("^%a+%.", "");
 
@@ -50,6 +28,4 @@ end
 
 if module:get_host_type() == "component" and module:get_option_string("component_module") == "muc" then
 	load_groups_host(module);
-else
-	load_main_host(module);
 end
