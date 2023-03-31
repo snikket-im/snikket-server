@@ -92,7 +92,6 @@
     - mod_email
     - mod_http_altconnect
     - mod_firewall
-    - mod_turncredentials
     - mod_admin_notify
     - mod_http_oauth2
     - mod_http_admin_api
