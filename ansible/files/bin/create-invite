@@ -6,7 +6,8 @@ if [ "$1" == "--qr" ]; then
 	shift;
 fi
 
-URL=$(prosodyctl mod_invites generate "$SNIKKET_DOMAIN" "$@")
+DOMAIN=${SNIKKET_TWEAK_XMPP_DOMAIN:-$SNIKKET_DOMAIN}
+URL=$(prosodyctl mod_invites generate "$DOMAIN" "$@")
 
 echo ""
 echo "Your invite link: $URL"
