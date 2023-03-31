@@ -8,5 +8,5 @@
 
 - name: Add to supervisord
   copy:
-    path: /etc/supervisor/conf.d/supervisord.conf
+    dest: /etc/supervisor/conf.d/supervisord.conf
     src: ../files/supervisor-certmon.conf

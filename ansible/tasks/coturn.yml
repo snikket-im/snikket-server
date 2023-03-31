@@ -32,6 +32,6 @@
     mode: 0755
 
 - name: "Add to supervisord"
-  file:
-    path: /etc/supervisor/conf.d/coturn.conf
+  copy:
+    dest: /etc/supervisor/conf.d/coturn.conf
     src: ../files/supervisor-coturn.conf
