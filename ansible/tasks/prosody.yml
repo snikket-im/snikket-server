@@ -153,3 +153,8 @@
     name: dns-root-data
     state: present
     install_recommends: no
+
+- name: "Add to supervisord"
+  file:
+    path: /etc/supervisor/conf.d/prosody.conf
+    src: ../files/supervisor-prosody.conf

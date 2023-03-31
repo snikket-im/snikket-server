@@ -5,3 +5,8 @@
     src: ../files/refresh-certs.cron
     dest: /etc/cron.daily/refresh-certs
     mode: 0555
+
+- name: Add to supervisord
+  copy:
+    path: /etc/supervisor/conf.d/supervisord.conf
+    src: ../files/supervisor-certmon.conf

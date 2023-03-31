@@ -24,3 +24,14 @@
   copy:
     src: ../files/turnserver.conf
     dest: /etc/turnserver.conf
+
+- name: "Add start script"
+  copy:
+    src: "../files/bin/start-coturn.sh"
+    dest: "/usr/local/bin/start-coturn.sh"
+    mode: 0755
+
+- name: "Add to supervisord"
+  file:
+    path: /etc/supervisor/conf.d/coturn.conf
+    src: ../files/supervisor-coturn.conf
