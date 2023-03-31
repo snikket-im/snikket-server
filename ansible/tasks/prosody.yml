@@ -1,8 +1,8 @@
 ---
 
-- name: "Install Lua 5.2"
+- name: "Install Lua 5.4"
   apt:
-    name: lua5.2
+    name: lua5.4
     state: present
     install_recommends: no
 - name: "Add Prosody package signing key"
@@ -53,7 +53,7 @@
     name: prosody
     state: stopped
 - name: "Allow Prosody to bind service ports"
-  command: setcap 'cap_net_bind_service=+ep' /usr/bin/lua5.2
+  command: setcap 'cap_net_bind_service=+ep' /usr/bin/lua5.4
 
 - name: Install Mercurial
   apt:
@@ -92,7 +92,6 @@
     - mod_email
     - mod_http_altconnect
     - mod_firewall
-    - mod_turncredentials
     - mod_admin_notify
     - mod_http_oauth2
     - mod_http_admin_api
@@ -143,5 +142,17 @@
 - name: "Install luaunbound"
   apt:
     name: lua-unbound
+    state: present
+    install_recommends: no
+
+- name: "Install lua-readline"
+  apt:
+    name: lua-readline
+    state: present
+    install_recommends: no
+
+- name: "Install DNS root data (for DNSSEC keys)"
+  apt:
+    name: dns-root-data
     state: present
     install_recommends: no
