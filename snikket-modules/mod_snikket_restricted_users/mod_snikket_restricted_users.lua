@@ -1,5 +1,6 @@
-local jid_bare = require "util.jid".bare;
-local um_get_roles = require "core.usermanager".get_roles;
+local um_get_jid_role = require "core.usermanager".get_jid_role;
+
+-- TODO replace by permission configuration
 
 local function load_main_host(module)
 	-- Check whether a user should be isolated from remote JIDs
@@ -7,10 +8,9 @@ local function load_main_host(module)
 	local function check_user_isolated(event)
 		local session = event.session;
 		if not session.no_host_isolation then
-			local bare_jid = jid_bare(session.full_jid);
-			local roles = um_get_roles(bare_jid, module.host);
-			if roles == false then return; end
-			if not roles or not roles["prosody:restricted"] then
+			local role = session.role;
+			if not role then return; end
+			if role.name ~= "prosody:restricted" then
 				-- Bypass isolation for all unrestricted users
 				session.no_host_isolation = true;
 			end
@@ -26,8 +26,8 @@ local function load_groups_host(module)
 	local primary_host = module.host:gsub("^%a+%.", "");
 
 	local function is_restricted(user_jid)
-		local roles = um_get_roles(user_jid, primary_host);
-		return not roles or roles["prosody:restricted"];
+		local role = um_get_jid_role(user_jid, primary_host);
+		return not role or role.name == "prosody:restricted";
 	end
 
 	module:hook("muc-config-submitted/muc#roomconfig_publicroom", function (event)

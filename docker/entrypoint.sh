@@ -52,4 +52,9 @@ if test -d /snikket/prosody/http_upload; then
 	prosodyctl mod_migrate_http_upload "share.$SNIKKET_DOMAIN" "$SNIKKET_DOMAIN"
 fi
 
+# COMPAT: migrate from 0.12 series role storage
+if ! test -d /snikket/prosody/*/account_roles; then
+	prosodyctl mod_authz_internal migrate "$SNIKKET_DOMAIN"
+fi
+
 exec supervisord -c /etc/supervisor/supervisord.conf

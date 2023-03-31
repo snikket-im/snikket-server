@@ -80,7 +80,7 @@ modules_enabled = {
 		"bookmarks";
 		"update_check";
 		"update_notify";
-		"turncredentials";
+		"turn_external";
 		"admin_shell";
 		"isolate_host";
 		"snikket_client_id";
@@ -129,6 +129,7 @@ modules_enabled = {
 		"measure_active_users";
 		"measure_lua";
 		"measure_malloc";
+		"portcheck";
 }
 
 registration_watchers = {} -- Disable by default
@@ -136,6 +137,7 @@ registration_notification = "New user registered: $username"
 
 http_ports  = { ENV_SNIKKET_TWEAK_INTERNAL_HTTP_PORT or 5280 }
 http_interfaces = { ENV_SNIKKET_TWEAK_INTERNAL_HTTP_INTERFACE or "127.0.0.1" }
+http_max_content_size = 1024 * 1024 -- non-streaming uploads limited to 1MB (improves RAM usage)
 
 https_ports = {};
 
@@ -193,6 +195,14 @@ else
 	statistics_interval = 60
 end
 
+if ENV_SNIKKET_TWEAK_DNSSEC == "1" then
+	local trustfile = "/usr/share/dns/root.ds"; -- Requires apt:dns-root-data
+	-- Bail out if it doesn't work
+	assert(require"lunbound".new{ resolvconf = true; trustfile = trustfile }:resolve ".".secure,
+		"Upstream DNS resolver is not DNSSEC-capable. Fix this or disable SNIKKET_TWEAK_DNSSEC");
+	unbound = { trustfile = trustfile }
+end
+
 certificates = "certs"
 
 group_default_name = ENV_SNIKKET_SITE_NAME or DOMAIN
@@ -213,8 +223,8 @@ http_host = DOMAIN
 http_external_url = "https://"..DOMAIN.."/"
 
 if ENV_SNIKKET_TWEAK_TURNSERVER ~= "0" or ENV_SNIKKET_TWEAK_TURNSERVER_DOMAIN then
-	turncredentials_host = ENV_SNIKKET_TWEAK_TURNSERVER_DOMAIN or DOMAIN
-	turncredentials_secret = ENV_SNIKKET_TWEAK_TURNSERVER_SECRET or assert(io.open("/snikket/prosody/turn-auth-secret-v2")):read("*l");
+	turn_external_host = ENV_SNIKKET_TWEAK_TURNSERVER_DOMAIN or DOMAIN
+	turn_external_secret = ENV_SNIKKET_TWEAK_TURNSERVER_SECRET or assert(io.open("/snikket/prosody/turn-auth-secret-v2")):read("*l");
 end
 
 -- Allow restricted users access to push notification servers
