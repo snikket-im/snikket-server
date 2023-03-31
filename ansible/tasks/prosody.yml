@@ -143,3 +143,9 @@
     name: lua-unbound
     state: present
     install_recommends: no
+
+- name: "Install lua-readline"
+  apt:
+    name: lua-readline
+    state: present
+    install_recommends: no
