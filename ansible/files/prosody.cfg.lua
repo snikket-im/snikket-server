@@ -194,6 +194,14 @@ else
 	statistics_interval = 60
 end
 
+if ENV_SNIKKET_TWEAK_DNSSEC == "1" then
+	local trustfile = "/usr/share/dns/root.ds"; -- Requires apt:dns-root-data
+	-- Bail out if it doesn't work
+	assert(require"lunbound".new{ resolvconf = true; trustfile = trustfile }:resolve ".".secure,
+		"Upstream DNS resolver is not DNSSEC-capable. Fix this or disable SNIKKET_TWEAK_DNSSEC");
+	unbound = { trustfile = trustfile }
+end
+
 certificates = "certs"
 
 group_default_name = ENV_SNIKKET_SITE_NAME or DOMAIN
