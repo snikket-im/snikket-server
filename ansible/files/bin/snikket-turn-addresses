@@ -1,13 +1,10 @@
 #!/usr/bin/env lua
 
-package.path = package.path:gsub("([^;]*)(?[^;]*)","%1prosody/%2;%1%2");
-package.cpath = package.cpath:gsub("([^;]*)(?[^;]*)","%1prosody/%2;%1%2");
+package.loaded["prosody.net.server"] = require "prosody.net.server_epoll";
 
-package.loaded["net.server"] = require "net.server_epoll";
-
-local net = require "util.net";
-local ip = require "util.ip";
-local dns = require "net.unbound".dns;
+local net = require "prosody.util.net";
+local ip = require "prosody.util.ip";
+local dns = require "prosody.net.unbound".dns;
 
 local host_name = assert(arg[1], "no domain specified");
 local addresses = net.local_addresses();
