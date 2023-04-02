@@ -1,12 +1,12 @@
 ---
 
-- name: "Install Lua 5.2"
+- name: "Install Lua 5.4"
   apt:
-    name: lua5.2
+    name: lua5.4
     state: present
     install_recommends: no
-- name: "Use Lua 5.2 by default"
-  command: update-alternatives --set lua-interpreter /usr/bin/lua5.2
+- name: "Use Lua 5.4 by default"
+  command: update-alternatives --set lua-interpreter /usr/bin/lua5.4
 - name: "Add Prosody package signing key"
   apt_key:
     url: "https://packages.prosody.im/debian/pubkey.asc"
@@ -55,7 +55,7 @@
     name: prosody
     state: stopped
 - name: "Allow Prosody to bind service ports"
-  command: setcap 'cap_net_bind_service=+ep' /usr/bin/lua5.2
+  command: setcap 'cap_net_bind_service=+ep' /usr/bin/lua5.4
 
 - name: Install Mercurial
   apt:
