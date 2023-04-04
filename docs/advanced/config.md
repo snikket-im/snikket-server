@@ -79,6 +79,21 @@ Email address of the admin. This will be sent to all new users as contact inform
 The time (in seconds) for which the web portal will allow avatars to be cached by browsers.
 
 
+## Advanced Configuration Reference
+
+### `SNIKKET_TWEAK_TURNSERVER_MIN_PORT`
+
+Controls the lowest port number used for TURN relay services.
+
+See [the firewall docs](firewall.md) for details.
+
+### `SNIKKET_TWEAK_TURNSERVER_MAX_PORT`
+
+Controls the highest port number used for TURN relay services.
+
+See [the firewall docs](firewall.md) for details.
+
+
 ## Arcane Configuration Reference
 
 **The options below this line are even more arcane than the options above. Do not touch unless you truly know what you're doing.**
