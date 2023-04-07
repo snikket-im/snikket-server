@@ -5,6 +5,8 @@
     name: lua5.4
     state: present
     install_recommends: no
+- name: "Use Lua 5.4 by default"
+  command: update-alternatives --set lua-interpreter /usr/bin/lua5.4
 - name: "Add Prosody package signing key"
   apt_key:
     url: "https://packages.prosody.im/debian/pubkey.asc"
