@@ -5,6 +5,8 @@ local http_formdecode = require "net.http".formdecode;
 local secret = module:get_option_string("invites_bootstrap_secret");
 if not secret then return; end
 
+local bootstrap_invite_ttl = module:get_option_number("invites_bootstrap_ttl");
+
 local invites_bootstrap_store = module:open_store("invites_bootstrap");
 
 -- This should be a non-negative integer higher than any set for the
@@ -37,7 +39,7 @@ local function handle_request(event)
 		roles = { ["prosody:admin"] = true };
 		groups = { "default" };
 		source = "api/token/bootstrap-"..current_index;
-	});
+	}, bootstrap_invite_ttl);
 	if not invite then
 		module:log("error", "Failed to create bootstrap invite! %s", invite_err);
 		return 500;

@@ -160,6 +160,7 @@ invites_page_external = true
 
 invites_bootstrap_index = tonumber(ENV_TWEAK_SNIKKET_BOOTSTRAP_INDEX)
 invites_bootstrap_secret = ENV_TWEAK_SNIKKET_BOOTSTRAP_SECRET
+invites_bootstrap_ttl = tonumber(ENV_TWEAK_SNIKKET_BOOTSTRAP_TTL or (28 * 86400)) -- default 28 days
 
 c2s_require_encryption = true
 s2s_require_encryption = true
