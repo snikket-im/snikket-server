@@ -27,6 +27,10 @@ This reference is in no particular order. Most importantly, it is certainly not 
 
 The domain name of your Snikket instance. Do not change this after it was once set.
 
+### `SNIKKET_UPLOAD_FILE_SIZE_LIMIT_MB`
+
+Use this option to define a maximum size in MB for files shared by users. This value refers to the size each uploaded file. If no limit is defined a default of 100 MB per file will be used.
+
 ### `SNIKKET_RETENTION_DAYS`
 
 The number of days (as integer) for which your server should preserve messages so that all devices of a user can catch up, even if they end up being disconnected from the internet for a while.
