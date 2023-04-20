@@ -1,6 +1,7 @@
 local DOMAIN = assert(ENV_SNIKKET_DOMAIN, "Please set the SNIKKET_DOMAIN environment variable")
 
 local RETENTION_DAYS = tonumber(ENV_SNIKKET_RETENTION_DAYS) or 7;
+local UPLOAD_FILE_SIZE_LIMIT_MB = tonumber(ENV_SNIKKET_UPLOAD_FILE_SIZE_LIMIT_MB) or 100;
 local UPLOAD_STORAGE_GB = tonumber(ENV_SNIKKET_UPLOAD_STORAGE_GB);
 
 if prosody.process_type == "prosody" and not prosody.config_loaded then
@@ -302,7 +303,7 @@ Component ("share."..DOMAIN) "http_file_share"
 	-- 128 bits (i.e. 16 bytes) is the maximum length of a GCM auth tag, which
 	-- is appended to encrypted uploads according to XEP-0454. This ensures we
 	-- allow files up to the size limit even if they are encrypted.
-	http_file_share_size_limit = (1024 * 1024 * 100) + 16 -- 100MB + 16 bytes
+	http_file_share_size_limit = (1024 * 1024 * UPLOAD_FILE_SIZE_LIMIT_MB) + 16 -- 100MB + 16 bytes
 	http_file_share_expires_after = 60 * 60 * 24 * RETENTION_DAYS -- N days
 
 	if UPLOAD_STORAGE_GB then
