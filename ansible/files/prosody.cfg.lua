@@ -166,8 +166,6 @@ archive_expires_after = ("%dd"):format(RETENTION_DAYS) -- Remove archived messag
 -- Disable IPv6 by default because Docker does not
 -- have it enabled by default, and s2s to domains
 -- with A+AAAA records breaks (as opposed to just AAAA)
--- TODO: implement happy eyeballs in net.connect
--- https://issues.prosody.im/1246
 use_ipv6 = (ENV_SNIKKET_TWEAK_IPV6 == "1")
 
 log = {
