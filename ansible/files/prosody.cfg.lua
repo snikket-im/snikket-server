@@ -157,6 +157,11 @@ invites_bootstrap_index = tonumber(ENV_TWEAK_SNIKKET_BOOTSTRAP_INDEX)
 invites_bootstrap_secret = ENV_TWEAK_SNIKKET_BOOTSTRAP_SECRET
 invites_bootstrap_ttl = tonumber(ENV_TWEAK_SNIKKET_BOOTSTRAP_TTL or (28 * 86400)) -- default 28 days
 
+-- The Resource Owner Credentials grant used internally between the web portal
+-- and Prosody, so ensure this is enabled. Other unused flows can be disabled.
+allowed_oauth2_grant_types = { "password" }
+allowed_oauth2_response_types = {}
+
 c2s_require_encryption = true
 s2s_require_encryption = true
 s2s_secure_auth = true
