@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim
+FROM debian:bookworm-slim
 
 ARG BUILD_SERIES=dev
 ARG BUILD_ID=0
@@ -33,7 +33,7 @@ RUN apt-get update \
          software-properties-common \
          gpg gpg-agent \
          python3-passlib \
-         mercurial libcap2-bin build-essential \
+         libcap2-bin build-essential \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/cache/*

@@ -13,7 +13,7 @@
 - name: "Add Prosody package repo"
   apt_repository:
     filename: prosody
-    repo: "deb https://packages.prosody.im/debian bullseye/snapshots/{{ prosody.snapshot }} main"
+    repo: "deb https://packages.prosody.im/debian bookworm/snapshots/{{ prosody.snapshot }} main"
 - name: "Install Prosody package"
   apt:
     name: "{{ prosody.package }}"
@@ -50,26 +50,26 @@
   service:
     name: prosody
     enabled: no
+    use: sysvinit
 - name: "Stop Prosody if running"
   service:
     name: prosody
     state: stopped
+    use: sysvinit
 - name: "Allow Prosody to bind service ports"
   command: setcap 'cap_net_bind_service=+ep' /usr/bin/lua5.4
 
-- name: Install Mercurial
-  apt:
-    name: mercurial
-    state: present
-    install_recommends: no
+- name: "Create Prosody modules source directory"
+  file:
+    state: directory
+    path: /usr/local/lib/prosody-modules
 
-- name: Clone prosody-modules
-  hg:
-    repo: https://hg.prosody.im/prosody-modules
+- name: Download prosody-modules
+  unarchive:
+    src: "https://hg.prosody.im/prosody-modules/archive/{{ prosody_modules.revision }}.tar.gz"
+    remote_src: true
+    extra_opts: "--strip-components=1"
     dest: /usr/local/lib/prosody-modules
-    revision: "{{ prosody_modules.revision }}"
-    purge: yes
-    update: yes
 - name: Enable wanted modules (prosody-modules)
   file:
     state: link
