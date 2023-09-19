@@ -9,7 +9,7 @@
       package: "prosody-trunk"
       snapshot: "2023-10-01"
     prosody_modules:
-      revision: "5178c13deb78"
+      revision: "7a4a6ded2bd6"
   tasks:
     - import_tasks: tasks/prosody.yml
     - import_tasks: tasks/supervisor.yml
