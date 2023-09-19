@@ -150,6 +150,9 @@ allow_contact_invites = false
 -- Disallow restricted users to create invitations to the server
 deny_user_invites_by_roles = { "prosody:restricted" }
 
+-- This role was renamed 'guest' in Prosody.
+custom_roles = { { name = "prosody:restricted"; priority = 15 } }
+
 invites_page = ENV_SNIKKET_INVITE_URL or ("https://"..DOMAIN.."/invite/{invite.token}/");
 invites_page_external = true
 
