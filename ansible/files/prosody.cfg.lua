@@ -162,6 +162,10 @@ invites_bootstrap_ttl = tonumber(ENV_TWEAK_SNIKKET_BOOTSTRAP_TTL or (28 * 86400)
 allowed_oauth2_grant_types = { "password" }
 allowed_oauth2_response_types = {}
 
+-- Longer access token lifetime than the default
+-- TODO: Use the already longer-lived refresh tokens
+oauth2_access_token_ttl = 86400
+
 c2s_require_encryption = true
 s2s_require_encryption = true
 s2s_secure_auth = true
