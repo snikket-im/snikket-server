@@ -174,7 +174,7 @@ s2s_require_encryption = true
 s2s_secure_auth = true
 
 add_permissions = {
-	["prosody:user"] = {
+	["prosody:registered"] = {
 		"xmpp:federate";
 	};
 }
