@@ -117,6 +117,7 @@
     - mod_measure_malloc
     - mod_http_xep227
     - mod_portcheck
+    - mod_authz_delegate
 
 - name: Enable wanted modules (snikket-modules)
   file:
@@ -131,6 +132,7 @@
     - mod_snikket_client_id
     - mod_snikket_ios_preserve_push
     - mod_snikket_restricted_users
+    - mod_snikket_circle_muc_protection
 
 - name: "Install lua-ossl for encrypted push notifications"
   apt:

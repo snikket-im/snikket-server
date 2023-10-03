@@ -272,9 +272,14 @@ Component ("groups."..DOMAIN) "muc"
 		"muc_offline_delivery";
 		"snikket_restricted_users";
 		"muc_auto_reserve_nicks";
+		"snikket_circle_muc_protection";
 	}
 	restrict_room_creation = "local"
 	muc_local_only = { "general@groups."..DOMAIN }
+	circle_muc_protection_main_domain = DOMAIN
+
+	authorization = "delegate"
+	authz_delegate_to = DOMAIN
 
 	-- Default configuration for rooms (typically overwritten by the client)
 	muc_room_default_allow_member_invites = true
