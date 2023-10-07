@@ -18,7 +18,7 @@
   apt:
     name: "{{ prosody.package }}"
     state: present
-    install_recommends: yes
+    install_recommends: no
 - name: "Deploy Prosody config"
   copy:
     src: ../files/prosody.cfg.lua
