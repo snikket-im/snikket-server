@@ -120,12 +120,6 @@ Just do not set this.
 
 Also better do not set this.
 
-### `SNIKKET_TWEAK_IPV6`
-
-Enable IPv6 support.
-
-By default, IPv6 is disabled because most container runtimes default to it being disabled. Enabling IPv6 in the server could cause issues if the container runtime does not support it.
-
 ### `SNIKKET_TWEAK_PROMETHEUS`
 
 If you are monitoring your Snikket server using [Prometheus](https://prometheus.io/) and scraping the metrics endpoint, you should set this to `1` and let it at its default otherwise.
