@@ -122,9 +122,9 @@ Also better do not set this.
 
 ### `SNIKKET_TWEAK_IPV6`
 
-Enable IPv6 support.
+Disable IPv6 support by setting to `0`.
 
-By default, IPv6 is disabled because most container runtimes default to it being disabled. Enabling IPv6 in the server could cause issues if the container runtime does not support it.
+By default, IPv6 is enable because Snikket uses host networking and gracefully handles IPv6 hosts being unreachable.
 
 ### `SNIKKET_TWEAK_PROMETHEUS`
 

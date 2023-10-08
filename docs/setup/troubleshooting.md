@@ -118,12 +118,7 @@ from the installation guide correctly, particularly the
 [DNS configuration](https://snikket.org/service/quickstart/#step-1-dns).
 
 If your server supports IPv6, you may also add that to DNS (using an
-AAAA record). If you do this, you *must* tell Snikket by adding the
-following line to your snikket.conf:
-
-```
-SNIKKET_TWEAK_IPV6=1
-```
+AAAA record).
 
 #### Port 80 blocked
 
