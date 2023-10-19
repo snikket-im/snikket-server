@@ -1,0 +1,15 @@
+---
+
+- name: "Install s6"
+  apt:
+    name: s6
+    state: present
+    install_recommends: no
+
+- name: "Install service files"
+  copy:
+    src: files/services/
+    dest: /etc/sv
+    owner: root
+    group: root
+    mode: '0750'

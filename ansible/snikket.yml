@@ -12,7 +12,7 @@
       revision: "7a4a6ded2bd6"
   tasks:
     - import_tasks: tasks/prosody.yml
-    - import_tasks: tasks/supervisor.yml
+    - import_tasks: tasks/services.yml
     - import_tasks: tasks/cron.yml
     - import_tasks: tasks/certs.yml
     - import_tasks: tasks/mail.yml
