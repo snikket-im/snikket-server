@@ -124,7 +124,7 @@ Also better do not set this.
 
 Disable IPv6 support by setting to `0`.
 
-By default, IPv6 is enable because Snikket uses host networking and gracefully handles IPv6 hosts being unreachable.
+By default, IPv6 is enabled because Snikket uses host networking and gracefully handles IPv6 hosts being unreachable.
 
 ### `SNIKKET_TWEAK_PROMETHEUS`
 
