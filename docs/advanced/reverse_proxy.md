@@ -115,8 +115,8 @@ obtain certificates.
 
 ### apache2
 
-**Note**: enable the needed apache2 mods, _proxy_wstunnel_ is only needed if you want to enable connections from webclients like [converse.js](https://conversejs.org) :
-`a2enmod ssl proxy proxy_http proxy_wstunnel`
+**Note**: enable the needed apache2 mods, the parameter upgrade=websocket and timeout is only needed if you want to enable connections from webclients like [converse.js](https://conversejs.org) :
+`a2enmod ssl proxy proxy_http`
 
 
 ```
@@ -147,17 +147,10 @@ obtain certificates.
         SSLCertificateKeyFile /path/to/certificatefolder/privkey.pem
         SSLCertificateChainFile /path/to/certificatefolder/chain.pem
 
-        ProxyPass           / https://127.0.0.1:5443/
+        ProxyPass           / https://127.0.0.1:5443/ upgrade=websocket timeout=900
         ProxyPassReverse    / https://127.0.0.1:5443/
-	
-	# Only needed for webclients like converse.js that need websockets
-        <IfModule mod_proxy_wstunnel.c>
-          ProxyTimeout 900
-          ProxyPass /xmpp-websocket "wss://127.0.0.1:5443/xmpp-websocket"
-        </IfModule>
 
 </VirtualHost>
-
 ```
 
 ### Caddy
