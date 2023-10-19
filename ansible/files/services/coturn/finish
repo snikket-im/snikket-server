@@ -1,0 +1,6 @@
+#!/bin/sh -e
+
+if [ "$SNIKKET_TWEAK_TURNSERVER" = "0" ]; then
+	# tell s6 it's not supposed to be running
+	exit 125
+fi
