@@ -57,4 +57,4 @@ if ! test -d /snikket/prosody/*/account_roles; then
 	prosodyctl mod_authz_internal migrate "$SNIKKET_DOMAIN"
 fi
 
-exec supervisord -c /etc/supervisor/supervisord.conf
+exec s6-svscan /etc/sv
