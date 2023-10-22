@@ -55,6 +55,12 @@ modules_enabled = {
 		"mam"; -- Store messages in an archive and allow users to access it
 		"csi_simple"; -- Simple Mobile optimizations
 
+	-- SASL2/FAST
+		"sasl2";
+		"sasl2_bind2";
+		"sasl2_sm";
+		"sasl2_fast";
+
 	-- Push notifications
 		"cloud_notify";
 		"cloud_notify_extensions";
@@ -191,6 +197,8 @@ log = {
 
 authentication = "internal_hashed"
 authorization = "internal"
+disable_sasl_mechanisms = { "PLAIN" }
+
 storage = "internal"
 statistics = "internal"
 
