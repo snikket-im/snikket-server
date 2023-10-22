@@ -191,6 +191,8 @@ log = {
 
 authentication = "internal_hashed"
 authorization = "internal"
+disable_sasl_mechanisms = { "PLAIN" }
+
 storage = "internal"
 statistics = "internal"
 
