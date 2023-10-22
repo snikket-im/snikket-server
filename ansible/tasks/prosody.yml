@@ -117,6 +117,10 @@
     - mod_measure_malloc
     - mod_http_xep227
     - mod_portcheck
+    - mod_sasl2
+    - mod_sasl2_bind2
+    - mod_sasl2_sm
+    - mod_sasl2_fast
 
 - name: Enable wanted modules (snikket-modules)
   file:
