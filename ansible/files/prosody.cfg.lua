@@ -60,6 +60,7 @@ modules_enabled = {
 		"sasl2_bind2";
 		"sasl2_sm";
 		"sasl2_fast";
+		"client_management";
 
 	-- Push notifications
 		"cloud_notify";

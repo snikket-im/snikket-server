@@ -121,6 +121,7 @@
     - mod_sasl2_bind2
     - mod_sasl2_sm
     - mod_sasl2_fast
+    - mod_client_management
 
 - name: Enable wanted modules (snikket-modules)
   file:
