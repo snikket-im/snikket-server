@@ -177,6 +177,7 @@ This nowadays conflicts with the web portal, so you should not set it.
 ### `SNIKKET_TWEAK_DNSSEC`
 
 Enable DNSSEC support. Requires a DNSSEC-capable resolver.
+This also enables DANE for outgoing connections.
 
 ### `SNIKKET_TWEAK_EXTRA_CONFIG`
 
