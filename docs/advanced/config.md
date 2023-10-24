@@ -19,6 +19,8 @@ In most situations, the configuration options shown in the example config in
 Also, it is very likely not complete.
 {{< /panel >}}
 
+After modifying any options in snikket.conf, you must run 'docker-compose up -d' to apply the changes.
+
 ## Configuration Option Reference
 
 This reference is in no particular order. Most importantly, it is certainly not in the order of "things you should try to mess with come first".
@@ -78,8 +80,22 @@ Email address of the admin. This will be sent to all new users as contact inform
 
 The time (in seconds) for which the web portal will allow avatars to be cached by browsers.
 
-
 ## Advanced Configuration Reference
+
+It should generally not be necessary to use the options in this section. These
+options have a high chance of breaking your Snikket setup (sometimes in subtle
+ways) or reducing security, if used incorrectly.
+
+### `SNIKKET_CERTBOT_OPTIONS`
+
+Add extra options to the certbot command-line.
+
+### `SNIKKET_CERTBOT_KEY_OPTIONS`
+
+Defaults to `--reuse-key`. Set to `--no-reuse-key` to rotate the private key
+on every certificate renewal. Note that rotating the key may invalidate things
+that depend on a stable public key, such as DANE and certificate monitoring
+utilities.
 
 ### `SNIKKET_TWEAK_TURNSERVER_MIN_PORT`
 
