@@ -190,6 +190,7 @@ Config for the deprecated general MUC (if it exists). Can be `hidden` or
 ### `SNIKKET_TWEAK_DNSSEC`
 
 Enable DNSSEC support. Requires a DNSSEC-capable resolver.
+This also enables DANE for outgoing connections.
 
 ### `SNIKKET_TWEAK_EXTRA_CONFIG`
 

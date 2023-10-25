@@ -225,6 +225,9 @@ if ENV_SNIKKET_TWEAK_DNSSEC == "1" then
 	assert(require"lunbound".new{ resolvconf = true; trustfile = trustfile }:resolve ".".secure,
 		"Upstream DNS resolver is not DNSSEC-capable. Fix this or disable SNIKKET_TWEAK_DNSSEC");
 	unbound = { trustfile = trustfile }
+
+	-- Since we have DNSSEC, we can also do DANE
+	use_dane = true
 end
 
 certificates = "certs"
