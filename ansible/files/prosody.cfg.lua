@@ -93,10 +93,10 @@ modules_enabled = {
 	-- Spam/abuse management
 		"spam_reporting"; -- Allow users to report spam/abuse
 		"watch_spam_reports"; -- Alert admins of spam/abuse reports by users
+		"server_contact_info"; -- Publish contact information for this service
 
 	-- TODO...
 		--"groups"; -- Shared roster support
-		--"server_contact_info"; -- Publish contact information for this service
 		--"announce"; -- Send announcement to all online users
 		--"motd"; -- Send a message to users when they log in
 		"welcome"; -- Welcome users who register accounts
@@ -136,6 +136,11 @@ modules_enabled = {
 
 registration_watchers = {} -- Disable by default
 registration_notification = "New user registered: $username"
+
+contact_info = {
+	abuse = ENV_SNIKKET_ABUSE_EMAIL and {"mailto:"..ENV_SNIKKET_ABUSE_EMAIL} or nil;
+	security = ENV_SNIKKET_SECURITY_EMAIL and {"mailto:"..ENV_SNIKKET_SECURITY_EMAIL} or nil;
+}
 
 http_ports  = { ENV_SNIKKET_TWEAK_INTERNAL_HTTP_PORT or 5280 }
 http_interfaces = { ENV_SNIKKET_TWEAK_INTERNAL_HTTP_INTERFACE or "127.0.0.1" }
