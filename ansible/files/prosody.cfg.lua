@@ -99,7 +99,6 @@ modules_enabled = {
 		--"groups"; -- Shared roster support
 		--"announce"; -- Send announcement to all online users
 		--"motd"; -- Send a message to users when they log in
-		"welcome"; -- Welcome users who register accounts
 		"http_files"; -- Serve static files from a directory over HTTP
 
 	-- Invites
@@ -271,13 +270,6 @@ VirtualHost (DOMAIN)
 			"http_openmetrics";
 		}
 	end
-
-	welcome_message = [[Hi, welcome to Snikket on $host! Thanks for joining us.]]
-	.."\n\n"
-	..[[For help and enquiries related to this service you may contact the admin via email: ]]
-	..ENV_SNIKKET_ADMIN_EMAIL
-	.."\n\n"
-	..[[Happy chatting!]]
 
 Component ("groups."..DOMAIN) "muc"
 	modules_enabled = {
