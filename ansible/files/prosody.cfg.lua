@@ -279,9 +279,13 @@ Component ("groups."..DOMAIN) "muc"
 		"muc_defaults";
 		"muc_offline_delivery";
 		"snikket_restricted_users";
+		"snikket_deprecate_general_muc";
 		"muc_auto_reserve_nicks";
 	}
 	restrict_room_creation = "local"
+
+	-- Some older deployments may have the general@ MUC, so we still need
+	-- to protect it:
 	muc_local_only = { "general@groups."..DOMAIN }
 
 	-- Default configuration for rooms (typically overwritten by the client)
@@ -296,22 +300,6 @@ Component ("groups."..DOMAIN) "muc"
 	-- to detect whether push notifications are enabled)
 	muc_registration_include_form = true
 
-	default_mucs = {
-		{
-			jid_node = "general";
-			config = {
-				name = "General Chat";
-				description = "Welcome to "..DOMAIN.." general chat!";
-				change_subject = false;
-				history_length = 30;
-				members_only = false;
-				moderated = false;
-				persistent = true;
-				public = true;
-				public_jids = true;
-			};
-		}
-	}
 
 Component ("share."..DOMAIN) "http_file_share"
 	-- For backwards compat, allow HTTP upload on the base domain
