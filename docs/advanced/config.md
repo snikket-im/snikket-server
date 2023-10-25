@@ -182,6 +182,11 @@ Expose the file share service at the `SNIKKET_DOMAIN` instead of at `share.SNIKK
 
 This nowadays conflicts with the web portal, so you should not set it.
 
+### `SNIKKET_TWEAK_GENERAL_MUC`
+
+Config for the deprecated general MUC (if it exists). Can be `hidden` or
+`destroyed`. Defaults to `hidden`.
+
 ### `SNIKKET_TWEAK_DNSSEC`
 
 Enable DNSSEC support. Requires a DNSSEC-capable resolver.

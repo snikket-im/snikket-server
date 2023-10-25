@@ -136,6 +136,7 @@
     - mod_snikket_client_id
     - mod_snikket_ios_preserve_push
     - mod_snikket_restricted_users
+    - mod_snikket_deprecate_general_muc
 
 - name: "Install lua-ossl for encrypted push notifications"
   apt:

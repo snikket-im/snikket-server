@@ -99,7 +99,6 @@ modules_enabled = {
 		--"groups"; -- Shared roster support
 		--"announce"; -- Send announcement to all online users
 		--"motd"; -- Send a message to users when they log in
-		"welcome"; -- Welcome users who register accounts
 		"http_files"; -- Serve static files from a directory over HTTP
 
 	-- Invites
@@ -272,13 +271,6 @@ VirtualHost (DOMAIN)
 		}
 	end
 
-	welcome_message = [[Hi, welcome to Snikket on $host! Thanks for joining us.]]
-	.."\n\n"
-	..[[For help and enquiries related to this service you may contact the admin via email: ]]
-	..ENV_SNIKKET_ADMIN_EMAIL
-	.."\n\n"
-	..[[Happy chatting!]]
-
 Component ("groups."..DOMAIN) "muc"
 	modules_enabled = {
 		"muc_mam";
@@ -287,9 +279,13 @@ Component ("groups."..DOMAIN) "muc"
 		"muc_defaults";
 		"muc_offline_delivery";
 		"snikket_restricted_users";
+		"snikket_deprecate_general_muc";
 		"muc_auto_reserve_nicks";
 	}
 	restrict_room_creation = "local"
+
+	-- Some older deployments may have the general@ MUC, so we still need
+	-- to protect it:
 	muc_local_only = { "general@groups."..DOMAIN }
 
 	-- Default configuration for rooms (typically overwritten by the client)
@@ -304,22 +300,6 @@ Component ("groups."..DOMAIN) "muc"
 	-- to detect whether push notifications are enabled)
 	muc_registration_include_form = true
 
-	default_mucs = {
-		{
-			jid_node = "general";
-			config = {
-				name = "General Chat";
-				description = "Welcome to "..DOMAIN.." general chat!";
-				change_subject = false;
-				history_length = 30;
-				members_only = false;
-				moderated = false;
-				persistent = true;
-				public = true;
-				public_jids = true;
-			};
-		}
-	}
 
 Component ("share."..DOMAIN) "http_file_share"
 	-- For backwards compat, allow HTTP upload on the base domain
