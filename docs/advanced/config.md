@@ -76,6 +76,14 @@ This will not expose your server's IP address or domain name to the Snikket org,
 
 Email address of the admin. This will be sent to all new users as contact information.
 
+### `SNIKKET_ABUSE_EMAIL`
+
+Optional. **Public.** Email address to which people should send abuse reports. It will be publicly visible to the XMPP network and on the instance website.
+
+### `SNIKKET_SECURITY_EMAIL`
+
+Optional. **Public.** Email address to which people should send security reports. It will be publicly visible to the XMPP network and on the instance website.
+
 ### `SNIKKET_WEB_AVATAR_CACHE_TTL`
 
 The time (in seconds) for which the web portal will allow avatars to be cached by browsers.
