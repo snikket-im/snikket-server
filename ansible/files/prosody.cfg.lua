@@ -184,6 +184,8 @@ c2s_require_encryption = true
 s2s_require_encryption = true
 s2s_secure_auth = true
 
+-- Grant federation privileges to regular users but not restricted users.
+-- This is enforced by mod_isolate_host.
 add_permissions = {
 	["prosody:registered"] = {
 		"xmpp:federate";
