@@ -7,7 +7,7 @@
   vars:
     prosody:
       package: "prosody-trunk"
-      snapshot: "2023-10-22"
+      snapshot: "2023-11-07"
     prosody_modules:
       revision: "78f766372e2c"
   tasks:
