@@ -195,3 +195,7 @@ This also enables DANE for outgoing connections.
 ### `SNIKKET_TWEAK_EXTRA_CONFIG`
 
 Path or glob for extra configuration files to load.
+
+### `SNIKKET_TWEAK_STORAGE`
+
+Sneak preview of SQLite storage. Valid values are `files` (the default) and `sqlite` (potential future default).

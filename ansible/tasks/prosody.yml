@@ -161,3 +161,18 @@
     name: dns-root-data
     state: present
     install_recommends: no
+
+- name: "Install Prosody-Migrator"
+  apt:
+    name: prosody-migrator-trunk
+    state: present
+    install_recommends: no
+- name: "Copy Prosody-Migrator config"
+  copy:
+    src: ../files/migrator.cfg.lua
+    dest: /etc/prosody/migrator.cfg.lua
+- name: "Install LuaDBI driver for SQLite3"
+  apt:
+    name: lua-dbi-sqlite3
+    state: present
+    install_recommends: no

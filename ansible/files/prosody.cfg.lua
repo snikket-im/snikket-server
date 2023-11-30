@@ -206,7 +206,16 @@ authentication = "internal_hashed"
 authorization = "internal"
 disable_sasl_mechanisms = { "PLAIN" }
 
-storage = "internal"
+if ENV_SNIKKET_TWEAK_STORAGE == "sqlite" then
+	storage = "sql"
+	sql = {
+		driver = "SQLite3";
+		database = "/snikket/prosody/prosody.sqlite";
+	}
+else
+	storage = "internal"
+end
+
 statistics = "internal"
 
 if ENV_SNIKKET_TWEAK_PROMETHEUS == "1" then
