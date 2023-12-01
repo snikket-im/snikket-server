@@ -122,6 +122,7 @@
     - mod_sasl2_sm
     - mod_sasl2_fast
     - mod_client_management
+    - mod_password_policy
 
 - name: Enable wanted modules (snikket-modules)
   file:

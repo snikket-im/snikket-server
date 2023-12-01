@@ -45,6 +45,7 @@ modules_enabled = {
 		"blocklist"; -- Allow users to block communications with other users
 		"vcard4"; -- User profiles (stored in PEP)
 		"vcard_legacy"; -- Conversion between legacy vCard and PEP Avatar, vcard
+		"password_policy";
 
 	-- Nice to have
 		"version"; -- Replies to server version requests
@@ -151,6 +152,10 @@ c2s_direct_tls_ports = { 5223 }
 
 allow_registration = true
 registration_invite_only = true
+
+password_policy = {
+	length = 10;
+}
 
 -- This disables in-app invites for non-admins
 -- TODO: The plan is to enable it once we can
