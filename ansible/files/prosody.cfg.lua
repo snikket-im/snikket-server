@@ -205,6 +205,10 @@ add_permissions = {
 
 archive_expires_after = ("%dd"):format(RETENTION_DAYS) -- Remove archived messages after N days
 
+-- Delay full account deletion via IBR for RETENTION_DAYS, to allow restoration
+-- in case of accidental or malicious deletion of an account
+registration_delete_grace_period = ("%d days"):format(RETENTION_DAYS)
+
 -- Allow disabling IPv6 because Docker does not have it enabled by default, but
 -- we don't use Docker networking so it should not matter.
 use_ipv6 = (ENV_SNIKKET_TWEAK_IPV6 ~= "0")
