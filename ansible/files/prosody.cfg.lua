@@ -163,6 +163,13 @@ password_policy = {
 	length = 10;
 }
 
+-- In the future we want to switch to SASL2 for better security,
+-- as client ids are not supported in SASL1 (identification is via
+-- the resource string, which is semi-public and not authenticated)
+-- This tweak is for developers to test with the future configuration,
+-- or people who want to opt into the new security sooner.
+enforce_client_ids = ENV_SNIKKET_TWEAK_REQUIRE_SASL2 == "1"
+
 -- This disables in-app invites for non-admins
 -- TODO: The plan is to enable it once we can
 -- give the admin more fine-grained control

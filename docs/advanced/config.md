@@ -199,3 +199,14 @@ Path or glob for extra configuration files to load.
 ### `SNIKKET_TWEAK_STORAGE`
 
 Sneak preview of SQLite storage. Valid values are `files` (the default) and `sqlite` (potential future default).
+
+### `ENV_SNIKKET_TWEAK_REQUIRE_SASL2`
+
+When set to `1` this will disable support for legacy SASL, requiring all
+clients to support SASL2. We plan for this to be the default in the future due
+to increased security, speed and other features, but currently there are many
+apps without SASL2 support and this would prevent them connecting.
+
+The tweak is available now so developers can ensure their client will work in
+SASL2-only mode, or admins can disable legacy SASL early if they are certain
+of only using SASL2-capable clients.
