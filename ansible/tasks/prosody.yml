@@ -122,6 +122,10 @@
     - mod_sasl2_sm
     - mod_sasl2_fast
     - mod_client_management
+    - mod_audit
+    - mod_audit_auth
+    - mod_audit_status
+    - mod_audit_user_accounts
     - mod_password_policy
 
 - name: Enable wanted modules (snikket-modules)

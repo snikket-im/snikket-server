@@ -63,6 +63,12 @@ modules_enabled = {
 		"sasl2_fast";
 		"client_management";
 
+	-- Event auditing
+		"audit";
+		"audit_auth"; -- Audit authentication attempts and new clients
+		"audit_status"; -- Audit status changes of the server (start, stop, crash)
+		"audit_user_accounts"; -- Audit status changes of user accounts (created, deleted, etc.)
+
 	-- Push notifications
 		"cloud_notify";
 		"cloud_notify_extensions";
