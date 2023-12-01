@@ -130,6 +130,41 @@ The TCP port on which the internal HTTP API listens on. The default is `5280`. D
 
 The IP address on which the internal HTTP API listens on. The default is `127.0.0.1`, so that the API is only accessible from the same server. Changing this may be a security risk as some general system information is accessible without authentication.
 
+### `SNIKKET_TWEAK_HTTP_TLS_VERSIONS`
+
+The TLS versions to offer for HTTPS. Changing this may make your setup less
+secure, or else prevent some browsers or operating systems from connecting to
+your instance.
+
+By default we follow Mozilla's TLS 'intermediate' profile, which balances
+strong security with allowing a range of browsers and clients to connect.
+
+To follow Mozilla's 'strict' profile (which may cause connectivity issues with
+Android < 9, Windows < 11, Safari/iOS < 12, and others), set:
+
+```
+SNIKKET_TWEAK_HTTP_TLS_VERSIONS=TLSv1.3
+SNIKKET_TWEAK_HTTP_TLS_CIPHERS=
+```
+
+### `SNIKKET_TWEAK_HTTP_TLS_CIPHERS`
+
+The TLS ciphers to offer for HTTPS. See the previous option about TLS version
+configuration for more details.
+
+### `SNIKKET_TWEAK_WEB_PROXY_PROTOCOLS`
+
+This is for customization of the web proxy configuration. After adding new
+configuration templates, this can be used to load them, it's a list of
+space-separated names.
+
+Defaults to `http https`.
+
+### `SNIKKET_TWEAK_WEB_PROXY_RELOAD_INTERVAL`
+
+The number of seconds between reloads of the web proxy (i.e. to pick up new
+certificates). Specified as a number of seconds, or `inf` to disable reloads.
+
 ### `SNIKKET_INVITE_URL`
 
 The URL template for invitation links. The server needs to know under which address the invitation service is hosted.
