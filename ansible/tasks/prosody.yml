@@ -127,6 +127,7 @@
     - mod_audit_status
     - mod_audit_user_accounts
     - mod_password_policy
+    - mod_s2s_status
 
 - name: Enable wanted modules (snikket-modules)
   file:

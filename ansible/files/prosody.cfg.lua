@@ -307,6 +307,12 @@ VirtualHost (DOMAIN)
 		}
 	end
 
+	if ENV_SNIKKET_TWEAK_S2S_STATUS == "1" then
+		modules_enabled: append {
+			"s2s_status";
+		}
+	end
+
 Component ("groups."..DOMAIN) "muc"
 	modules_enabled = {
 		"muc_mam";
@@ -318,6 +324,13 @@ Component ("groups."..DOMAIN) "muc"
 		"snikket_deprecate_general_muc";
 		"muc_auto_reserve_nicks";
 	}
+
+	if ENV_SNIKKET_TWEAK_S2S_STATUS == "1" then
+		modules_enabled: append {
+			"s2s_status";
+		}
+	end
+
 	restrict_room_creation = "local"
 
 	-- Some older deployments may have the general@ MUC, so we still need
