@@ -357,4 +357,8 @@ Component ("share."..DOMAIN) "http_file_share"
 		file_share = "/upload"
 	}
 
+	modules_disabled = {
+		"s2s";
+	}
+
 Include (ENV_SNIKKET_TWEAK_EXTRA_CONFIG or "/snikket/prosody/*.cfg.lua")
