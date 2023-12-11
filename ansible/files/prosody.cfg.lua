@@ -302,7 +302,7 @@ VirtualHost (DOMAIN)
 	}
 
 	if ENV_SNIKKET_TWEAK_PROMETHEUS == "1" then
-		modules_enabled = {
+		modules_enabled: append {
 			"http_openmetrics";
 		}
 	end
