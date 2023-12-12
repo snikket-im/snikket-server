@@ -192,3 +192,11 @@
     name: lua-dbi-sqlite3
     state: present
     install_recommends: no
+
+- name: "Apply Prosody module patches"
+  patch:
+    src: "{{item}}"
+    basedir: "/usr/lib/prosody/modules"
+    strip: 1
+  with_fileglob:
+    - "../files/patches/prosody/modules/*.patch"
