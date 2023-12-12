@@ -1,9 +1,9 @@
-local DOMAIN = assert(ENV_SNIKKET_DOMAIN, "Please set the SNIKKET_DOMAIN environment variable")
+local DOMAIN = Lua.assert(ENV_SNIKKET_DOMAIN, "Please set the SNIKKET_DOMAIN environment variable")
 
-local RETENTION_DAYS = tonumber(ENV_SNIKKET_RETENTION_DAYS) or 7;
-local UPLOAD_STORAGE_GB = tonumber(ENV_SNIKKET_UPLOAD_STORAGE_GB);
+local RETENTION_DAYS = Lua.tonumber(ENV_SNIKKET_RETENTION_DAYS) or 7;
+local UPLOAD_STORAGE_GB = Lua.tonumber(ENV_SNIKKET_UPLOAD_STORAGE_GB);
 
-if prosody.process_type == "prosody" and not prosody.config_loaded then
+if Lua.prosody.process_type == "prosody" and not Lua.prosody.config_loaded then
 	-- Wait at startup for certificates
 	local lfs, socket = require "lfs", require "socket";
 	local cert_path = "/etc/prosody/certs/"..DOMAIN..".crt";
@@ -11,10 +11,10 @@ if prosody.process_type == "prosody" and not prosody.config_loaded then
 	while not lfs.attributes(cert_path, "mode") do
 		counter = counter + 1;
 		if counter == 1 or counter%6 == 0 then
-			print("Waiting for certificates...");
+			Lua.print("Waiting for certificates...");
 		elseif counter > 60 then
-			print("No certificates found... exiting");
-			os.exit(1);
+			Lua.print("No certificates found... exiting");
+			Lua.os.exit(1);
 		end
 		socket.sleep(5);
 	end
@@ -185,9 +185,9 @@ custom_roles = { { name = "prosody:restricted"; priority = 15 } }
 invites_page = ENV_SNIKKET_INVITE_URL or ("https://"..DOMAIN.."/invite/{invite.token}/");
 invites_page_external = true
 
-invites_bootstrap_index = tonumber(ENV_TWEAK_SNIKKET_BOOTSTRAP_INDEX)
+invites_bootstrap_index = Lua.tonumber(ENV_TWEAK_SNIKKET_BOOTSTRAP_INDEX)
 invites_bootstrap_secret = ENV_TWEAK_SNIKKET_BOOTSTRAP_SECRET
-invites_bootstrap_ttl = tonumber(ENV_TWEAK_SNIKKET_BOOTSTRAP_TTL or (28 * 86400)) -- default 28 days
+invites_bootstrap_ttl = Lua.tonumber(ENV_TWEAK_SNIKKET_BOOTSTRAP_TTL or (28 * 86400)) -- default 28 days
 
 -- The Resource Owner Credentials grant used internally between the web portal
 -- and Prosody, so ensure this is enabled. Other unused flows can be disabled.
@@ -255,7 +255,7 @@ end
 if ENV_SNIKKET_TWEAK_DNSSEC == "1" then
 	local trustfile = "/usr/share/dns/root.ds"; -- Requires apt:dns-root-data
 	-- Bail out if it doesn't work
-	assert(require"lunbound".new{ resolvconf = true; trustfile = trustfile }:resolve ".".secure,
+	Lua.assert(require"lunbound".new{ resolvconf = true; trustfile = trustfile }:resolve ".".secure,
 		"Upstream DNS resolver is not DNSSEC-capable. Fix this or disable SNIKKET_TWEAK_DNSSEC");
 	unbound = { trustfile = trustfile }
 
@@ -284,7 +284,7 @@ http_external_url = "https://"..DOMAIN.."/"
 
 if ENV_SNIKKET_TWEAK_TURNSERVER ~= "0" or ENV_SNIKKET_TWEAK_TURNSERVER_DOMAIN then
 	turn_external_host = ENV_SNIKKET_TWEAK_TURNSERVER_DOMAIN or DOMAIN
-	turn_external_secret = ENV_SNIKKET_TWEAK_TURNSERVER_SECRET or assert(io.open("/snikket/prosody/turn-auth-secret-v2")):read("*l");
+	turn_external_secret = ENV_SNIKKET_TWEAK_TURNSERVER_SECRET or Lua.assert(Lua.io.open("/snikket/prosody/turn-auth-secret-v2")):read("*l");
 end
 
 -- Allow restricted users access to push notification servers
