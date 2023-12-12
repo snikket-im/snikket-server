@@ -91,7 +91,6 @@ modules_enabled = {
 		"update_notify";
 		"turn_external";
 		"admin_shell";
-		"isolate_host";
 		"snikket_client_id";
 		"snikket_ios_preserve_push";
 		"snikket_restricted_users";
@@ -293,6 +292,9 @@ isolate_except_domains = { "push.snikket.net", "push-ios.snikket.net" }
 VirtualHost (DOMAIN)
 	authentication = "internal_hashed"
 
+	modules_enabled = {}
+	firewall_scripts = {}
+
 	http_files_dir = "/var/www"
 	http_paths = {
 		files = "/";
@@ -310,6 +312,16 @@ VirtualHost (DOMAIN)
 	if ENV_SNIKKET_TWEAK_S2S_STATUS == "1" then
 		modules_enabled: append {
 			"s2s_status";
+		}
+	end
+
+	if ENV_SNIKKET_TWEAK_RESTRICTED_USERS_V2 == "1" then
+		firewall_scripts: append {
+			"/etc/prosody/firewall/restricted_users.pfw";
+		}
+	else
+		modules_enabled: append {
+			"isolate_host";
 		}
 	end
 

@@ -1,0 +1,14 @@
+::deliver
+
+ENTERING: $local
+TO ROLE: prosody:restricted
+NOT SUBSCRIBED?
+BOUNCE=policy-violation (Recipient does not accept messages from strangers)
+
+::preroute
+
+LEAVING: $local
+FROM ROLE: prosody:restricted
+NOT SUBSCRIBED?
+BOUNCE=policy-violation (Your account is not permitted to communicate with strangers)
+
