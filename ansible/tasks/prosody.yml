@@ -34,6 +34,10 @@
   file:
     state: directory
     path: /etc/prosody/modules
+- name: "Create Prosody firewall directory"
+  file:
+    state: directory
+    path: /etc/prosody/firewall
 - name: "Create web root directory"
   file:
     state: directory
@@ -122,6 +126,12 @@
     - mod_sasl2_sm
     - mod_sasl2_fast
     - mod_client_management
+    - mod_audit
+    - mod_audit_auth
+    - mod_audit_status
+    - mod_audit_user_accounts
+    - mod_password_policy
+    - mod_s2s_status
 
 - name: Enable wanted modules (snikket-modules)
   file:
@@ -137,6 +147,12 @@
     - mod_snikket_ios_preserve_push
     - mod_snikket_restricted_users
     - mod_snikket_deprecate_general_muc
+
+- name: "Install mod_firewall rules"
+  copy:
+    src: ../files/restricted_users.pfw
+    dest: /etc/prosody/firewall/
+    mode: 0644
 
 - name: "Install lua-ossl for encrypted push notifications"
   apt:
@@ -176,3 +192,11 @@
     name: lua-dbi-sqlite3
     state: present
     install_recommends: no
+
+- name: "Apply Prosody module patches"
+  patch:
+    src: "{{item}}"
+    basedir: "/usr/lib/prosody/modules"
+    strip: 1
+  with_fileglob:
+    - "../files/patches/prosody/modules/*.patch"

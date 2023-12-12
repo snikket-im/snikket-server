@@ -1,9 +1,9 @@
-local DOMAIN = assert(ENV_SNIKKET_DOMAIN, "Please set the SNIKKET_DOMAIN environment variable")
+local DOMAIN = Lua.assert(ENV_SNIKKET_DOMAIN, "Please set the SNIKKET_DOMAIN environment variable")
 
-local RETENTION_DAYS = tonumber(ENV_SNIKKET_RETENTION_DAYS) or 7;
-local UPLOAD_STORAGE_GB = tonumber(ENV_SNIKKET_UPLOAD_STORAGE_GB);
+local RETENTION_DAYS = Lua.tonumber(ENV_SNIKKET_RETENTION_DAYS) or 7;
+local UPLOAD_STORAGE_GB = Lua.tonumber(ENV_SNIKKET_UPLOAD_STORAGE_GB);
 
-if prosody.process_type == "prosody" and not prosody.config_loaded then
+if Lua.prosody.process_type == "prosody" and not Lua.prosody.config_loaded then
 	-- Wait at startup for certificates
 	local lfs, socket = require "lfs", require "socket";
 	local cert_path = "/etc/prosody/certs/"..DOMAIN..".crt";
@@ -11,10 +11,10 @@ if prosody.process_type == "prosody" and not prosody.config_loaded then
 	while not lfs.attributes(cert_path, "mode") do
 		counter = counter + 1;
 		if counter == 1 or counter%6 == 0 then
-			print("Waiting for certificates...");
+			Lua.print("Waiting for certificates...");
 		elseif counter > 60 then
-			print("No certificates found... exiting");
-			os.exit(1);
+			Lua.print("No certificates found... exiting");
+			Lua.os.exit(1);
 		end
 		socket.sleep(5);
 	end
@@ -45,6 +45,7 @@ modules_enabled = {
 		"blocklist"; -- Allow users to block communications with other users
 		"vcard4"; -- User profiles (stored in PEP)
 		"vcard_legacy"; -- Conversion between legacy vCard and PEP Avatar, vcard
+		"password_policy";
 
 	-- Nice to have
 		"version"; -- Replies to server version requests
@@ -61,6 +62,12 @@ modules_enabled = {
 		"sasl2_sm";
 		"sasl2_fast";
 		"client_management";
+
+	-- Event auditing
+		"audit";
+		"audit_auth"; -- Audit authentication attempts and new clients
+		"audit_status"; -- Audit status changes of the server (start, stop, crash)
+		"audit_user_accounts"; -- Audit status changes of user accounts (created, deleted, etc.)
 
 	-- Push notifications
 		"cloud_notify";
@@ -84,7 +91,6 @@ modules_enabled = {
 		"update_notify";
 		"turn_external";
 		"admin_shell";
-		"isolate_host";
 		"snikket_client_id";
 		"snikket_ios_preserve_push";
 		"snikket_restricted_users";
@@ -152,6 +158,17 @@ c2s_direct_tls_ports = { 5223 }
 allow_registration = true
 registration_invite_only = true
 
+password_policy = {
+	length = 10;
+}
+
+-- In the future we want to switch to SASL2 for better security,
+-- as client ids are not supported in SASL1 (identification is via
+-- the resource string, which is semi-public and not authenticated)
+-- This tweak is for developers to test with the future configuration,
+-- or people who want to opt into the new security sooner.
+enforce_client_ids = ENV_SNIKKET_TWEAK_REQUIRE_SASL2 == "1"
+
 -- This disables in-app invites for non-admins
 -- TODO: The plan is to enable it once we can
 -- give the admin more fine-grained control
@@ -167,9 +184,9 @@ custom_roles = { { name = "prosody:restricted"; priority = 15 } }
 invites_page = ENV_SNIKKET_INVITE_URL or ("https://"..DOMAIN.."/invite/{invite.token}/");
 invites_page_external = true
 
-invites_bootstrap_index = tonumber(ENV_TWEAK_SNIKKET_BOOTSTRAP_INDEX)
+invites_bootstrap_index = Lua.tonumber(ENV_TWEAK_SNIKKET_BOOTSTRAP_INDEX)
 invites_bootstrap_secret = ENV_TWEAK_SNIKKET_BOOTSTRAP_SECRET
-invites_bootstrap_ttl = tonumber(ENV_TWEAK_SNIKKET_BOOTSTRAP_TTL or (28 * 86400)) -- default 28 days
+invites_bootstrap_ttl = Lua.tonumber(ENV_TWEAK_SNIKKET_BOOTSTRAP_TTL or (28 * 86400)) -- default 28 days
 
 -- The Resource Owner Credentials grant used internally between the web portal
 -- and Prosody, so ensure this is enabled. Other unused flows can be disabled.
@@ -193,6 +210,10 @@ add_permissions = {
 }
 
 archive_expires_after = ("%dd"):format(RETENTION_DAYS) -- Remove archived messages after N days
+
+-- Delay full account deletion via IBR for RETENTION_DAYS, to allow restoration
+-- in case of accidental or malicious deletion of an account
+registration_delete_grace_period = ("%d days"):format(RETENTION_DAYS)
 
 -- Allow disabling IPv6 because Docker does not have it enabled by default, but
 -- we don't use Docker networking so it should not matter.
@@ -233,7 +254,7 @@ end
 if ENV_SNIKKET_TWEAK_DNSSEC == "1" then
 	local trustfile = "/usr/share/dns/root.ds"; -- Requires apt:dns-root-data
 	-- Bail out if it doesn't work
-	assert(require"lunbound".new{ resolvconf = true; trustfile = trustfile }:resolve ".".secure,
+	Lua.assert(require"lunbound".new{ resolvconf = true; trustfile = trustfile }:resolve ".".secure,
 		"Upstream DNS resolver is not DNSSEC-capable. Fix this or disable SNIKKET_TWEAK_DNSSEC");
 	unbound = { trustfile = trustfile }
 
@@ -262,7 +283,7 @@ http_external_url = "https://"..DOMAIN.."/"
 
 if ENV_SNIKKET_TWEAK_TURNSERVER ~= "0" or ENV_SNIKKET_TWEAK_TURNSERVER_DOMAIN then
 	turn_external_host = ENV_SNIKKET_TWEAK_TURNSERVER_DOMAIN or DOMAIN
-	turn_external_secret = ENV_SNIKKET_TWEAK_TURNSERVER_SECRET or assert(io.open("/snikket/prosody/turn-auth-secret-v2")):read("*l");
+	turn_external_secret = ENV_SNIKKET_TWEAK_TURNSERVER_SECRET or Lua.assert(Lua.io.open("/snikket/prosody/turn-auth-secret-v2")):read("*l");
 end
 
 -- Allow restricted users access to push notification servers
@@ -270,6 +291,9 @@ isolate_except_domains = { "push.snikket.net", "push-ios.snikket.net" }
 
 VirtualHost (DOMAIN)
 	authentication = "internal_hashed"
+
+	modules_enabled = {}
+	firewall_scripts = {}
 
 	http_files_dir = "/var/www"
 	http_paths = {
@@ -280,8 +304,24 @@ VirtualHost (DOMAIN)
 	}
 
 	if ENV_SNIKKET_TWEAK_PROMETHEUS == "1" then
-		modules_enabled = {
+		modules_enabled: append {
 			"http_openmetrics";
+		}
+	end
+
+	if ENV_SNIKKET_TWEAK_S2S_STATUS == "1" then
+		modules_enabled: append {
+			"s2s_status";
+		}
+	end
+
+	if ENV_SNIKKET_TWEAK_RESTRICTED_USERS_V2 == "1" then
+		firewall_scripts: append {
+			"/etc/prosody/firewall/restricted_users.pfw";
+		}
+	else
+		modules_enabled: append {
+			"isolate_host";
 		}
 	end
 
@@ -296,6 +336,13 @@ Component ("groups."..DOMAIN) "muc"
 		"snikket_deprecate_general_muc";
 		"muc_auto_reserve_nicks";
 	}
+
+	if ENV_SNIKKET_TWEAK_S2S_STATUS == "1" then
+		modules_enabled: append {
+			"s2s_status";
+		}
+	end
+
 	restrict_room_creation = "local"
 
 	-- Some older deployments may have the general@ MUC, so we still need
@@ -333,6 +380,10 @@ Component ("share."..DOMAIN) "http_file_share"
 	end
 	http_paths = {
 		file_share = "/upload"
+	}
+
+	modules_disabled = {
+		"s2s";
 	}
 
 Include (ENV_SNIKKET_TWEAK_EXTRA_CONFIG or "/snikket/prosody/*.cfg.lua")

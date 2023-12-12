@@ -130,6 +130,41 @@ The TCP port on which the internal HTTP API listens on. The default is `5280`. D
 
 The IP address on which the internal HTTP API listens on. The default is `127.0.0.1`, so that the API is only accessible from the same server. Changing this may be a security risk as some general system information is accessible without authentication.
 
+### `SNIKKET_TWEAK_HTTP_TLS_VERSIONS`
+
+The TLS versions to offer for HTTPS. Changing this may make your setup less
+secure, or else prevent some browsers or operating systems from connecting to
+your instance.
+
+By default we follow Mozilla's TLS 'intermediate' profile, which balances
+strong security with allowing a range of browsers and clients to connect.
+
+To follow Mozilla's 'strict' profile (which may cause connectivity issues with
+Android < 9, Windows < 11, Safari/iOS < 12, and others), set:
+
+```
+SNIKKET_TWEAK_HTTP_TLS_VERSIONS=TLSv1.3
+SNIKKET_TWEAK_HTTP_TLS_CIPHERS=
+```
+
+### `SNIKKET_TWEAK_HTTP_TLS_CIPHERS`
+
+The TLS ciphers to offer for HTTPS. See the previous option about TLS version
+configuration for more details.
+
+### `SNIKKET_TWEAK_WEB_PROXY_PROTOCOLS`
+
+This is for customization of the web proxy configuration. After adding new
+configuration templates, this can be used to load them, it's a list of
+space-separated names.
+
+Defaults to `http https`.
+
+### `SNIKKET_TWEAK_WEB_PROXY_RELOAD_INTERVAL`
+
+The number of seconds between reloads of the web proxy (i.e. to pick up new
+certificates). Specified as a number of seconds, or `inf` to disable reloads.
+
 ### `SNIKKET_INVITE_URL`
 
 The URL template for invitation links. The server needs to know under which address the invitation service is hosted.
@@ -199,3 +234,26 @@ Path or glob for extra configuration files to load.
 ### `SNIKKET_TWEAK_STORAGE`
 
 Sneak preview of SQLite storage. Valid values are `files` (the default) and `sqlite` (potential future default).
+
+### `SNIKKET_TWEAK_REQUIRE_SASL2`
+
+When set to `1` this will disable support for legacy SASL, requiring all
+clients to support SASL2. We plan for this to be the default in the future due
+to increased security, speed and other features, but currently there are many
+apps without SASL2 support and this would prevent them connecting.
+
+The tweak is available now so developers can ensure their client will work in
+SASL2-only mode, or admins can disable legacy SASL early if they are certain
+of only using SASL2-capable clients.
+
+### `SNIKKET_TWEAK_RESTRICTED_USERS_V2`
+
+When set to `1` this will enable an alternative implementation of "restricted
+users". It is primarily for testing the implementation that is expected to
+become the default in a future release.
+
+### `SNIKKET_TWEAK_S2S_STATUS`
+
+When set to `1` this will enable a module that monitors the list and health of
+server-to-server connections. This is only useful for developers, as the
+information cannot currently be viewed in the user interface.
