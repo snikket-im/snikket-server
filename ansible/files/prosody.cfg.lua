@@ -225,7 +225,7 @@ log = {
 
 authentication = "internal_hashed"
 authorization = "internal"
-disable_sasl_mechanisms = { "PLAIN" }
+disable_sasl_mechanisms = { "PLAIN", "OAUTHBEARER" }
 
 if ENV_SNIKKET_TWEAK_STORAGE == "sqlite" then
 	storage = "sql"
