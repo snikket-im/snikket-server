@@ -62,6 +62,7 @@ modules_enabled = {
 		"sasl2_sm";
 		"sasl2_fast";
 		"client_management";
+		"sasl_ssdp";
 
 	-- Event auditing
 		"audit";
