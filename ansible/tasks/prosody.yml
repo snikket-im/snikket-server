@@ -132,6 +132,7 @@
     - mod_audit_user_accounts
     - mod_password_policy
     - mod_s2s_status
+    - mod_sasl_ssdp
 
 - name: Enable wanted modules (snikket-modules)
   file:
