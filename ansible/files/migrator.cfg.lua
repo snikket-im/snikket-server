@@ -2,6 +2,7 @@ local data_path = "/snikket/prosody";
 
 local vhost = {
 	"accounts";
+	"accounts_cleanup";
 	"account_details";
 	"account_roles";
 	"roster";
