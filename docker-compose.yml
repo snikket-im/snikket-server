@@ -13,6 +13,7 @@ services:
   snikket_certs:
     container_name: snikket-certs
     image: snikket/snikket-cert-manager:dev
+    network_mode: host
     env_file: snikket.conf
     volumes:
       - snikket_data:/snikket
