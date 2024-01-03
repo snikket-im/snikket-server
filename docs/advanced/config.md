@@ -88,6 +88,13 @@ Optional. **Public.** Email address to which people should send security reports
 
 The time (in seconds) for which the web portal will allow avatars to be cached by browsers.
 
+### `SNIKKET_PROXY65_PORT`
+
+The port to use for the internal file transfer proxy (used for transferring large files).
+Defaults to port 5000, but can be changed if something else is using this port (the apps
+will automatically discover the configured port). Don't forget to update your firewall
+rules if you change this.
+
 ## Advanced Configuration Reference
 
 It should generally not be necessary to use the options in this section. These

@@ -156,6 +156,8 @@ https_ports = {};
 
 c2s_direct_tls_ports = { 5223 }
 
+proxy65_ports = { ENV_SNIKKET_PROXY65_PORT or 5000 }
+
 allow_registration = true
 registration_invite_only = true
 
