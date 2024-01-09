@@ -16,16 +16,20 @@ instance. Each method is explained here.
 
 
 {{< panel style="warning" >}}
-**Important note for ARM or Raspberry Pi users:** Some compatibility issues
-have been observed with the new release on systems running Debian or Raspbian
-10 ("buster") or older. For further advice on this issue, see our
-[troubleshooting guide](../troubleshooting/#problems-on-debianraspbian-10-buster-on-raspberry-pi-or-arm-devices).
+**Compatibility notes**
+
+If your system matches *any* of the following descriptions, please check
+the [host system compatibility](../troubleshooting/#host-compatibility)
+section of the troubleshooting guide before you upgrade:
+
+- ARM or Raspberry Pi devices running Debian or Raspbian 10 ("buster") or older
+- Docker version 20.10.9 or earlier
 {{< /panel >}}
 
 ## Snikket quick-start
 
 If you are using a version installed from the [original quick-start][] guide
-on the website, use these commands:
+on the website (most likely), then use these commands:
 
 ```
     cd /etc/snikket
@@ -35,7 +39,8 @@ on the website, use these commands:
 
 ## snikket-selfhosted
 
-If you installed Snikket using the [snikket-selfhosted][] scripts, simply run:
+If you installed Snikket using the [snikket-selfhosted][] repository, simply
+run:
 
 ```
     cd /opt/snikket

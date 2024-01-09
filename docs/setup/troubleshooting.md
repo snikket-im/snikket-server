@@ -59,7 +59,21 @@ responsible for this domain":
   recently modified your DNS records, you may need to wait a while for
   DNS caches to expire the old records.
 
-### Problems on Debian/Raspbian 10 ("buster") on Raspberry Pi or ARM devices
+### Host compatibility
+
+Although Docker mostly isolates Snikket from the host system that you install
+it on, it does depend on certain capabilities of the host. This section lists
+any known compatibility issues.
+
+#### Docker version compatibility
+
+Certain old versions of Docker are incompatible with Snikket releases from
+January 2024 and later. We recommend ensuring that you have Docker 20.10.10
+or later installed on the host system. Otherwise, you might see that Snikket
+has trouble starting, obtaining certificates or other functionality may not
+work.
+
+#### Problems on Debian/Raspbian 10 ("buster") on Raspberry Pi or ARM devices
 
 If you use Debian or Raspbian version 10 ("buster") on a Raspberry Pi or other
 ARM-based system, you may experience Snikket's containers failing to start with
@@ -141,6 +155,17 @@ to Snikket on both http and https.
 
 See our [Snikket reverse proxy documentation](../../advanced/reverse_proxy/)
 for more information on correctly configuring reverse proxies.
+
+#### IPv6-only network
+
+If your Snikket instance is on an IPv6-only network, ensure you are using the
+latest docker-compose.yml. Specifically, there should be a `network_mode: host`
+under the `snikket_certs:` line.
+
+#### Incompatible Docker version
+
+Certain old versions of Docker prevent Snikket from starting properly. Ensure
+you have Docker 20.10.10 or later.
 
 ### Certificate debugging commands
 
