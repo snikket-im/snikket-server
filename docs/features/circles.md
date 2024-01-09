@@ -12,8 +12,8 @@ Circles have the following features:
 
 - All members within a circle will automatically have everyone else in the
   same circle on their contact list, with no need to add contacts manually.
-- Every circle has an automatic group chat created with all the circle members
-  in it.
+- Circles can have one or more group chats, which automatically include all
+  the circle members.
 - One person can be a member of multiple circles.
 
 For example, Ruby Lightfoot run a Snikket instance for her family. All Ruby's
@@ -28,20 +28,23 @@ circle, and sends an invitation link with her friends.
 Every Snikket instance is created with a default circle. The circle's name
 defaults to the domain name of the instance.
 
-## Circle group chats
-
-Every circle has a group chat automatically created and managed by Snikket.
-This provides a shared space where members of a circle can exchanged messages
-and files with each other.
-
-Note that membership of this group chat is linked directly to circle membership,
-therefore it is not possible to directly manage the members or invite new
-users to the chat via the app. This restriction only applies to the automatic
-group chat created by Snikket. You can use the app to create and manage as
-many additional group chats as you need.
-
 ## Contact list synchronization
 
 Snikket will automatically synchronize the circle members' contact lists, so
 that every member can find every other member in their Snikket contacts for
 direct one-to-one messaging.
+
+## Circle chats
+
+Sometimes you may want to create a group chat in which everyone in the circle
+should be included. Snikket allows you to create *circle chats* for this.
+These chats provide shared spaces where members of a circle can easily
+exchange messages and files with each other.
+
+Circle chats can be created in the web portal, and you can choose a name for
+each one. Snikket will automatically keep the membership of each chat in sync
+with the circle's member list.
+
+If you need group chats where you manage the members manually, you can always
+create these normally in the Snikket app. You cannot create or manage *circle
+chats* within the app.
