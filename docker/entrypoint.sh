@@ -57,6 +57,9 @@ if ! test -d /snikket/prosody/*/account_roles; then
 	prosodyctl mod_authz_internal migrate "$SNIKKET_DOMAIN"
 fi
 
+# Migrate from prosody:normal to prosody:registered
+prosodyctl mod_migrate_snikket_roles migrate "$SNIKKET_DOMAIN"
+
 if test "${SNIKKET_TWEAK_STORAGE:-files}" = "sqlite" && ! test -f /snikket/prosody/prosody.sqlite; then
 	sed -i "s/SNIKKET_DOMAIN/$SNIKKET_DOMAIN/" /etc/prosody/migrator.cfg.lua
 	if prosody-migrator files sqlite; then
