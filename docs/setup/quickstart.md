@@ -32,6 +32,8 @@ for some advice.
 websites on the same server. If you are running other HTTP services on the same server, refer to our [reverse proxy](../..//advanced/reverse_proxy/)
 documentation after you complete step 3.
 
+Finally, if you can't meet these requirements but want to use Snikket anyway, check out our [Snikket Hosting](https://snikket.org/hosting/) service which lets you set up Snikket with minimal technical knowledge and just a few clicks.
+
 ## Get Started
 
 ### Step 1: DNS
@@ -87,7 +89,7 @@ firewall, you're fine... onto the next step!
 Docker is a handy tool for running self-contained services known as "containers". We use Docker to provide Snikket
 in a clean way that works reliably across all different systems.
 
-If you have the `docker` and `docker-compose` commands already available on your system, great! You can skip to Step 3 below. If not, continue reading.
+If you have the `docker` and `docker compose` commands already available on your system, great! You can skip to Step 3 below. If not, continue reading.
 
 #### docker
 
@@ -100,26 +102,17 @@ for a range of operating systems. Follow the guide for your system:
 - [Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
 
 {{< panel style="warning" >}}
-**Warning for Debian 10 (or Raspbian 10) ("buster") Raspberry Pi and other ARM devices**
+**Compatibility note**
 
-There is a compatibility issue with the version of a package supplied with your OS that
-affects newer Docker images, including Snikket. Before proceeding with the setup, consult
-[the advice in our troubleshooting guide](../troubleshooting/#problems-on-debianraspbian-10-buster-on-raspberry-pi-or-arm-devices)
-so you can avoid any problems.
+Snikket is not compatible with the following host systems:
+
+- Debian 10 (or Raspbian 10) "buster" running on Raspberry Pi or other ARM devices (upgrade your OS)
+- Systems running Docker versions older than 20.10.10 (upgrade Docker using the guides linked above)
+
+For more information, review the [host 
+compatibility](https://snikket.org/service/help/setup/troubleshooting/#host-compatibility)
+section of our documentation.
 {{< /panel >}}
-
-#### docker-compose
-
-The Docker folks also provide a handy tool called `docker-compose` which is not installed by default. We're going to use it
-as an easy way to launch and configure Snikket.
-
-As per the [installation instructions](https://docs.docker.com/compose/install/) (see the 'Linux' tab there), install
-`docker-compose` with the following commands:
-
-```bash
-sudo curl -L "https://github.com/docker/compose/releases/download/1.25.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-sudo chmod a+x /usr/local/bin/docker-compose
-```
 
 ### Step 3: Prepare for Snikket!
 
@@ -135,7 +128,7 @@ cd /etc/snikket
 And then download our `docker-compose.yml` file:
 
 ```bash
-curl -o docker-compose.yml https://snikket.org/service/resources/docker-compose.beta.yml
+curl -o docker-compose.yml https://snikket.org/service/resources/docker-compose.yml
 ```
 
 Now create another file called `snikket.conf` in the same directory, using a text editor (such as nano, or vim).
@@ -170,14 +163,20 @@ When you're done, come back here and continue with the final launch step!
 Here we go! Run:
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 The first time you run this command docker will download Snikket. In a moment it should complete,
 and Snikket should be running and accessible via the web (e.g. `http://chat.example.com/`). As
 soon as it has created certificates, it will redirect to HTTPS and show you a login page.
 
-Now to set up your first account. To create yourself an admin account, run the following command:
+{{< panel style="secondary" >}}
+**Note:** If this command returns an error like `"compose" is not a docker command`, don't panic!
+You just need to [install the docker compose plugin](https://docs.docker.com/compose/install/linux/#install-using-the-repository)
+and try again.
+{{< /panel >}}
+
+Now Snikket is running, it's time to set up your first account. To create yourself an admin account, run the following command:
 
 ```bash
 docker exec snikket create-invite --admin --group default
@@ -185,12 +184,12 @@ docker exec snikket create-invite --admin --group default
 
 Follow the link to open the invitation, and follow the instructions get signed in.
 
-You can create as many links as you want and share them with people. Each link can
-only be used once. Don't forget to drop the `--admin` part to create normal user accounts!
-
-Once you've created your admin account, you can also log in to the web management portal
-online by visiting `https://chat.example.com/` in your browser (obviously put your own
+Once you've created your admin account, you can log in to the web dashboard
+by visiting `https://chat.example.com/` in your browser (obviously put your own
 domain in there!).
+
+From there you can create more invitation links to share with your family, friends
+and anyone else you want to join your Snikket instance. It won't be empty for long!
 
 {{< panel style="success" >}}
 That's it! How did it go? Let us know at feedback@snikket.org. Also if you want to support
