@@ -116,13 +116,13 @@ utilities.
 
 Controls the lowest port number used for TURN relay services.
 
-See [the firewall docs](firewall.md) for details.
+See [the firewall docs](../firewall) for details.
 
 ### `SNIKKET_TWEAK_TURNSERVER_MAX_PORT`
 
 Controls the highest port number used for TURN relay services.
 
-See [the firewall docs](firewall.md) for details.
+See [the firewall docs](../firewall) for details.
 
 
 ## Arcane Configuration Reference
