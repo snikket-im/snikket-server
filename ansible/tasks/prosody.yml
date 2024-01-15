@@ -148,6 +148,7 @@
     - mod_snikket_ios_preserve_push
     - mod_snikket_restricted_users
     - mod_snikket_deprecate_general_muc
+    - mod_migrate_snikket_roles
 
 - name: "Install mod_firewall rules"
   copy:
