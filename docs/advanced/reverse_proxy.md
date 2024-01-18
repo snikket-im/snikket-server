@@ -174,6 +174,95 @@ share.chat.example.com {
 }
 ```
 
+### haproxy
+
+Here is an example haproxy configuration for reverse proxying to Snikket's web
+server:
+
+```
+global
+        log /dev/log    local0
+        log /dev/log    local1 notice
+        chroot /var/lib/haproxy
+        stats socket /run/haproxy/admin.sock mode 660 level admin expose-fd listeners
+        stats timeout 30s
+        user haproxy
+        group haproxy
+        daemon
+
+        # Default SSL material locations
+        ca-base /etc/ssl/certs
+        crt-base /etc/ssl/private
+
+        # See: https://ssl-config.mozilla.org/#server=haproxy&server-version=2.0.3&config=intermediate
+        ssl-default-bind-ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-CHACHA20-POLY1305
+        ssl-default-bind-ciphersuites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256
+        ssl-default-bind-options prefer-client-ciphers no-sslv3 no-tlsv10 no-tlsv11 no-tls-tickets
+
+defaults
+        log     global
+        mode    http
+        option  httplog
+        option  forwardfor
+        option  dontlognull
+        timeout connect 5000
+        timeout client  50000
+        timeout server  50000
+        errorfile 400 /etc/haproxy/errors/400.http
+        errorfile 403 /etc/haproxy/errors/403.http
+        errorfile 408 /etc/haproxy/errors/408.http
+        errorfile 500 /etc/haproxy/errors/500.http
+        errorfile 502 /etc/haproxy/errors/502.http
+        errorfile 503 /etc/haproxy/errors/503.http
+        errorfile 504 /etc/haproxy/errors/504.http
+
+# Define a frontend to handle incoming http(s) traffic
+frontend http
+        # Define a specific IP address to bind or use * for all interfaces
+        # Include both ports 80 and 443
+        # For port 443 include the path to the certificate(s). This can be a directory, as below, that contains
+        # one or more SSL certificates, or it can be the path to a specific file.
+        # This config expects the cert and key to be in a single file (if using certbot you must manually concatenate the
+        # privkey.pem and fullchain.pem files into a single file, or script this). As of version 2.2 HAProxy will also
+        # support separate cert and key files
+        bind *:443 ssl crt /etc/haproxy/certs
+        bind *:80
+
+        # Check for letsencrypt request
+        acl acl_acme_challenge path_beg /.well-known/acme-challenge/
+        acl https ssl_fc
+        # Upgrade to https, if not acl_acme_challenge
+        redirect scheme https code 301 if !{ ssl_fc } !acl_acme_challenge
+        # Redirect www subdomain to root (optional, CNAME or A record for www must be defined on your name server)
+        http-request redirect prefix http://%[hdr(host),regsub(^www\.,,i)] code 301 if { hdr_beg(host) -i www. }
+
+        # Set headers
+        http-request del-header X-Forwarded-For
+        http-request set-header X-Forwarded-Proto https
+        http-request set-header X-Forwarded-Port 443
+
+        # ACLs to identify Snikket subdomains
+        acl acl_snikket         hdr_end(host) -i yourdomain.com
+        acl acl_snikket_share   hdr_end(host) -i share.yourdomain.com
+        acl acl_snikket_groups  hdr_end(host) -i groups.yourdomain.com
+
+        # Rules to route Snikket traffic to the proper backend
+        use_backend snikket-certs if acl_acme_challenge
+        use_backend snikket if acl_snikket
+        use_backend snikket if acl_snikket_share
+        use_backend snikket if acl_snikket_groups
+
+# Backends
+backend snikket-certs
+        server snikket-cert-manager 127.0.0.1:5080
+
+backend snikket
+        http-request set-header Host %[req.hdr(Host)]
+        http-request set-header X-Forwarded-For %[src]
+        server snikket-server 127.0.0.1:5443 check ssl verify none
+        # change "ssl verify none" to "ssl verify all" if target server is not localhost/127.0.0.1
+```
+
 ## Other setups
 
 ### Generic instructions
