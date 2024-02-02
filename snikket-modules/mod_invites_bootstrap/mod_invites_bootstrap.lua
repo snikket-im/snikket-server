@@ -36,7 +36,7 @@ local function handle_request(event)
 
 	-- Create invite
 	local invite, invite_err = invites.create_account(nil, {
-		roles = { ["prosody:admin"] = true };
+		roles = { "prosody:admin" };
 		groups = { "default" };
 		source = "api/token/bootstrap-"..current_index;
 	}, bootstrap_invite_ttl);
