@@ -26,7 +26,9 @@ section of the troubleshooting guide before you upgrade:
 - Docker version 20.10.9 or earlier
 {{< /panel >}}
 
-## Snikket quick-start
+## Upgrading
+
+### Snikket quick-start
 
 If you are using a version installed from the [original quick-start][] guide
 on the website (most likely), then use these commands:
@@ -37,7 +39,7 @@ on the website (most likely), then use these commands:
     docker-compose up -d
 ```
 
-## snikket-selfhosted
+### snikket-selfhosted
 
 If you installed Snikket using the [snikket-selfhosted][] repository, simply
 run:
@@ -48,7 +50,7 @@ run:
     ./scripts/update.sh
 ```
 
-## Snikket hosting
+### Snikket hosting
 
 If you're using our hosting service, you can upgrade by visiting your
 [hosting dashboard][] and clicking the 'Update' button next to your instance.
@@ -56,6 +58,25 @@ If you're using our hosting service, you can upgrade by visiting your
 **Note:** Updates are not always available on the hosted platform immediately
 after release. If the 'Update' button is not present, try again later.
 Typically you will receive a notification when an update is available.
+
+## Check your version
+
+There are several ways to check the version of the Snikket server you are
+currently using:
+
+### Using the web interface
+
+1. Log into the web interface using your admin account
+2. In the footer of the page click on "Snikket service"
+3. Scroll to the section "Software versions"
+
+### Using the command-line
+
+SSH into the system where Snikket is installed, and run the following command:
+
+```shell
+docker exec snikket prosodyctl about | head -n1
+```
 
 [snikket-selfhosted]: https://github.com/snikket-im/snikket-selfhosted
 [original quick-start]: https://snikket.org/service/quickstart/
