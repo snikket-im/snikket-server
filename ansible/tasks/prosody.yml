@@ -133,6 +133,7 @@
     - mod_password_policy
     - mod_s2s_status
     - mod_sasl_ssdp
+    - mod_privilege
 
 - name: Enable wanted modules (snikket-modules)
   file:
