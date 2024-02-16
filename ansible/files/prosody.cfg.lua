@@ -331,6 +331,7 @@ VirtualHost (DOMAIN)
 Component ("groups."..DOMAIN) "muc"
 	modules_enabled = {
 		"muc_mam";
+		"muc_moderation";
 		"muc_local_only";
 		"vcard_muc";
 		"muc_defaults";
