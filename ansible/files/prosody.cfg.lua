@@ -95,6 +95,7 @@ modules_enabled = {
 		"snikket_ios_preserve_push";
 		"snikket_restricted_users";
 		"lastlog2";
+		"admin_blocklist";
 
 	-- Spam/abuse management
 		"spam_reporting"; -- Allow users to report spam/abuse

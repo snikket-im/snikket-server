@@ -134,6 +134,7 @@
     - mod_s2s_status
     - mod_sasl_ssdp
     - mod_privilege
+    - mod_admin_blocklist
     - mod_muc_moderation
 
 - name: Enable wanted modules (snikket-modules)
