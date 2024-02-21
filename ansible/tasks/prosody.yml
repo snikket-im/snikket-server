@@ -152,6 +152,7 @@
     - mod_snikket_restricted_users
     - mod_snikket_deprecate_general_muc
     - mod_migrate_snikket_roles
+    - mod_health_report
 
 - name: "Install mod_firewall rules"
   copy:
