@@ -53,15 +53,18 @@ function report_health()
 		};
 		body = json.encode(health);
 	}):next(function (response)
-		if response.code ~= 200 or response.headers.content_type ~= "application/json" then
-			module:log("warn", "Health API error %d (%s)", response.code, response.headers.content_type);
-			return promise.reject();
+		if response.code ~= 200 or response.headers["content-type"] ~= "application/json" then
+			module:log("warn", "Health API error %d (%s)", response.code, response.headers["content-type"]);
+			if response.headers["content-type"] == "application/json" then
+				module:log("warn", "Error: %s", response.body);
+			end
+			return promise.reject("API error");
 		end
 		last_health_report = health;
 		module:log("info", "Submitted health report");
 	end)
-	:catch(function ()
-		module:log("warn", "Failed to send health report");
+	:catch(function (e)
+		module:log("warn", "Failed to send health report: %s", e);
 	end);
 
 
