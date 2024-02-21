@@ -35,7 +35,7 @@ function report_health()
 
 	local health = {
 		launch_time = prosody.start_time;
-		crashed = mod_audit_status.crashed;
+		crashed = not not mod_audit_status.crashed;
 		dau = get_gauge_metric("prosody_mod_measure_active_users/active_users_1d");
 		wau = get_gauge_metric("prosody_mod_measure_active_users/active_users_7d");
 		mau = get_gauge_metric("prosody_mod_measure_active_users/active_users_30d");
