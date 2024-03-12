@@ -14,6 +14,7 @@ end
 local metric_registry = require "core.statsmanager".get_metric_registry();
 
 local mod_audit_status = module:depends("audit_status");
+local mod_measure_active_users = module:depends("measure_active_users");
 
 local last_health_report;
 
@@ -27,12 +28,14 @@ local function has_changed(new, old)
 	return false;
 end
 
-function get_gauge_metric(name)
+local function get_gauge_metric(name)
 	return (metric_registry.families[name].data:get(module.host) or {}).value;
 end
 
 function report_health()
 	local url = health_report_api:gsub("DOMAIN", http.urlencode(module.host));
+
+	mod_measure_active_users.update_calculations();
 
 	local health = {
 		launch_time = prosody.start_time;
