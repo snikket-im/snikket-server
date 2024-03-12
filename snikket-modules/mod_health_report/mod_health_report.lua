@@ -85,3 +85,15 @@ function module.ready()
 		});
 	end);
 end
+
+local pending_report = false;
+
+function schedule_report_update()
+	if pending_report then return; end
+	module:add_timer(math.random(30, 60), function ()
+		pending_report = false;
+		report_health();
+	end);
+end
+
+module:hook("client_management/new-client", schedule_report_update);
