@@ -4,6 +4,7 @@ local promise = require "prosody.util.promise";
 
 local health_report_api = module:get_option_string("health_report_api");
 local auth_token = module:get_option_string("health_report_api_key");
+local report_frequency = module:get_option_string("health_report_frequency", "hourly");
 
 if not health_report_api or not auth_token then
 	module:set_status("info", "Inactive - not configured");
@@ -75,6 +76,9 @@ function module.ready()
 	module:log("debug", "Scheduled initial health report in %ds", secs);
 	module:add_timer(secs, function ()
 		report_health();
-		module:daily(report_health);
+		module:cron({
+			when = report_frequency;
+			run = report_health;
+		});
 	end);
 end
