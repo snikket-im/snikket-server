@@ -1,10 +1,10 @@
 #!/bin/sh -e
 
-CERT_PATH="/snikket/letsencrypt/live/$SNIKKET_DOMAIN"
+CERT_PATH="/snikket/letsencrypt/live/$SNIKKET_DOMAIN_ASCII"
 
 if test -d "$CERT_PATH"; then
 	prosodyctl --root cert import /snikket/letsencrypt/live
-	if test -f "/etc/prosody/certs/$SNIKKET_DOMAIN.crt"; then
+	if test -f "/etc/prosody/certs/$SNIKKET_DOMAIN_ASCII.crt"; then
 		exit 0;
 	fi
 fi
@@ -12,7 +12,7 @@ fi
 while sleep 10; do
 	if test -d "$CERT_PATH"; then
 		prosodyctl --root cert import /snikket/letsencrypt/live
-		if test -f "/etc/prosody/certs/$SNIKKET_DOMAIN.crt"; then
+		if test -f "/etc/prosody/certs/$SNIKKET_DOMAIN_ASCII.crt"; then
 			exit 0;
 		fi
 	fi

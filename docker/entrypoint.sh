@@ -5,6 +5,8 @@ if [ -z "$SNIKKET_DOMAIN" ]; then
   exit 1;
 fi
 
+export SNIKKET_DOMAIN_ASCII=$(idn2 "$SNIKKET_DOMAIN")
+
 if [ -z "$SNIKKET_ADMIN_EMAIL" ]; then
   echo "Please provide SNIKKET_ADMIN_EMAIL";
   exit 1;
@@ -15,12 +17,12 @@ if [ -z "$SNIKKET_SMTP_URL" ]; then
 fi
 
 if [ -z "$SNIKKET_EXTERNAL_IP" ]; then
-	SNIKKET_EXTERNAL_IP="$(dig +short $SNIKKET_DOMAIN)"
+	SNIKKET_EXTERNAL_IP="$(dig +short $SNIKKET_DOMAIN_ASCII)"
 fi
 
 echo "$SNIKKET_SMTP_URL" | smtp-url-to-msmtp > /etc/msmtprc
 
-echo "from snikket@$SNIKKET_DOMAIN" >> /etc/msmtprc
+echo "from snikket@$SNIKKET_DOMAIN_ASCII" >> /etc/msmtprc
 
 unset SNIKKET_SMTP_URL
 

@@ -20,6 +20,9 @@ ADD ansible /opt/ansible
 
 ADD snikket-modules /usr/local/lib/snikket-modules
 
+# Required for idn2 to work, and probably generally good
+ENV LANG=C.UTF-8
+
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
         software-properties-common ca-certificates \

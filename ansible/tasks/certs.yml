@@ -5,3 +5,8 @@
     src: ../files/refresh-certs.cron
     dest: /etc/cron.daily/refresh-certs
     mode: 0555
+- name: Install idn2 for IDN support
+  apt:
+    name: idn2
+    state: present
+    install_recommends: no
