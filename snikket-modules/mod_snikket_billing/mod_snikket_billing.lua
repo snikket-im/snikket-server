@@ -1,8 +1,8 @@
-local dt = require "util.datetime";
-local http = require "net.http";
-local json = require "util.json";
-local promise = require "util.promise";
-local st = require "util.stanza";
+local dt = require "prosody.util.datetime";
+local http = require "prosody.net.http";
+local json = require "prosody.util.json";
+local promise = require "prosody.util.promise";
+local st = require "prosody.util.stanza";
 
 local billing_api = module:get_option_string("snikket_billing_api");
 local billing_dashboard_url = module:get_option_string("snikket_billing_dashboard");
@@ -75,8 +75,8 @@ end);
 
 -- Allow restricting federation for trial instances, to prevent their use for spam and abuse
 do
-	local is_user_subscribed = require "core.rostermanager".is_user_subscribed;
-	local jid_host = require "util.jid".host;
+	local is_user_subscribed = require "prosody.core.rostermanager".is_user_subscribed;
+	local jid_host = require "prosody.util.jid".host;
 	module:hook("route/remote", function (event)
 		if features.federation ~= "restricted" then return; end
 		local origin, stanza = event.origin, event.stanza;

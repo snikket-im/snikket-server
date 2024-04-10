@@ -1,10 +1,10 @@
-local adns = require "net.adns";
+local adns = require "prosody.net.adns";
 local r = adns.resolver();
 
 local function dns_escape(input)
 	return (input:gsub("%W", "_"));
 end
-local render_hostname = require "util.interpolation".new("%b{}", dns_escape);
+local render_hostname = require "prosody.util.interpolation".new("%b{}", dns_escape);
 
 local update_dns = module:get_option_string("update_check_dns");
 local check_interval = module:get_option_number("update_check_interval", 86400);

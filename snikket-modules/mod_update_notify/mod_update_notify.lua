@@ -1,5 +1,5 @@
-local urlencode = require "util.http".urlencode;
-local interpolation = require "util.interpolation";
+local urlencode = require "prosody.util.http".urlencode;
+local interpolation = require "prosody.util.interpolation";
 
 local render_url = interpolation.new("%b{}", urlencode);
 local render_text = interpolation.new("%b{}", function (s) return s; end);
