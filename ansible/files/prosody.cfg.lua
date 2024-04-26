@@ -96,6 +96,7 @@ modules_enabled = {
 		"snikket_restricted_users";
 		"lastlog2";
 		"admin_blocklist";
+		"snikket_server_vcard";
 
 	-- Spam/abuse management
 		"spam_reporting"; -- Allow users to report spam/abuse
@@ -268,6 +269,9 @@ end
 certificates = "certs"
 
 group_default_name = ENV_SNIKKET_SITE_NAME or DOMAIN
+
+site_name = ENV_SNIKKET_SITE_NAME or DOMAIN
+site_logo = "/usr/local/share/snikket/logo.png"
 
 -- Update check configuration
 software_name = "Snikket"

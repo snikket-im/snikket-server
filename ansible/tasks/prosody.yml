@@ -153,6 +153,7 @@
     - mod_snikket_deprecate_general_muc
     - mod_migrate_snikket_roles
     - mod_health_report
+    - mod_snikket_server_vcard
 
 - name: "Install mod_firewall rules"
   copy:
@@ -206,3 +207,19 @@
     strip: 1
   with_fileglob:
     - "../files/patches/prosody/modules/*.patch"
+
+- name: Create Snikket resources directory
+  file:
+    state: directory
+    path: /usr/local/share/snikket
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Install Snikket logo
+  copy:
+    src: ../files/snikket-logo.png
+    dest: /usr/local/share/snikket/logo.png
+    owner: root
+    group: root
+    mode: 0644
