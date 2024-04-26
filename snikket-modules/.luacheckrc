@@ -1,12 +1,10 @@
 cache = true
-allow_defined_top = true
-unused_secondaries = false
-max_line_length = 150
 codes = true
+allow_defined_top = true
+max_line_length = 150
 ignore = { "411/err", "421/err", "411/ok", "421/ok", "211/_ENV" };
 read_globals = {
 	"prosody",
-	"hosts",
 	"import",
 
 	-- Module instance
@@ -18,6 +16,7 @@ read_globals = {
 	"module.saved_state",
 	"module.global",
 	"module.path",
+	"module.items",
 
 	-- Module API
 	"module.add_extension",
@@ -25,8 +24,13 @@ read_globals = {
 	"module.add_identity",
 	"module.add_item",
 	"module.add_timer",
+	"module.weekly",
+	"module.daily",
+	"module.hourly",
 	"module.broadcast",
 	"module.context",
+	"module.default_permission",
+	"module.default_permissions",
 	"module.depends",
 	"module.fire_event",
 	"module.get_directory",
@@ -37,9 +41,13 @@ read_globals = {
 	"module.get_option",
 	"module.get_option_array",
 	"module.get_option_boolean",
+	"module.get_option_enum",
 	"module.get_option_inherited_set",
+	"module.get_option_integer",
 	"module.get_option_number",
 	"module.get_option_path",
+	"module.get_option_period",
+	"module.get_option_scalar",
 	"module.get_option_set",
 	"module.get_option_string",
 	"module.get_status",
@@ -51,10 +59,10 @@ read_globals = {
 	"module.load_resource",
 	"module.log",
 	"module.log_status",
+	"module.may",
 	"module.measure",
-	"module.measure_event",
-	"module.measure_global_event",
-	"module.measure_object_event",
+	"module.metric",
+	"module.on_ready",
 	"module.open_store",
 	"module.provides",
 	"module.remove_item",
