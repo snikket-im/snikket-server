@@ -154,6 +154,7 @@
     - mod_migrate_snikket_roles
     - mod_health_report
     - mod_snikket_server_vcard
+    - mod_snikket_billing
 
 - name: "Install mod_firewall rules"
   copy:

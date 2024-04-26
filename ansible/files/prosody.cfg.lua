@@ -1,3 +1,11 @@
+local function split(s)
+	local v = {};
+	for p in (s or ""):gmatch("[^%s,]+") do
+		v[#v+1] = p;
+	end
+	return v;
+end
+
 local DOMAIN = Lua.assert(ENV_SNIKKET_DOMAIN, "Please set the SNIKKET_DOMAIN environment variable")
 
 local RETENTION_DAYS = Lua.tonumber(ENV_SNIKKET_RETENTION_DAYS) or 7;
@@ -331,6 +339,16 @@ VirtualHost (DOMAIN)
 		modules_enabled: append {
 			"isolate_host";
 		}
+	end
+
+	if ENV_SNIKKET_BILLING_API then
+		modules_enabled: append {
+			"snikket_billing";
+		}
+
+		snikket_billing_api = ENV_SNIKKET_BILLING_API
+		snikket_billing_dashboard = ENV_SNIKKET_DASHBOARD
+		snikket_billing_unrestricted_remote_domains = split(ENV_SNIKKET_UNRESTRICTED_REMOTE_DOMAINS)
 	end
 
 Component ("groups."..DOMAIN) "muc"
