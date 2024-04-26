@@ -341,15 +341,6 @@ VirtualHost (DOMAIN)
 		}
 	end
 
-	if ENV_SNIKKET_BILLING_API then
-		modules_enabled: append {
-			"snikket_billing";
-		}
-
-		snikket_billing_api = ENV_SNIKKET_BILLING_API
-		snikket_billing_dashboard = ENV_SNIKKET_DASHBOARD
-		snikket_billing_unrestricted_remote_domains = split(ENV_SNIKKET_UNRESTRICTED_REMOTE_DOMAINS)
-	end
 
 Component ("groups."..DOMAIN) "muc"
 	modules_enabled = {
