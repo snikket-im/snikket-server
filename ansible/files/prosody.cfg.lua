@@ -56,7 +56,7 @@ modules_enabled = {
 		"password_policy";
 
 	-- Nice to have
-		"version"; -- Replies to server version requests
+		"snikket_version"; -- Replies to server version requests
 		"uptime"; -- Report how long server has been running
 		"time"; -- Let others know the time here on this server
 		"ping"; -- Replies to XMPP pings with pongs
