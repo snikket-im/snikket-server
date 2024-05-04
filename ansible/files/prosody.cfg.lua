@@ -245,6 +245,16 @@ if ENV_SNIKKET_TWEAK_STORAGE == "sqlite" then
 		driver = "SQLite3";
 		database = "/snikket/prosody/prosody.sqlite";
 	}
+elseif ENV_SNIKKET_TWEAK_STORAGE == "postgres" then
+	storage = "sql"
+	sql = {
+		driver = "Postgres";
+		database = ENV_PGDATABASE or "prosody";
+		host = ENV_PGHOST or "localhost";
+		port = ENV_PGPORT or "5432";
+		username = ENV_PGUSER or "prosody";
+		password = ENV_PGPASSWORD or "";
+	}
 else
 	storage = "internal"
 end
