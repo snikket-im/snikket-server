@@ -22,5 +22,6 @@ max_port="${SNIKKET_TWEAK_TURNSERVER_MAX_PORT:-65535}"
 exec /usr/bin/turnserver -c /etc/turnserver.conf --prod \
      --static-auth-secret="$(cat /snikket/prosody/turn-auth-secret-v2)" \
      --cert="$CERTFILE" --pkey "$KEYFILE" -r "$SNIKKET_DOMAIN_ASCII" \
-     --min-port "$min_port" --max-port "$max_port" \
+     --min-port "$min_port" --max-port "$max_port" --listening-port \
+     --listening-port "${SNIKKET_TWEAK_TURNSERVER_PORT-3478}" \
      -X "$TURN_EXTERNAL_IP"

@@ -112,6 +112,18 @@ on every certificate renewal. Note that rotating the key may invalidate things
 that depend on a stable public key, such as DANE and certificate monitoring
 utilities.
 
+### `SNIKKET_TWEAK_TURNSERVER_PORT`
+
+Controls the primary listening port of the TURN server (default: 3478).
+
+This option is used to select the port that clients should use for STUN/TURN.
+
+If using the built-in TURN server, the TURN server will automatically listen
+on the selected port.
+
+If you are using an external TURN server, make sure this option is set to the
+port that your TURN server is using (3478 is the default if unset).
+
 ### `SNIKKET_TWEAK_TURNSERVER_MIN_PORT`
 
 Controls the lowest port number used for TURN relay services.

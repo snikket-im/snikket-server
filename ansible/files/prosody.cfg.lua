@@ -298,6 +298,7 @@ http_external_url = "https://"..DOMAIN.."/"
 
 if ENV_SNIKKET_TWEAK_TURNSERVER ~= "0" or ENV_SNIKKET_TWEAK_TURNSERVER_DOMAIN then
 	turn_external_host = ENV_SNIKKET_TWEAK_TURNSERVER_DOMAIN or DOMAIN
+	turn_external_port = ENV_SNIKKET_TWEAK_TURNSERVER_PORT
 	turn_external_secret = ENV_SNIKKET_TWEAK_TURNSERVER_SECRET or Lua.assert(Lua.io.open("/snikket/prosody/turn-auth-secret-v2")):read("*l");
 	turn_external_tcp = true
 end
