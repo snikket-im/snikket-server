@@ -1,4 +1,4 @@
-local um_get_jid_role = require "core.usermanager".get_jid_role;
+local um_get_jid_role = require "prosody.core.usermanager".get_jid_role;
 
 local function load_groups_host(module)
 	local primary_host = module.host:gsub("^%a+%.", "");

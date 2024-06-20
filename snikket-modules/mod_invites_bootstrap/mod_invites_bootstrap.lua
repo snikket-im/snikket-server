@@ -1,6 +1,6 @@
 --luacheck: ignore 143/module
 
-local http_formdecode = require "net.http".formdecode;
+local http_formdecode = require "prosody.net.http".formdecode;
 
 local secret = module:get_option_string("invites_bootstrap_secret");
 if not secret then return; end
