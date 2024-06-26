@@ -48,6 +48,7 @@ function handle_billing_info(event)
 
 	-- Status changed
 	current_status = billing_info.status;
+	module:log_status("info", "Billing status changed: %s", current_status);
 	module:fire_event("snikket-billing-status-changed");
 end
 
@@ -124,13 +125,14 @@ function update_billing_info()
 	})
 		:next(function (response)
 			if response.code ~= 200 or response.headers.content_type ~= "application/json" then
-				module:log("warn", "Billing API error %d (%s)", response.code, response.headers.content_type);
-				return promise.reject();
+				local err_desc = ("%d (%s)"):format(response.code, response.headers.content_type);
+				module:log("warn", "Billing API error %s", err_desc);
+				return promise.reject(err_desc);
 			end
 			local new_billing_info = json.decode(response.body);
 			if type(new_billing_info) ~= "table" then
 				module:log("warn", "Invalid data received from billing API (%s)", type(new_billing_info));
-				return promise.reject();
+				return promise.reject("unexpected response");
 			end
 
 			new_billing_info.received = os.time();
@@ -155,8 +157,9 @@ function update_billing_info()
 			local next_update_secs = math.max((billing_info.expiry + billing_grace_period) - os.time(), billing_min_retry_time);
 			module:add_timer(spread(next_update_secs, billing_spread_factor), update_billing_info);
 		end)
-		:catch(function ()
+		:catch(function (e)
 			local secs = spread(billing_min_retry_time, billing_spread_factor);
+			module:set_status("warn", "Billing API error: "..tostring(e or "unknown error"));
 			module:log("warn", "Failed to fetch billing status - retry in %0.2f seconds", secs);
 			module:add_timer(secs, update_billing_info);
 		end);
