@@ -10,6 +10,8 @@ local billing_message = module:get_option_string("snikket_billing_message",
 	"Payment required. Please review your details at "..billing_dashboard_url
 );
 
+local billing_api_key = module:get_option_string("snikket_billing_api_key");
+
 local billing_min_retry_time = module:get_option_number("snikket_billing_min_retry_time", 3600);
 local billing_unverified_grace_period = module:get_option_number("snikket_billing_unverified_grace_period",
 	billing_min_retry_time * 3.5
@@ -20,6 +22,11 @@ local billing_spread_factor = module:get_option_number("snikket_billing_spread_f
 local unrestricted_remote_domains = module:get_option_set("snikket_billing_unrestricted_remote_domains", {});
 
 if not billing_api then return; end -- Billing not activated
+
+if not billing_api_key then
+	module:log_status("warn", "Billing API configured, but no key");
+	return;
+end
 
 --- Code to respond to billing status changes
 
@@ -110,7 +117,11 @@ end
 function update_billing_info()
 	local url = billing_api:gsub("DOMAIN", http.urlencode(module.host));
 
-	http.request(url)
+	http.request(url, {
+		headers = {
+			Authentication = "Bearer "..billing_api_key;
+		};
+	})
 		:next(function (response)
 			if response.code ~= 200 or response.headers.content_type ~= "application/json" then
 				module:log("warn", "Billing API error %d (%s)", response.code, response.headers.content_type);
