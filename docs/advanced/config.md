@@ -254,6 +254,15 @@ Path or glob for extra configuration files to load.
 
 Sneak preview of SQLite storage. Valid values are `files` (the default) and `sqlite` (potential future default).
 
+### `SNIKKET_TWEAK_PUSH2`
+
+Preview of "Push 2.0", a planned upgrade to how push notifications currently
+work. This is not yet supported by any clients, the specification is still
+being worked on, and this toggle is only to enable developers to test against
+the prototype.
+
+When set to `1` support for Push 2.0 will be enabled.
+
 ### `SNIKKET_TWEAK_REQUIRE_SASL2`
 
 When set to `1` this will disable support for legacy SASL, requiring all

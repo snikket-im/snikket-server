@@ -332,6 +332,12 @@ VirtualHost (DOMAIN)
 		}
 	end
 
+	if ENV_SNIKKET_TWEAK_PUSH2 == "1" then
+		modules_enabled: append {
+			"push2";
+		}
+	end
+
 	if ENV_SNIKKET_TWEAK_RESTRICTED_USERS_V2 == "1" then
 		firewall_scripts: append {
 			"/etc/prosody/firewall/restricted_users.pfw";

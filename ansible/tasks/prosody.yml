@@ -136,6 +136,7 @@
     - mod_privilege
     - mod_admin_blocklist
     - mod_muc_moderation
+    - mod_push2
 
 - name: Enable wanted modules (snikket-modules)
   file:
