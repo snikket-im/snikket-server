@@ -50,7 +50,7 @@ function handle_billing_info(event)
 	-- Status changed
 	current_status = billing_info.status;
 	last_status_change = os.time();
-	module:log_status("info", "Billing status changed: %s", current_status);
+	module:log_status("info", "Billing status: %s", current_status);
 	module:fire_event("snikket-billing-status-changed");
 end
 
