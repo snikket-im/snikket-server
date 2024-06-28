@@ -65,7 +65,7 @@ module:add_timer(billing_unverified_grace_period, function ()
 end);
 
 module:hook("stanza/urn:ietf:params:xml:ns:xmpp-sasl:auth", function(event)
-	if current_status == "inactive" then
+	if current_status == "inactive" and features.disable_inactive then
 		local reply = st.stanza("failure", { xmlns = "urn:ietf:params:xml:ns:xmpp-sasl" })
 			:tag("account-disabled"):up()
 			:text_tag("text", billing_message);
@@ -74,7 +74,7 @@ module:hook("stanza/urn:ietf:params:xml:ns:xmpp-sasl:auth", function(event)
 end, 100);
 
 module:hook_tag("urn:xmpp:sasl:2", "authenticate", function (session)
-	if current_status == "inactive" then
+	if current_status == "inactive" and features.disable_inactive then
 		local reply = st.stanza("failure", { xmlns = "urn:xmpp:sasl:2" })
 			:tag("account-disabled", { xmlns = "urn:ietf:params:xml:ns:xmpp-sasl" }):up()
 			:text_tag("text", billing_message);
