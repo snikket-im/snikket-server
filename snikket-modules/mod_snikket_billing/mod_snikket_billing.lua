@@ -126,8 +126,8 @@ function update_billing_info()
 		};
 	})
 		:next(function (response)
-			if response.code ~= 200 or response.headers.content_type ~= "application/json" then
-				local err_desc = ("%d (%s)"):format(response.code, response.headers.content_type);
+			if response.code ~= 200 or response.headers["content-type"] ~= "application/json" then
+				local err_desc = ("%d (%s)"):format(response.code, response.headers["content-type"]);
 				module:log("warn", "Billing API error %s", err_desc);
 				return promise.reject(err_desc);
 			end
