@@ -18,6 +18,7 @@ local billing_unverified_grace_period = module:get_option_number("snikket_billin
 );
 local billing_grace_period = module:get_option_number("snikket_billing_grace_period", 86400 * 1.1);
 local billing_spread_factor = module:get_option_number("snikket_billing_spread_factor", 0.20);
+local billing_default_ttl = module:get_option_number("snikket_billing_default_ttl", 86400);
 
 local unrestricted_remote_domains = module:get_option_set("snikket_billing_unrestricted_remote_domains", {});
 
@@ -144,6 +145,8 @@ function update_billing_info()
 						return promise.reject();
 					end
 				end
+			else
+				new_billing_info.expiry = os.time() + billing_default_ttl;
 			end
 
 			local old_billing_info = billing_info;
