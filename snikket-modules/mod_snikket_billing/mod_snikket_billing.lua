@@ -122,7 +122,7 @@ function update_billing_info()
 
 	http.request(url, {
 		headers = {
-			Authentication = "Bearer "..billing_api_key;
+			Authorization = "Bearer "..billing_api_key;
 		};
 	})
 		:next(function (response)
