@@ -27,6 +27,9 @@ Snikket currently requires the following ports to be open/forwarded:
  | :----------- | :----------------------------------------------------------------------------------|
  | 49152-65535  | Audio/Video Data Proxy (Turn Data, see below)                                      |
 
+Obviously your server may need additional ports open as well as these, depending on what services you run.
+For example you will definitely want to keep your SSH port (usually port 22) open if you manage your server
+via SSH!
 
 ## Changing the turnserver port range
 
