@@ -174,6 +174,31 @@ share.chat.example.com {
 }
 ```
 
+### Nginx Proxy Manager
+
+Unfortunately setup with Nginx Proxy Manager (NPM) is rather difficult due to
+a bug in NPM that causes it to block some requests that Snikket needs to
+function. Specifically, NPM does not currently forward the `/.well-known`
+directory, which is needed for some features of Snikket to work correctly,
+including certificate management and web client discovery.
+
+**Bug report:** https://github.com/NginxProxyManager/nginx-proxy-manager/issues/210
+
+If Snikket and NPM are running on the same machine, you could try [this
+workaround](https://github.com/NginxProxyManager/nginx-proxy-manager/issues/210#issuecomment-1068955629).
+
+Another option is to export the certificates that NPM obtains, and import them
+into Snikket (at `/snikket/letsencrypt/live/` inside the Snikket containers).
+You would need to do this regularly (i.e. automate it), as certificates need
+to be updated every few weeks. You should disable Snikket's cert manager
+container if you do this.
+
+Either of these workarounds will allow Snikket to start, but you may still
+have some problems, e.g. connecting from some web clients may not work, due to
+NPM also blocking other things located in `/.well-known`. Unfortunately there
+is not much we can do about this, as this is a limitation of NPM's current
+design.
+
 ## Other setups
 
 ### Generic instructions
