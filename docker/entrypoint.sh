@@ -50,17 +50,9 @@ if test -f /snikket/prosody/turn-auth-secret; then
 	rm /snikket/prosody/turn-auth-secret;
 fi
 
-if test -d /snikket/prosody/http_upload; then
-	prosodyctl mod_migrate_http_upload "share.$SNIKKET_DOMAIN" "$SNIKKET_DOMAIN"
-fi
-
-# COMPAT: migrate from 0.12 series role storage
-if ! test -d /snikket/prosody/*/account_roles; then
-	prosodyctl mod_authz_internal migrate "$SNIKKET_DOMAIN"
-fi
-
-# Migrate from prosody:normal to prosody:registered
-prosodyctl mod_migrate_snikket_roles migrate "$SNIKKET_DOMAIN"
+# Migrate between storage backends if needed
+# Note: this happens before we do any other operations that touch Prosody's
+# data store, to ensure consistency.
 
 if test "${SNIKKET_TWEAK_STORAGE:-files}" = "sqlite" && ! test -f /snikket/prosody/prosody.sqlite; then
 	sed -i "s/SNIKKET_DOMAIN/$SNIKKET_DOMAIN/" /etc/prosody/migrator.cfg.lua
@@ -85,5 +77,17 @@ elif test "${SNIKKET_TWEAK_STORAGE:-files}" = "files" && test -f /snikket/prosod
 		exit 1
 	fi
 fi
+
+if test -d /snikket/prosody/http_upload; then
+	prosodyctl mod_migrate_http_upload "share.$SNIKKET_DOMAIN" "$SNIKKET_DOMAIN"
+fi
+
+# COMPAT: migrate from 0.12 series role storage
+if ! test -d /snikket/prosody/*/account_roles; then
+	prosodyctl mod_authz_internal migrate "$SNIKKET_DOMAIN"
+fi
+
+# Migrate from prosody:normal to prosody:registered
+prosodyctl mod_migrate_snikket_roles migrate "$SNIKKET_DOMAIN"
 
 exec s6-svscan /etc/sv
