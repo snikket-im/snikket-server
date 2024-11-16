@@ -41,6 +41,6 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/cache/*
 
-RUN echo "Snikket $BUILD_SERIES $BUILD_ID" > /usr/lib/prosody/prosody.version
+RUN echo "Snikket $BUILD_SERIES $BUILD_ID" > /usr/lib/prosody/snikket.version
 
 VOLUME ["/snikket"]
