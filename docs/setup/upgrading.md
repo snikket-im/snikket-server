@@ -35,8 +35,8 @@ on the website (most likely), then use these commands:
 
 ```
     cd /etc/snikket
-    docker-compose pull
-    docker-compose up -d
+    docker compose pull
+    docker compose up -d
 ```
 
 ### snikket-selfhosted
