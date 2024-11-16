@@ -9,10 +9,12 @@ local render_hostname = require "prosody.util.interpolation".new("%b{}", dns_esc
 local update_dns = module:get_option_string("update_check_dns");
 local check_interval = module:get_option_number("update_check_interval", 86400);
 
+local mod_snikket_version = module:depends("snikket_version");
+
 local version_info = {};
 
 do
-	local version_string = prosody.version;
+	local version_string = mod_snikket_version.snikket_version;
 	-- "dev 128-00000", "release v2021.05r2", "release beta.20220119"
 	local series, version = version_string:match("(%w+) (%S+)$");
 	if series then

@@ -15,6 +15,7 @@ local metric_registry = require "core.statsmanager".get_metric_registry();
 
 local mod_audit_status = module:depends("audit_status");
 local mod_measure_active_users = module:depends("measure_active_users");
+local mod_snikket_version = module:depends("snikket_version");
 
 local last_health_report;
 
@@ -43,7 +44,7 @@ function report_health()
 		dau = get_gauge_metric("prosody_mod_measure_active_users/active_users_1d");
 		wau = get_gauge_metric("prosody_mod_measure_active_users/active_users_7d");
 		mau = get_gauge_metric("prosody_mod_measure_active_users/active_users_30d");
-		version = prosody.version;
+		version = mod_snikket_version.snikket_version;
 	};
 
 	if not has_changed(health, last_health_report) then
