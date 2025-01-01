@@ -200,6 +200,9 @@ invites_bootstrap_index = Lua.tonumber(ENV_TWEAK_SNIKKET_BOOTSTRAP_INDEX)
 invites_bootstrap_secret = ENV_TWEAK_SNIKKET_BOOTSTRAP_SECRET
 invites_bootstrap_ttl = Lua.tonumber(ENV_TWEAK_SNIKKET_BOOTSTRAP_TTL or (28 * 86400)) -- default 28 days
 
+-- Enable MUC integration for mod_groups_internal
+groups_muc_host = "groups."..DOMAIN
+
 -- The Resource Owner Credentials grant used internally between the web portal
 -- and Prosody, so ensure this is enabled. Other unused flows can be disabled.
 allowed_oauth2_grant_types = { "password" }
