@@ -336,6 +336,7 @@ VirtualHost (DOMAIN)
 	end
 
 	if ENV_SNIKKET_TWEAK_PUSH2 == "1" then
+		contact_uri = "https://" .. DOMAIN .. "/"
 		modules_enabled: append {
 			"push2";
 		}
