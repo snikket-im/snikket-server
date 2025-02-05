@@ -50,6 +50,13 @@
     group: adm
     mode: 0750
     recurse: yes
+- name: "Delete localhost cert created by package postinst script"
+  file:
+    path: "/etc/prosody/certs/{{ item }}"
+    state: absent
+  loop:
+    - localhost.crt
+    - localhost.key
 - name: "Disable Prosody init script"
   service:
     name: prosody
