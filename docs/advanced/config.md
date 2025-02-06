@@ -19,7 +19,7 @@ In most situations, the configuration options shown in the example config in
 Also, it is very likely not complete.
 {{< /panel >}}
 
-After modifying any options in snikket.conf, you must run 'docker-compose up -d' to apply the changes.
+After modifying any options in snikket.conf, you must run 'docker compose up -d' to apply the changes.
 
 ## Configuration Option Reference
 

@@ -109,7 +109,7 @@ There are two options to fix this:
 
    ```
    systemctl restart docker
-   docker-compose up -d  # <- run this in your snikket directory
+   docker compose up -d  # <- run this in your snikket directory
    ```
 
 ## Certificate problems
@@ -176,7 +176,7 @@ problem could be, check the error log:
 
 ```
 cd /etc/snikket
-docker-compose exec snikket_certs cat /var/log/letsencrypt/errors.log
+docker compose exec snikket_certs cat /var/log/letsencrypt/errors.log
 ```
 
 If you get a "No such file or directory" error when running the above command,
@@ -184,7 +184,7 @@ inspect the debug log instead:
 
 ```
 cd /etc/snikket
-docker-compose exec snikket_certs cat /var/log/letsencrypt/letsencrypt.log | grep detail
+docker compose exec snikket_certs cat /var/log/letsencrypt/letsencrypt.log | grep detail
 ```
 
 #### Trying again
@@ -194,7 +194,7 @@ following command:
 
 ```
 cd /etc/snikket
-docker-compose exec snikket_certs /etc/cron.daily/certbot
+docker compose exec snikket_certs /etc/cron.daily/certbot
 ```
 
 If that command says that no certificates are due for renewal, but you need to
@@ -202,7 +202,7 @@ trigger a renewal anyway, run:
 
 ```
 cd /etc/snikket
-docker-compose exec snikket_certs su letsencrypt -- -c "certbot renew --config-dir /snikket/letsencrypt --cert-path /etc/ssl/certbot --force-renew"
+docker compose exec snikket_certs su letsencrypt -- -c "certbot renew --config-dir /snikket/letsencrypt --cert-path /etc/ssl/certbot --force-renew"
 ```
 
 Note that Let's Encrypt has strict [rate limits](https://letsencrypt.org/docs/rate-limits/) -
