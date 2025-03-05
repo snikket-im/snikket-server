@@ -35,5 +35,5 @@ The easiest way is to use docker-compose. Copy the file `snikket.conf.example` t
 `snikket.conf` and edit the values in it. Then run:
 
 ```console
-docker-compose up -d
+docker compose up -d
 ```
