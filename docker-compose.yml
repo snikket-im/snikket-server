@@ -9,6 +9,7 @@ services:
     volumes:
       - snikket_data:/snikket
       - acme_challenges:/var/www/html/.well-known/acme-challenge
+      - /var/log/nginx:/var/log/nginx
     ports:
       - 80:80/tcp
       - 443:443/tcp
