@@ -105,6 +105,7 @@ modules_enabled = {
 		"admin_blocklist";
 		"snikket_server_vcard";
 		"snikket_version"; -- Replies to server version requests
+		"log_auth";
 
 	-- Spam/abuse management
 		"spam_reporting"; -- Allow users to report spam/abuse
@@ -235,7 +236,8 @@ registration_delete_grace_period = ("%d days"):format(RETENTION_DAYS)
 use_ipv6 = (ENV_SNIKKET_TWEAK_IPV6 ~= "0")
 
 log = {
-	[ENV_SNIKKET_LOGLEVEL or "info"] = "*stdout"
+	-- constantly logging hacking attempts on SD card of SBC is not a good idea
+	[ENV_SNIKKET_LOGLEVEL or "info"] = "/var/log/prosody/prosody.log"
 }
 
 authentication = "internal_hashed"
