@@ -1,40 +1,63 @@
-version: "3.3"
-
+---
 services:
   snikket_proxy:
     container_name: snikket-proxy
-    image: snikket/snikket-web-proxy:dev
+    image: snikket/snikket-web-proxy:stable
+    networks:
+      - snikket
     env_file: snikket.conf
-    network_mode: host
     volumes:
       - snikket_data:/snikket
       - acme_challenges:/var/www/html/.well-known/acme-challenge
+    ports:
+      - 80:80/tcp
+      - 443:443/tcp
     restart: "unless-stopped"
+
   snikket_certs:
     container_name: snikket-certs
-    image: snikket/snikket-cert-manager:dev
-    network_mode: host
+    image: snikket/snikket-cert-manager:stable
+    networks:
+      - snikket
     env_file: snikket.conf
     volumes:
       - snikket_data:/snikket
       - acme_challenges:/var/www/.well-known/acme-challenge
+      - /var/log/letsencrypt:/var/log/letsencrypt
     restart: "unless-stopped"
+
   snikket_portal:
     container_name: snikket-portal
-    image: snikket/snikket-web-portal:dev
-    network_mode: host
+    image: snikket/snikket-web-portal:stable
+    networks:
+      - snikket
     env_file: snikket.conf
     restart: "unless-stopped"
 
   snikket_server:
     container_name: snikket
-    image: snikket/snikket-server:dev
-    network_mode: host
+    image: snikket/snikket-server:stable
+    networks:
+      - snikket
     volumes:
       - snikket_data:/snikket
+      - /var/log/prosody:/var/log/prosody
     env_file: snikket.conf
+    ports:
+      - 5000:5000/tcp
+      - 5222:5222/tcp
+      - 5223:5223/tcp
+      - 5269:5269/tcp
+      - 3478:3478
+      - 3479:3479
+      - 5349:5349
+      - 5350:5350
+      - "60000-60019:60000-60019/udp"
     restart: "unless-stopped"
 
 volumes:
   acme_challenges:
   snikket_data:
+
+networks:
+  snikket: {}
