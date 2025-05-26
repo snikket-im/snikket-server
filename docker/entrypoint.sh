@@ -38,7 +38,7 @@ if ! test -d /snikket/prosody; then
 	install -o prosody -g prosody -m 750 -d /snikket/prosody;
 fi
 
-chown -R prosody:prosody /var/spool/anacron /var/run/prosody /snikket/prosody /etc/prosody
+chown -R prosody:prosody /var/spool/anacron /var/run/prosody /snikket/prosody /etc/prosody /var/log/prosody
 
 ## Generate secret for coturn auth if necessary
 if ! test -f /snikket/prosody/turn-auth-secret-v2; then

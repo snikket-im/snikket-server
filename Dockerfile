@@ -14,7 +14,8 @@ ADD docker/entrypoint.sh /bin/entrypoint.sh
 RUN chmod 770 /bin/entrypoint.sh
 ENTRYPOINT ["/bin/entrypoint.sh"]
 
-HEALTHCHECK CMD /usr/bin/prosodyctl shell "portcheck ${SNIKKET_TWEAK_INTERNAL_HTTP_INTERFACE:-127.0.0.1}:${SNIKKET_TWEAK_INTERNAL_HTTP_PORT:-5280}"
+HEALTHCHECK --interval=10m \
+    CMD /usr/bin/prosodyctl shell "portcheck ${SNIKKET_TWEAK_INTERNAL_HTTP_INTERFACE:-127.0.0.1}:${SNIKKET_TWEAK_INTERNAL_HTTP_PORT:-5280}"
 
 ADD ansible /opt/ansible
 
