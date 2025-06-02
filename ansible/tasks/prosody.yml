@@ -100,7 +100,6 @@
     - mod_password_policy
     - mod_vcard_muc
     - mod_email
-    - mod_http_altconnect
     - mod_firewall
     - mod_admin_notify
     - mod_http_oauth2
@@ -109,7 +108,6 @@
     - mod_groups_migration
     - mod_invites_api
     - mod_invites_groups
-    - mod_invites_page
     - mod_invites_register_api
     - mod_invites_tracking
     - mod_groups_internal
@@ -144,6 +142,7 @@
     - mod_admin_blocklist
     - mod_muc_moderation
     - mod_push2
+    - mod_migrate_lastlog2
 
 - name: Enable wanted modules (snikket-modules)
   file:

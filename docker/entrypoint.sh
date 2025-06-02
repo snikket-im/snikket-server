@@ -45,6 +45,11 @@ if ! test -f /snikket/prosody/turn-auth-secret-v2; then
 	head -c 32 /dev/urandom | base64 > /snikket/prosody/turn-auth-secret-v2;
 fi
 
+## Generate OAuth2 registration secret if necessary
+if ! test -f /snikket/prosody/oauth2-registration-secret; then
+	head -c 32 /dev/urandom | base64 > /snikket/prosody/oauth2-registration-secret;
+fi
+
 # COMPAT w/ alpha.20200513: remove older format
 if test -f /snikket/prosody/turn-auth-secret; then
 	rm /snikket/prosody/turn-auth-secret;

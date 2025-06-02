@@ -6,7 +6,12 @@ if [ "$1" = "--qr" ]; then
 	shift;
 fi
 
-URL=$(prosodyctl mod_invites generate "$SNIKKET_DOMAIN" "$@")
+if [ "$1" = "--reset" ]; then
+	URL=$(prosodyctl shell invite create_reset "$@")
+else
+	URL=$(prosodyctl shell invite create_account "$@" "$SNIKKET_DOMAIN")
+fi
+
 
 echo ""
 echo "Your invite link: $URL"

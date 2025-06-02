@@ -101,10 +101,11 @@ modules_enabled = {
 		"snikket_client_id";
 		"snikket_ios_preserve_push";
 		"snikket_restricted_users";
-		"lastlog2";
 		"admin_blocklist";
 		"snikket_server_vcard";
 		"snikket_version"; -- Replies to server version requests
+		"account_activity";
+		"migrate_lastlog2"; -- Automatically migrate data from mod_lastlog2 if necessary
 
 	-- Spam/abuse management
 		"spam_reporting"; -- Allow users to report spam/abuse
@@ -122,7 +123,6 @@ modules_enabled = {
 		"invites_adhoc";
 		"invites_api";
 		"invites_groups";
-		"invites_page";
 		"invites_register";
 		"invites_register_api";
 		"invites_tracking";
@@ -194,7 +194,7 @@ deny_user_invites_by_roles = { "prosody:restricted" }
 custom_roles = { { name = "prosody:restricted"; priority = 15 } }
 
 invites_page = ENV_SNIKKET_INVITE_URL or ("https://"..DOMAIN.."/invite/{invite.token}/");
-invites_page_external = true
+invites_page_supports = { "account", "contact", "account-and-contact", "password-reset" }
 
 invites_bootstrap_index = Lua.tonumber(ENV_TWEAK_SNIKKET_BOOTSTRAP_INDEX)
 invites_bootstrap_secret = ENV_TWEAK_SNIKKET_BOOTSTRAP_SECRET
@@ -206,11 +206,13 @@ groups_muc_host = "groups."..DOMAIN
 -- The Resource Owner Credentials grant used internally between the web portal
 -- and Prosody, so ensure this is enabled. Other unused flows can be disabled.
 allowed_oauth2_grant_types = { "password" }
-allowed_oauth2_response_types = {}
+allowed_oauth2_response_types = {"code"}
 
 -- Longer access token lifetime than the default
 -- TODO: Use the already longer-lived refresh tokens
 oauth2_access_token_ttl = 86400
+
+oauth2_registration_key = FileLine("/snikket/prosody/oauth2-registration-secret")
 
 c2s_require_encryption = true
 s2s_require_encryption = true
