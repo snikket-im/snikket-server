@@ -170,12 +170,6 @@
     dest: /etc/prosody/firewall/
     mode: 0644
 
-- name: "Install lua-ossl for encrypted push notifications"
-  apt:
-    name: lua-luaossl
-    state: present
-    install_recommends: no
-
 - name: "Install luaunbound"
   apt:
     name: lua-unbound
