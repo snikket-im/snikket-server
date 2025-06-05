@@ -206,7 +206,7 @@ groups_muc_host = "groups."..DOMAIN
 -- The Resource Owner Credentials grant used internally between the web portal
 -- and Prosody, so ensure this is enabled. Other unused flows can be disabled.
 allowed_oauth2_grant_types = { "password" }
-allowed_oauth2_response_types = {"code"}
+allowed_oauth2_response_types = {}
 
 -- Longer access token lifetime than the default
 -- TODO: Use the already longer-lived refresh tokens
