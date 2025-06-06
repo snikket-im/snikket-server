@@ -98,7 +98,6 @@
     - mod_lastlog2
     - mod_limit_auth
     - mod_password_policy
-    - mod_vcard_muc
     - mod_email
     - mod_firewall
     - mod_admin_notify
