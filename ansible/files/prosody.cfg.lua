@@ -79,6 +79,7 @@ modules_enabled = {
 	-- Push notifications
 		"cloud_notify";
 		"cloud_notify_extensions";
+		"push2";
 
 	-- HTTP modules
 		"bosh"; -- Enable BOSH clients, aka "Jabber over HTTP"
@@ -313,6 +314,7 @@ isolate_except_domains = { "push.snikket.net", "push-ios.snikket.net" }
 
 VirtualHost (DOMAIN)
 	authentication = "internal_hashed"
+	contact_uri = "https://" .. DOMAIN .. "/"
 
 	modules_enabled = {}
 	firewall_scripts = {}
@@ -334,13 +336,6 @@ VirtualHost (DOMAIN)
 	if ENV_SNIKKET_TWEAK_S2S_STATUS == "1" then
 		modules_enabled: append {
 			"s2s_status";
-		}
-	end
-
-	if ENV_SNIKKET_TWEAK_PUSH2 == "1" then
-		contact_uri = "https://" .. DOMAIN .. "/"
-		modules_enabled: append {
-			"push2";
 		}
 	end
 
