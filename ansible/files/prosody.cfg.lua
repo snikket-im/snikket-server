@@ -339,6 +339,14 @@ VirtualHost (DOMAIN)
 		}
 	end
 
+	if ENV_SNIKKET_TWEAK_SHARE_PROXY == "1" then
+		modules_enabled: append {
+			"http_connect";
+		}
+		-- Reuse the same secret we use for TURN
+		http_proxy_secret = ENV_SNIKKET_TWEAK_TURNSERVER_SECRET or FileLine("/snikket/prosody/turn-auth-secret-v2")
+	end
+
 	if ENV_SNIKKET_TWEAK_RESTRICTED_USERS_V2 == "1" then
 		firewall_scripts: append {
 			"/etc/prosody/firewall/restricted_users.pfw";
@@ -367,6 +375,10 @@ Component ("groups."..DOMAIN) "muc"
 		modules_enabled: append {
 			"s2s_status";
 		}
+	end
+
+	if ENV_SNIKKET_TWEAK_GC3 == "1" then
+		muc_enable_experimental_gc3 = true;
 	end
 
 	restrict_room_creation = "local"

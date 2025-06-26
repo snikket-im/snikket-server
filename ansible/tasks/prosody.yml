@@ -143,6 +143,7 @@
     - mod_muc_moderation
     - mod_push2
     - mod_migrate_lastlog2
+    - mod_http_connect
 
 - name: Enable wanted modules (snikket-modules)
   file:
