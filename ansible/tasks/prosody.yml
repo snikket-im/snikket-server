@@ -87,7 +87,6 @@
     src: "/usr/local/lib/prosody-modules/{{item}}"
     dest: "/etc/prosody/modules/{{item}}"
   loop:
-    - mod_cloud_notify
     - mod_cloud_notify_extensions
     - mod_cloud_notify_encrypted
     - mod_cloud_notify_priority_tag
@@ -98,7 +97,6 @@
     - mod_lastlog2
     - mod_limit_auth
     - mod_password_policy
-    - mod_vcard_muc
     - mod_email
     - mod_firewall
     - mod_admin_notify

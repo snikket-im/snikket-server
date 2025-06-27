@@ -363,7 +363,6 @@ Component ("groups."..DOMAIN) "muc"
 		"muc_mam";
 		"muc_moderation";
 		"muc_local_only";
-		"vcard_muc";
 		"muc_defaults";
 		"muc_offline_delivery";
 		"snikket_restricted_users";
