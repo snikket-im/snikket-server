@@ -97,7 +97,6 @@ modules_enabled = {
 		"bookmarks";
 		"update_check";
 		"update_notify";
-		"turn_external";
 		"admin_shell";
 		"snikket_client_id";
 		"snikket_ios_preserve_push";
@@ -303,6 +302,9 @@ http_host = DOMAIN
 http_external_url = "https://"..DOMAIN.."/"
 
 if ENV_SNIKKET_TWEAK_TURNSERVER ~= "0" or ENV_SNIKKET_TWEAK_TURNSERVER_DOMAIN then
+	modules_enabled: append {
+		"turn_external";
+	}
 	turn_external_host = ENV_SNIKKET_TWEAK_TURNSERVER_DOMAIN or DOMAIN
 	turn_external_port = ENV_SNIKKET_TWEAK_TURNSERVER_PORT
 	turn_external_secret = ENV_SNIKKET_TWEAK_TURNSERVER_SECRET or FileLine("/snikket/prosody/turn-auth-secret-v2")
