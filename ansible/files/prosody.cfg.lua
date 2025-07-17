@@ -13,7 +13,7 @@ local UPLOAD_STORAGE_GB = Lua.tonumber(ENV_SNIKKET_UPLOAD_STORAGE_GB);
 
 if Lua.prosody.process_type == "prosody" and not Lua.prosody.config_loaded then
 	-- Wait at startup for certificates
-	local lfs, socket = require "lfs", require "socket";
+	local lfs, socket = Lua.require "lfs", Lua.require "socket";
 	local cert_path = "/etc/prosody/certs/"..DOMAIN..".crt";
 	local counter = 0;
 	while not lfs.attributes(cert_path, "mode") do
@@ -26,7 +26,7 @@ if Lua.prosody.process_type == "prosody" and not Lua.prosody.config_loaded then
 		end
 		socket.sleep(5);
 	end
-	_G.ltn12 = require "ltn12";
+	Lua._G.ltn12 = Lua.require "ltn12";
 end
 
 network_backend = "epoll"
