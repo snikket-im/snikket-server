@@ -6,12 +6,6 @@
     state: present
     install_recommends: yes
 
-- name: "Install dnsutils package"
-  apt:
-    name: dnsutils
-    state: present
-    install_recommends: no
-
 - name: "Disable coturn service"
   service:
     name: coturn
