@@ -16,10 +16,6 @@ if [ -z "$SNIKKET_SMTP_URL" ]; then
 	SNIKKET_SMTP_URL="smtp://localhost:1025/;no-tls"
 fi
 
-if [ -z "$SNIKKET_EXTERNAL_IP" ]; then
-	SNIKKET_EXTERNAL_IP="$(dig +short $SNIKKET_DOMAIN_ASCII)"
-fi
-
 echo "$SNIKKET_SMTP_URL" | smtp-url-to-msmtp > /etc/msmtprc
 
 echo "from snikket@$SNIKKET_DOMAIN_ASCII" >> /etc/msmtprc
