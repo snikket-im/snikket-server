@@ -7,18 +7,19 @@
     install_recommends: no
 - name: "Use Lua 5.4 by default"
   command: update-alternatives --set lua-interpreter /usr/bin/lua5.4
-- name: "Add Prosody package signing key"
-  apt_key:
-    url: "https://packages.prosody.im/debian/pubkey.asc"
 - name: "Add Prosody package repo"
-  apt_repository:
-    filename: prosody
-    repo: "deb https://packages.prosody.im/debian bookworm/snapshots/{{ prosody.snapshot }} main"
+  template:
+    dest: /etc/apt/sources.list.d/prosody.sources
+    src: ../files/prosody.sources
+    owner: root
+    group: root
+    mode: 0644
 - name: "Install Prosody package"
   apt:
     name: "{{ prosody.package }}"
     state: present
     install_recommends: no
+    update_cache: yes
 - name: "Deploy Prosody config"
   copy:
     src: ../files/prosody.cfg.lua
