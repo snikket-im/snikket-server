@@ -355,7 +355,7 @@ VirtualHost (DOMAIN)
 		}
 	else
 		modules_enabled: append {
-			"isolate_host";
+			"restrict_federation";
 		}
 	end
 

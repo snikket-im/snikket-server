@@ -9,7 +9,7 @@
       package: "prosody-trunk"
       snapshot: "2025-09-22"
     prosody_modules:
-      revision: "4fd1ad56176b"
+      revision: "ba2c344e1bdd"
   tasks:
     - import_tasks: tasks/prosody.yml
     - import_tasks: tasks/services.yml

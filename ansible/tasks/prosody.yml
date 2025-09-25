@@ -115,7 +115,6 @@
     - mod_measure_process
     - mod_spam_reporting
     - mod_watch_spam_reports
-    - mod_isolate_host
     - mod_muc_auto_reserve_nicks
     - mod_measure_active_users
     - mod_measure_lua
@@ -140,6 +139,7 @@
     - mod_push2
     - mod_migrate_lastlog2
     - mod_http_connect
+    - mod_restrict_federation
 
 - name: Enable wanted modules (snikket-modules)
   file:
