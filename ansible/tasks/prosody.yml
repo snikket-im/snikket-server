@@ -139,6 +139,7 @@
     - mod_migrate_lastlog2
     - mod_http_connect
     - mod_restrict_federation
+    - mod_protect_last_admin
 
 - name: Enable wanted modules (snikket-modules)
   file:

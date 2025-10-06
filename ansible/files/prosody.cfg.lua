@@ -106,6 +106,7 @@ modules_enabled = {
 		"snikket_version"; -- Replies to server version requests
 		"account_activity";
 		"migrate_lastlog2"; -- Automatically migrate data from mod_lastlog2 if necessary
+		"protect_last_admin";
 
 	-- Spam/abuse management
 		"spam_reporting"; -- Allow users to report spam/abuse
