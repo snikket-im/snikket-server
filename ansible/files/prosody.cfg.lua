@@ -228,6 +228,13 @@ add_permissions = {
 
 archive_expires_after = ("%dd"):format(RETENTION_DAYS) -- Remove archived messages after N days
 
+-- This is required for Conversations 2.19 to receive offline messages, which
+-- we currently utilize to attempt at-least-once delivery for messages beyond
+-- the archive retention period.
+-- Eventually it will be removed when mod_offline is removed in favour of
+-- smarter retention strategies.
+send_legacy_offline_messages_to_mam_clients = true
+
 -- Delay full account deletion via IBR for RETENTION_DAYS, to allow restoration
 -- in case of accidental or malicious deletion of an account
 registration_delete_grace_period = ("%d days"):format(RETENTION_DAYS)
