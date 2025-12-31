@@ -1,15 +1,23 @@
-#!/bin/sh -e
+#!/bin/bash
+
+set -euo pipefail
 
 SHOW_QR=0
-if [ "$1" = "--qr" ]; then
+if [ "${1-}" = "--qr" ]; then
 	SHOW_QR=1;
 	shift;
 fi
 
-if [ "$1" = "--reset" ]; then
-	URL=$(prosodyctl shell invite create_reset "$@")
+if [ "${1-}" = "--reset" ]; then
+	shift;
+	jid="$1"
+	if [[ "$jid" != *@* ]]; then
+		# Append domain if not provided
+		jid="${jid}@${SNIKKET_DOMAIN}"
+	fi
+	URL=$(prosodyctl shell invite create_reset "$jid" | sed -n 's/^OK: //;T;p')
 else
-	URL=$(prosodyctl shell invite create_account "$@" "$SNIKKET_DOMAIN")
+	URL=$(prosodyctl shell invite create_account "$@" "$SNIKKET_DOMAIN" | sed -n 's/^OK: //;T;p')
 fi
 
 
@@ -22,4 +30,3 @@ if [ "$SHOW_QR" = "1" ]; then
 	echo "$URL" | qrencode -t ansi
 	echo ""
 fi
-
