@@ -2,7 +2,7 @@
 services:
   snikket_proxy:
     container_name: snikket-proxy
-    image: snikket/snikket-web-proxy:stable
+    image: snikket/snikket-web-proxy:dev
     networks:
       - snikket
     env_file: snikket.conf
@@ -17,7 +17,7 @@ services:
 
   snikket_certs:
     container_name: snikket-certs
-    image: snikket/snikket-cert-manager:stable
+    image: snikket/snikket-cert-manager:dev
     networks:
       - snikket
     env_file: snikket.conf
@@ -29,7 +29,7 @@ services:
 
   snikket_portal:
     container_name: snikket-portal
-    image: snikket/snikket-web-portal:stable
+    image: snikket/snikket-web-portal:dev
     networks:
       - snikket
     env_file: snikket.conf
@@ -37,12 +37,13 @@ services:
 
   snikket_server:
     container_name: snikket
-    image: snikket/snikket-server:stable
+    image: snikket/snikket-server:dev
     networks:
       - snikket
     volumes:
       - snikket_data:/snikket
       - /var/log/prosody:/var/log/prosody
+      - /var/log/coturn:/var/log/coturn
     env_file: snikket.conf
     ports:
       - 5000:5000/tcp
