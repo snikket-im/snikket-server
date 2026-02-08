@@ -16,10 +16,6 @@ if [ -z "$SNIKKET_SMTP_URL" ]; then
 	SNIKKET_SMTP_URL="smtp://localhost:1025/;no-tls"
 fi
 
-if [ -z "$SNIKKET_EXTERNAL_IP" ]; then
-	SNIKKET_EXTERNAL_IP="$(dig +short $SNIKKET_DOMAIN_ASCII)"
-fi
-
 echo "$SNIKKET_SMTP_URL" | smtp-url-to-msmtp > /etc/msmtprc
 
 echo "from snikket@$SNIKKET_DOMAIN_ASCII" >> /etc/msmtprc
@@ -43,6 +39,11 @@ chown -R prosody:prosody /var/spool/anacron /var/run/prosody /snikket/prosody /e
 ## Generate secret for coturn auth if necessary
 if ! test -f /snikket/prosody/turn-auth-secret-v2; then
 	head -c 32 /dev/urandom | base64 > /snikket/prosody/turn-auth-secret-v2;
+fi
+
+## Generate OAuth2 registration secret if necessary
+if ! test -f /snikket/prosody/oauth2-registration-secret; then
+	head -c 32 /dev/urandom | base64 > /snikket/prosody/oauth2-registration-secret;
 fi
 
 # COMPAT w/ alpha.20200513: remove older format

@@ -26,7 +26,7 @@ RUN apt-get update \
         software-properties-common ca-certificates \
         gpg gpg-agent \
         ansible python3-passlib \
-        libcap2-bin build-essential\
+        build-essential\
     && c_rehash \
     && ansible-playbook -c local -i localhost, --extra-vars "ansible_python_interpreter=/usr/bin/python3" /opt/ansible/snikket.yml \
     && apt-get remove --purge -y \
@@ -34,7 +34,7 @@ RUN apt-get update \
          software-properties-common \
          gpg gpg-agent \
          python3-passlib \
-         libcap2-bin build-essential \
+         build-essential \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/cache/*

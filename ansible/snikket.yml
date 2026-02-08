@@ -7,9 +7,9 @@
   vars:
     prosody:
       package: "prosody-trunk"
-      snapshot: "2025-02-06"
+      snapshot: "2025-12-31"
     prosody_modules:
-      revision: "e977174082ee"
+      revision: "908d44cfb693"
   tasks:
     - import_tasks: tasks/prosody.yml
     - import_tasks: tasks/services.yml

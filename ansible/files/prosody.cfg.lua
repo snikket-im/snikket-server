@@ -13,7 +13,7 @@ local UPLOAD_STORAGE_GB = Lua.tonumber(ENV_SNIKKET_UPLOAD_STORAGE_GB);
 
 if Lua.prosody.process_type == "prosody" and not Lua.prosody.config_loaded then
 	-- Wait at startup for certificates
-	local lfs, socket = require "lfs", require "socket";
+	local lfs, socket = Lua.require "lfs", Lua.require "socket";
 	local cert_path = "/etc/prosody/certs/"..DOMAIN..".crt";
 	local counter = 0;
 	while not lfs.attributes(cert_path, "mode") do
@@ -26,7 +26,7 @@ if Lua.prosody.process_type == "prosody" and not Lua.prosody.config_loaded then
 		end
 		socket.sleep(5);
 	end
-	_G.ltn12 = require "ltn12";
+	Lua._G.ltn12 = Lua.require "ltn12";
 end
 
 network_backend = "epoll"
@@ -79,6 +79,7 @@ modules_enabled = {
 	-- Push notifications
 		"cloud_notify";
 		"cloud_notify_extensions";
+		"push2";
 
 	-- HTTP modules
 		"bosh"; -- Enable BOSH clients, aka "Jabber over HTTP"
@@ -96,15 +97,16 @@ modules_enabled = {
 		"bookmarks";
 		"update_check";
 		"update_notify";
-		"turn_external";
 		"admin_shell";
 		"snikket_client_id";
 		"snikket_ios_preserve_push";
 		"snikket_restricted_users";
-		"lastlog2";
 		"admin_blocklist";
 		"snikket_server_vcard";
 		"snikket_version"; -- Replies to server version requests
+		"account_activity";
+		"migrate_lastlog2"; -- Automatically migrate data from mod_lastlog2 if necessary
+		"protect_last_admin";
 
 	-- Spam/abuse management
 		"spam_reporting"; -- Allow users to report spam/abuse
@@ -122,7 +124,6 @@ modules_enabled = {
 		"invites_adhoc";
 		"invites_api";
 		"invites_groups";
-		"invites_page";
 		"invites_register";
 		"invites_register_api";
 		"invites_tracking";
@@ -146,7 +147,6 @@ modules_enabled = {
 		"measure_active_users";
 		"measure_lua";
 		"measure_malloc";
-		"portcheck";
 }
 
 registration_watchers = {} -- Disable by default
@@ -194,7 +194,7 @@ deny_user_invites_by_roles = { "prosody:restricted" }
 custom_roles = { { name = "prosody:restricted"; priority = 15 } }
 
 invites_page = ENV_SNIKKET_INVITE_URL or ("https://"..DOMAIN.."/invite/{invite.token}/");
-invites_page_external = true
+invites_page_supports = { "account", "contact", "account-and-contact", "password-reset" }
 
 invites_bootstrap_index = Lua.tonumber(ENV_TWEAK_SNIKKET_BOOTSTRAP_INDEX)
 invites_bootstrap_secret = ENV_TWEAK_SNIKKET_BOOTSTRAP_SECRET
@@ -212,6 +212,8 @@ allowed_oauth2_response_types = {}
 -- TODO: Use the already longer-lived refresh tokens
 oauth2_access_token_ttl = 86400
 
+oauth2_registration_key = FileLine("/snikket/prosody/oauth2-registration-secret")
+
 c2s_require_encryption = true
 s2s_require_encryption = true
 s2s_secure_auth = true
@@ -225,6 +227,13 @@ add_permissions = {
 }
 
 archive_expires_after = ("%dd"):format(RETENTION_DAYS) -- Remove archived messages after N days
+
+-- This is required for Conversations 2.19 to receive offline messages, which
+-- we currently utilize to attempt at-least-once delivery for messages beyond
+-- the archive retention period.
+-- Eventually it will be removed when mod_offline is removed in favour of
+-- smarter retention strategies.
+send_legacy_offline_messages_to_mam_clients = true
 
 -- Delay full account deletion via IBR for RETENTION_DAYS, to allow restoration
 -- in case of accidental or malicious deletion of an account
@@ -301,6 +310,9 @@ http_host = DOMAIN
 http_external_url = "https://"..DOMAIN.."/"
 
 if ENV_SNIKKET_TWEAK_TURNSERVER ~= "0" or ENV_SNIKKET_TWEAK_TURNSERVER_DOMAIN then
+	modules_enabled: append {
+		"turn_external";
+	}
 	turn_external_host = ENV_SNIKKET_TWEAK_TURNSERVER_DOMAIN or DOMAIN
 	turn_external_port = ENV_SNIKKET_TWEAK_TURNSERVER_PORT
 	turn_external_secret = ENV_SNIKKET_TWEAK_TURNSERVER_SECRET or FileLine("/snikket/prosody/turn-auth-secret-v2")
@@ -312,6 +324,7 @@ isolate_except_domains = { "push.snikket.net", "push-ios.snikket.net" }
 
 VirtualHost (DOMAIN)
 	authentication = "internal_hashed"
+	contact_uri = "https://" .. DOMAIN .. "/"
 
 	modules_enabled = {}
 	firewall_scripts = {}
@@ -336,11 +349,12 @@ VirtualHost (DOMAIN)
 		}
 	end
 
-	if ENV_SNIKKET_TWEAK_PUSH2 == "1" then
-		contact_uri = "https://" .. DOMAIN .. "/"
+	if ENV_SNIKKET_TWEAK_SHARE_PROXY == "1" then
 		modules_enabled: append {
-			"push2";
+			"http_connect";
 		}
+		-- Reuse the same secret we use for TURN
+		http_proxy_secret = ENV_SNIKKET_TWEAK_TURNSERVER_SECRET or FileLine("/snikket/prosody/turn-auth-secret-v2")
 	end
 
 	if ENV_SNIKKET_TWEAK_RESTRICTED_USERS_V2 == "1" then
@@ -349,7 +363,7 @@ VirtualHost (DOMAIN)
 		}
 	else
 		modules_enabled: append {
-			"isolate_host";
+			"restrict_federation";
 		}
 	end
 
@@ -359,7 +373,6 @@ Component ("groups."..DOMAIN) "muc"
 		"muc_mam";
 		"muc_moderation";
 		"muc_local_only";
-		"vcard_muc";
 		"muc_defaults";
 		"muc_offline_delivery";
 		"snikket_restricted_users";
@@ -371,6 +384,10 @@ Component ("groups."..DOMAIN) "muc"
 		modules_enabled: append {
 			"s2s_status";
 		}
+	end
+
+	if ENV_SNIKKET_TWEAK_GC3 == "1" then
+		muc_enable_experimental_gc3 = true;
 	end
 
 	restrict_room_creation = "local"

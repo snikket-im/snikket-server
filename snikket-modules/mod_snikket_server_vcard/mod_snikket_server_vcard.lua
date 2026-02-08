@@ -58,6 +58,6 @@ module:hook("presence/initial", function (event)
 		:tag("x", { xmlns = "vcard-temp:x:update" })
 			:text_tag("photo", avatar_hash)
 		:up();
-	module:log("info", "Sending avatar hash: %s", pres);
+	module:log("debug", "Sending avatar hash: %s", pres);
 	event.origin.send(pres);
 end);
