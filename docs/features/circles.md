@@ -14,7 +14,7 @@ Circles have the following features:
   same circle on their contact list, with no need to add contacts manually.
 - Circles can have one or more group chats, which automatically include all
   the circle members.
-- One person can be a member of multiple circles.
+- People can be members of multiple circles.
 
 For example, Ruby Lightfoot run a Snikket instance for her family. All Ruby's
 family members are in a circle called 'Family' which she created. Ruby also
