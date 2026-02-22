@@ -73,13 +73,14 @@ To       Action    From
 Snikket  ALLOW     Anywhere
 ```
 
-Create the following file at `/etc/ufw/applications.d/ufw-snikket`. I have opted to open UDP ports 6000-6200 in the following example, but you should change this to reflect which TURN ports your Snikket configuration specifies.
+Create the following file at `/etc/ufw/applications.d/ufw-snikket`.
+If you [changed the TURN server port range](#changing-the-turnserver-port-range) then you should change the last part (`49152:65535/udp`) to reflect this.
 
 ```
 [Snikket]
 title=Snikket Server
 description=Simple XMPP Server
-ports=80/tcp|443/tcp|5222/tcp|5269/tcp|5000/tcp|3478|3479|5349|5350|6000:6200/udp
+ports=80/tcp|443/tcp|5222/tcp|5269/tcp|5000/tcp|3478|3479|5349|5350|49152:65535/udp
 ```
 
 Add the new rule:
