@@ -84,6 +84,19 @@ Optional. **Public.** Email address to which people should send abuse reports. I
 
 Optional. **Public.** Email address to which people should send security reports. It will be publicly visible to the XMPP network and on the instance website.
 
+### `SNIKKET_TLS_PROFILE`
+
+Specify the TLS profile to use for chat connections. You only need this if you
+have trouble connecting some older devices to connect to your server.
+
+Valid options:
+
+- `modern` - the default, strongest security. Compatible with Android 10+, iOS 12+.
+- `intermediate` - wide compatibility with older devices, high security level
+- `old` - compatibility with very old devices, not generally recommended
+
+The profiles are based on [Mozilla's server-side TLS profiles](https://wiki.mozilla.org/Security/Server_Side_TLS).
+
 ### `SNIKKET_WEB_AVATAR_CACHE_TTL`
 
 The time (in seconds) for which the web portal will allow avatars to be cached by browsers.
