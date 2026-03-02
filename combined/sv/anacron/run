@@ -1,0 +1,5 @@
+#!/bin/sh -e
+
+while /usr/sbin/anacron -d -n; do
+	sleep 3600;
+done
