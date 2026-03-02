@@ -1,0 +1,12 @@
+services:
+  snikket_allinone:
+    container_name: snikket-allinone
+    image: snikket/snikket-allinone:dev
+    env_file: ../snikket.conf
+    network_mode: host
+    volumes:
+      - snikket_data:/snikket
+    restart: "unless-stopped"
+
+volumes:
+  snikket_data:
