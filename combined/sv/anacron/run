@@ -1,5 +1,19 @@
 #!/bin/sh -e
 
+SNIKKET_DOMAIN_ASCII="${SNIKKET_DOMAIN_ASCII:-$(idn2 "$SNIKKET_DOMAIN")}"
+HTTP_PORT="${SNIKKET_TWEAK_HTTP_PORT:-80}"
+
+echo "Waiting for nginx listener on 127.0.0.1:${HTTP_PORT} ..."
+while ! nc -z 127.0.0.1 "$HTTP_PORT" >/dev/null 2>&1; do
+	sleep 1;
+done
+
+echo "Waiting for HTTP readiness for host ${SNIKKET_DOMAIN_ASCII} ..."
+while ! curl -fsS -o /dev/null -H "Host: ${SNIKKET_DOMAIN_ASCII}" "http://127.0.0.1:${HTTP_PORT}/" >/dev/null 2>&1; do
+	sleep 1;
+done
+
+echo "HTTP readiness confirmed, starting anacron loop."
 while /usr/sbin/anacron -d -n; do
 	sleep 3600;
 done
