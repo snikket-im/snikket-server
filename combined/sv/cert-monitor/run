@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ "${SNIKKET_TWEAK_WEB_PROXY:-1}" = "0" ]; then
+	echo "Built-in web proxy disabled by environment, not launching cert-monitor."
+	exit 0;
+fi
+
 export SNIKKET_DOMAIN_ASCII=$(idn2 "$SNIKKET_DOMAIN")
 
 CERT_PATH="/snikket/letsencrypt/live/$SNIKKET_DOMAIN_ASCII/fullchain.pem"
