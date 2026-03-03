@@ -1,3 +1,8 @@
 #!/bin/sh -e
 
+if [ "${SNIKKET_TWEAK_WEB_PROXY:-1}" = "0" ]; then
+	echo "Built-in web proxy disabled by environment, not launching nginx."
+	exit 0;
+fi
+
 exec /usr/sbin/nginx -g "daemon off;"
