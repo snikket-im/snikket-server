@@ -12,6 +12,24 @@ if [ -z "${SNIKKET_ADMIN_EMAIL:-}" ]; then
     exit 1
 fi
 
+WEB_PROXY="${SNIKKET_TWEAK_WEB_PROXY:-1}"
+CERT_MANAGER="${SNIKKET_TWEAK_CERT_MANAGER:-1}"
+
+if [ "$WEB_PROXY" != "0" ] && [ "$WEB_PROXY" != "1" ]; then
+    echo "SNIKKET_TWEAK_WEB_PROXY must be 0 or 1 (got: $WEB_PROXY)"
+    exit 1
+fi
+
+if [ "$CERT_MANAGER" != "0" ] && [ "$CERT_MANAGER" != "1" ]; then
+    echo "SNIKKET_TWEAK_CERT_MANAGER must be 0 or 1 (got: $CERT_MANAGER)"
+    exit 1
+fi
+
+if [ "$WEB_PROXY" = "0" ] && [ "$CERT_MANAGER" = "1" ]; then
+    echo "Invalid config: SNIKKET_TWEAK_CERT_MANAGER=1 requires SNIKKET_TWEAK_WEB_PROXY=1. Set SNIKKET_TWEAK_CERT_MANAGER=0 when using an external gateway."
+    exit 1
+fi
+
 export SNIKKET_DOMAIN_ASCII
 SNIKKET_DOMAIN_ASCII=$(idn2 "$SNIKKET_DOMAIN")
 
@@ -53,6 +71,12 @@ chown -R prosody:prosody /var/spool/anacron /var/run/prosody /snikket/prosody /e
 
 if ! chown -R letsencrypt:letsencrypt /snikket/letsencrypt /var/lib/letsencrypt /var/log/letsencrypt /var/www/html/.well-known/acme-challenge; then
     echo "WW: Failed to adjust the permissions of some letsencrypt files/directories"
+fi
+
+if [ "$CERT_MANAGER" = "0" ]; then
+    chmod 0644 /etc/cron.daily/certbot
+else
+    chmod 0555 /etc/cron.daily/certbot
 fi
 
 if ! test -f /snikket/prosody/turn-auth-secret-v2; then
@@ -104,17 +128,21 @@ prosodyctl mod_migrate_snikket_roles migrate "$SNIKKET_DOMAIN"
 CERT_PATH="/snikket/letsencrypt/live/$SNIKKET_DOMAIN_ASCII/fullchain.pem"
 PROTOS="${SNIKKET_TWEAK_WEB_PROXY_PROTOS:-http https}"
 
-if test -f "$CERT_PATH"; then
-    /usr/local/bin/render-template.sh "/etc/nginx/templates/snikket-common" "/etc/nginx/snippets/snikket-common.conf"
-    for proto in $PROTOS; do
-        /usr/local/bin/render-template.sh "/etc/nginx/templates/$proto" "/etc/nginx/sites-enabled/$proto"
-    done
-else
-    /usr/local/bin/render-template.sh "/etc/nginx/templates/startup" "/etc/nginx/sites-enabled/startup"
-fi
+if [ "$WEB_PROXY" = "1" ]; then
+    if test -f "$CERT_PATH"; then
+        /usr/local/bin/render-template.sh "/etc/nginx/templates/snikket-common" "/etc/nginx/snippets/snikket-common.conf"
+        for proto in $PROTOS; do
+            /usr/local/bin/render-template.sh "/etc/nginx/templates/$proto" "/etc/nginx/sites-enabled/$proto"
+        done
+    else
+        /usr/local/bin/render-template.sh "/etc/nginx/templates/startup" "/etc/nginx/sites-enabled/startup"
+    fi
 
-if [ "${#SNIKKET_DOMAIN_ASCII}" -gt 35 ]; then
-    sed 's/server_names_hash_bucket_size .*$/server_names_hash_bucket_size 128;/' /etc/nginx/nginx.conf
+    if [ "${#SNIKKET_DOMAIN_ASCII}" -gt 35 ]; then
+        sed 's/server_names_hash_bucket_size .*$/server_names_hash_bucket_size 128;/' /etc/nginx/nginx.conf
+    fi
+else
+    echo "Built-in web proxy disabled by environment."
 fi
 
 exec s6-svscan /etc/sv
