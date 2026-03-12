@@ -149,6 +149,16 @@ Controls the highest port number used for TURN relay services.
 
 See [the firewall docs](../firewall) for details.
 
+### `SNIKKET_TWEAK_TURNSERVER_INTERNAL_IP`
+
+If your Snikket server is behind a NAT, you can set this option to the
+internal IP address of your server which will receive incoming traffic
+(otherwise Snikket will pick the first internal IP it finds). Although it's
+not ideal to run a TURN server behind a NAT, providing the correct internal IP
+address helps to make TURN more reliable.
+
+**Note:** It's important that your NAT preserves port numbers when routing,
+i.e. `<external ip>:1234` **MUST** be routed to `<internal ip>:1234`.
 
 ## Arcane Configuration Reference
 

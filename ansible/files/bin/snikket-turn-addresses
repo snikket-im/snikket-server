@@ -5,23 +5,92 @@ package.loaded["prosody.net.server"] = require "prosody.net.server_epoll";
 local net = require "prosody.util.net";
 local ip = require "prosody.util.ip";
 local dns = require "prosody.net.unbound".dns;
+local set = require "prosody.util.set";
 
 local host_name = assert(arg[1], "no domain specified");
-local addresses = net.local_addresses();
+local ordered_addresses = net.local_addresses();
+local local_addresses = set.new(ordered_addresses);
 
-local ip_addr = ip.new_ip(addresses[1]);
+local function get_public_ips()
+	local ipv4_record = dns.lookup(host_name, "A");
+	local ipv6_record = dns.lookup(host_name, "AAAA");
 
-if not ip_addr.private then
-	-- Not a private address, no mapping needed
-	print(ip_addr);
-	os.exit(0)
+	return ipv4_record and ipv4_record[1] and ipv4_record[1].a,
+	       ipv6_record and ipv6_record[1] and ipv6_record[1].aaaa;
 end
 
-local dns_record = dns.lookup(host_name, ip_addr.proto == "IPv6" and "AAAA" or "A")
-if not dns_record or #dns_record == 0 then
-	io.stderr:write(("ERROR: No external address found for %s on %s\n"):format(ip_addr.proto, host_name));
+local function selected(external, internal)
+	if internal then
+		print(tostring(external).."/"..tostring(internal));
+	else
+		print(external);
+	end
+	os.exit(0);
+end
+
+local public_v4, public_v6 = get_public_ips();
+
+if not public_v4 and not public_v6 then
+	io.stderr:write("WARN: Unable to determine external IP address from DNS\n");
+	for _, address in ipairs(ordered_addresses) do
+		local ip_addr = ip.new_ip(address);
+		if ip_addr and not ip_addr.private then
+			if not public_v4 and ip_addr.proto == "IPv4" then
+				public_v4 = tostring(ip_addr);
+				io.stderr:write("WARN: Guessing ", public_v4, " as probable public IPv4 address\n");
+			end
+			if not public_v6 and ip_addr.proto == "IPv6" then
+				public_v6 = tostring(ip_addr);
+				io.stderr:write("WARN: Guessing ", public_v6, " as probable public IPv6 address\n");
+			end
+		end
+		if public_v6 and public_v4 then
+			break;
+		end
+	end
+	if not public_v4 and not public_v6 then
+		io.stderr:write("ERROR: Unable to determine any public IP addresses, required for TURN\n");
+		os.exit(1);
+	end
+end
+
+
+if public_v4 and local_addresses:contains(public_v4) then
+	print(public_v4);
+	os.exit(0);
+end
+
+if public_v6 and local_addresses:contains(public_v6) then
+	print(public_v6);
+	os.exit(0);
+end
+
+-- Find a private IP to map to
+io.stderr:write("WARN: Public IP address is not associated with this server, STUN/TURN may be unreliable behind NATs\n");
+
+local preferred_internal_ip = os.getenv("SNIKKET_TWEAK_TURNSERVER_INTERNAL_IP");
+if preferred_internal_ip and local_addresses:contains(preferred_internal_ip) then
+	local ip_addr = ip.new_ip(preferred_internal_ip);
+	if ip_addr then
+		if ip_addr.proto == "IPv6" and public_v6 then
+			if public_v6 then
+				return selected(public_v6, ip_addr);
+			end
+		end
+
+		return selected(public_v4 or public_v6, ip_addr);
+	else
+		io.stderr:write("WARN: SNIKKET_TWEAK_TURN_INTERNAL_IP is not a valid IP address: ", preferred_internal_ip, "\n");
+	end
+end
+
+if local_addresses:empty() then
+	io.stderr:write("ERROR: Unable to determine external/internal IP address for TURN server\n");
 	os.exit(1);
 end
 
-local external_ip = assert(dns_record[1].a or dns_record[1].aaaa, "Unable to resolve external IP from DNS");
-print(external_ip.."/"..tostring(ip_addr));
+io.stderr:write("WARN: No internal address specified with SNIKKET_TWEAK_TURN_INTERNAL_IP, defaulting to ", ordered_addresses[1], "\n");
+
+local ip_addr = ip.new_ip(ordered_addresses[1]);
+
+return selected(public_v4 or public_v6, ip_addr);
