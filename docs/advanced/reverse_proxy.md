@@ -160,8 +160,9 @@ For a simple configuration that only proxies the Snikket web portal, the followi
 http://chat.example.com,
 http://groups.chat.example.com,
 http://share.chat.example.com {
-    header_up Host {host}
-    reverse_proxy localhost:5080
+    reverse_proxy localhost:5080 {
+        header_up Host {host}
+    }
 }
 
 chat.example.com,
