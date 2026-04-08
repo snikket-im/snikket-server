@@ -396,6 +396,9 @@ Component ("groups."..DOMAIN) "muc"
 
 	restrict_room_creation = "local"
 
+	-- Remove archived messages in MUC after N days
+	muc_log_expires_after = ("%dd"):format(RETENTION_DAYS)
+
 	-- Some older deployments may have the general@ MUC, so we still need
 	-- to protect it:
 	muc_local_only = { "general@groups."..DOMAIN }
