@@ -10,6 +10,7 @@ local DOMAIN = Lua.assert(ENV_SNIKKET_DOMAIN, "Please set the SNIKKET_DOMAIN env
 
 local RETENTION_DAYS = Lua.tonumber(ENV_SNIKKET_RETENTION_DAYS) or 7;
 local UPLOAD_STORAGE_GB = Lua.tonumber(ENV_SNIKKET_UPLOAD_STORAGE_GB);
+local DAILY_UPLOAD_LIMIT_PER_USER_GB = Lua.tonumber(ENV_SNIKKET_DAILY_UPLOAD_LIMIT_PER_USER_GB);
 
 if Lua.prosody.process_type == "prosody" and not Lua.prosody.config_loaded then
 	-- Wait at startup for certificates
@@ -425,7 +426,9 @@ Component ("share."..DOMAIN) "http_file_share"
 	-- allow files up to the size limit even if they are encrypted.
 	http_file_share_size_limit = (1024 * 1024 * 100) + 16 -- 100MB + 16 bytes
 	http_file_share_expires_after = 60 * 60 * 24 * RETENTION_DAYS -- N days
-
+	if DAILY_UPLOAD_LIMIT_PER_USER_GB then
+		http_file_share_daily_quota = 1024 * 1024 * 1024 * DAILY_UPLOAD_LIMIT_PER_USER_GB
+	end
 	if UPLOAD_STORAGE_GB then
 		http_file_share_global_quota = 1024 * 1024 * 1024 * UPLOAD_STORAGE_GB
 	end
