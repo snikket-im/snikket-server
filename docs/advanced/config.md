@@ -56,6 +56,19 @@ SNIKKET_UPLOAD_STORAGE_GB=1.5
 
 The amount of file storage used is affected by the configured retention period (7 days by default) - i.e. longer retention periods will mean files are stored for longer, and more space will be used. Take this into account when choosing a value.
 
+### `SNIKKET_DAILY_UPLOAD_LIMIT_PER_USER_GB`
+
+Use this option to define an upload limit for each user. By default the daily upload limit per user is set to 1 GB (it equals ten times the maximum file size, which is currently defined as 100 MB).
+
+If the limit is reached, the affected user will be unable to upload new files and has to wait for the next day.
+
+Example:
+
+```
+# Allow no more than 1.5GB disk space to be used by uploaded files
+SNIKKET_DAILY_UPLOAD_LIMIT_PER_USER_GB=1.5
+```
+
 ### `SNIKKET_LOGLEVEL`
 
 Control the detail level of the log output of the snikket server.
