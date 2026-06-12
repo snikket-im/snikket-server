@@ -139,7 +139,7 @@ if [ "$WEB_PROXY" = "1" ]; then
     fi
 
     if [ "${#SNIKKET_DOMAIN_ASCII}" -gt 35 ]; then
-        sed 's/server_names_hash_bucket_size .*$/server_names_hash_bucket_size 128;/' /etc/nginx/nginx.conf
+        sed -i 's/server_names_hash_bucket_size .*$/server_names_hash_bucket_size 128;/' /etc/nginx/nginx.conf
     fi
 else
     echo "Built-in web proxy disabled by environment."
