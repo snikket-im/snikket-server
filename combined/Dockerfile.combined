@@ -1,0 +1,104 @@
+FROM debian:bookworm-slim AS portal-build
+
+RUN set -eu; \
+    export DEBIAN_FRONTEND=noninteractive; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+        python3 python3-mypy python3-dotenv python3-toml python3-babel python3-distutils \
+        sassc make; \
+    rm -rf /var/lib/apt/lists/*
+
+COPY combined/src/snikket-web-portal/ /opt/snikket-web-portal/
+WORKDIR /opt/snikket-web-portal
+RUN make
+
+
+FROM debian:bookworm-slim
+
+ARG BUILD_SERIES=dev
+ARG BUILD_ID=0
+
+ENV LANG=C.UTF-8
+ENV SNIKKET_WEB_PYENV=/etc/snikket-web-portal/env.py
+ENV SNIKKET_WEB_PROSODY_ENDPOINT=http://127.0.0.1:5280/
+
+VOLUME ["/snikket"]
+
+RUN install -d -m 755 \
+    /snikket \
+    /opt/snikket-web-portal \
+    /etc/snikket-web-portal \
+    /etc/nginx/templates \
+    /etc/nginx/snippets \
+    /etc/nginx/sites-enabled
+
+COPY tools/smtp-url-to-msmtp.lua /usr/local/bin/smtp-url-to-msmtp
+COPY ansible /opt/ansible
+COPY snikket-modules /usr/local/lib/snikket-modules
+
+RUN set -eu; \
+    chmod 0550 /usr/local/bin/smtp-url-to-msmtp; \
+    export DEBIAN_FRONTEND=noninteractive; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+        software-properties-common ca-certificates \
+        gpg gpg-agent \
+        ansible python3-passlib \
+        build-essential \
+        certbot anacron idn2 jq curl \
+        nginx s6 gettext-base libjs-bootstrap4 libjs-jquery \
+        netcat-traditional python3 python3-setuptools python3-pip \
+        python3-aiohttp python3-email-validator python3-flask-babel \
+        python3-flaskext.wtf python3-hsluv python3-hypercorn \
+        python3-quart python3-typing-extensions python3-wtforms; \
+    c_rehash; \
+    ansible-playbook -c local -i localhost, --extra-vars "ansible_python_interpreter=/usr/bin/python3" /opt/ansible/snikket.yml; \
+    pip3 install --break-system-packages environ-config; \
+    apt-get remove --purge -y \
+         ansible \
+         software-properties-common \
+         gpg gpg-agent \
+         python3-passlib \
+         build-essential \
+         python3-pip python3-setuptools; \
+    apt-get autoremove -y; \
+    rm -f /etc/nginx/sites-enabled/default; \
+    if [ -f /etc/cron.daily/0anacron ]; then mv /etc/cron.daily/0anacron /tmp/0anacron; fi; \
+    rm -f /etc/cron.daily/* /etc/cron.d/*; \
+    if [ -f /tmp/0anacron ]; then mv /tmp/0anacron /etc/cron.daily/0anacron; fi; \
+    rm -rf /var/lib/apt/lists/* /var/cache/* /root/.cache; \
+    useradd -md /snikket/letsencrypt letsencrypt
+
+COPY --from=portal-build /opt/snikket-web-portal/snikket_web/ /opt/snikket-web-portal/snikket_web/
+COPY combined/src/snikket-web-portal/babel.cfg /opt/snikket-web-portal/babel.cfg
+COPY combined/src/snikket-web-portal/docker/env.py /etc/snikket-web-portal/env.py
+
+COPY combined/src/snikket-web-proxy/render-template.sh /usr/local/bin/render-template.sh
+COPY combined/src/snikket-web-proxy/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY combined/src/snikket-web-proxy/nginx/snikket-common.template /etc/nginx/templates/snikket-common
+COPY combined/src/snikket-web-proxy/nginx/startup.template /etc/nginx/templates/startup
+COPY combined/src/snikket-web-proxy/nginx/http.template /etc/nginx/templates/http
+COPY combined/src/snikket-web-proxy/nginx/https.template /etc/nginx/templates/https
+COPY combined/src/snikket-web-proxy/static /var/www/html/static
+COPY combined/src/snikket-web-proxy/startup.html /var/www/html/index.html
+COPY combined/src/snikket-web-proxy/error-pages /var/www/html/_errors
+
+COPY ansible/files/refresh-certs.cron /etc/cron.daily/refresh-certs
+COPY combined/src/snikket-cert-manager/certbot.cron /etc/cron.daily/certbot
+COPY combined/src/snikket-cert-manager/wait_for_http.py /usr/local/bin/wait_for_http.py
+COPY combined/src/snikket-cert-manager/tools/report-error.sh /usr/local/bin/report-error.sh
+
+COPY combined/sv /etc/sv
+COPY combined/combined-entrypoint.sh /bin/entrypoint.sh
+
+RUN set -eu; \
+    echo "Snikket ${BUILD_SERIES} ${BUILD_ID}" > /usr/lib/prosody/snikket.version; \
+    echo "${BUILD_SERIES} ${BUILD_ID}" > /opt/snikket-web-portal/.app_version; \
+    chmod 0555 /etc/cron.daily/refresh-certs /etc/cron.daily/certbot; \
+    chmod 0755 /usr/local/bin/render-template.sh /usr/local/bin/wait_for_http.py /usr/local/bin/report-error.sh; \
+    chmod 0770 /bin/entrypoint.sh; \
+    find /etc/sv -type f -name run -exec chmod 0750 {} +; \
+    find /etc/sv -type f -name finish -exec chmod 0750 {} +; \
+    sed -i 's|--webroot-path /var/www|--webroot-path /var/www/html|' /etc/cron.daily/certbot
+
+ENTRYPOINT ["/bin/entrypoint.sh"]
