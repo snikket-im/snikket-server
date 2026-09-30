@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 
 ARG BUILD_SERIES=dev
 ARG BUILD_ID=0
@@ -23,7 +23,7 @@ ENV LANG=C.UTF-8
 
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-        software-properties-common ca-certificates \
+        ca-certificates \
         gpg gpg-agent \
         ansible python3-passlib \
         build-essential\
@@ -31,7 +31,6 @@ RUN apt-get update \
     && ansible-playbook -c local -i localhost, --extra-vars "ansible_python_interpreter=/usr/bin/python3" /opt/ansible/snikket.yml \
     && apt-get remove --purge -y \
          ansible \
-         software-properties-common \
          gpg gpg-agent \
          python3-passlib \
          build-essential \
