@@ -162,6 +162,7 @@
     - mod_snikket_server_vcard
     - mod_snikket_billing
     - mod_snikket_version
+    - mod_snikket_web_portal_login
 
 - name: "Install mod_firewall rules"
   copy:

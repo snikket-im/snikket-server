@@ -105,6 +105,7 @@ modules_enabled = {
 		"admin_blocklist";
 		"snikket_server_vcard";
 		"snikket_version"; -- Replies to server version requests
+		"snikket_web_portal_login";
 		"account_activity";
 		"migrate_lastlog2"; -- Automatically migrate data from mod_lastlog2 if necessary
 		"protect_last_admin";
