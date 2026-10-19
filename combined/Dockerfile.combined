@@ -1,19 +1,24 @@
-FROM debian:bookworm-slim AS portal-build
+FROM debian:trixie-slim AS portal-build
 
 RUN set -eu; \
     export DEBIAN_FRONTEND=noninteractive; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
-        python3 python3-mypy python3-dotenv python3-toml python3-babel python3-distutils \
+        python3 python3-venv python3-dev python3-babel build-essential \
         sassc make; \
     rm -rf /var/lib/apt/lists/*
 
-COPY combined/src/snikket-web-portal/ /opt/snikket-web-portal/
 WORKDIR /opt/snikket-web-portal
+COPY combined/src/snikket-web-portal/requirements.txt ./requirements.txt
+RUN python3 -m venv /opt/snikket-web-portal/venv \
+    && venv/bin/pip install --no-cache-dir -r requirements.txt
+COPY combined/src/snikket-web-portal/Makefile ./Makefile
+COPY combined/src/snikket-web-portal/babel.cfg ./babel.cfg
+COPY combined/src/snikket-web-portal/snikket_web/ ./snikket_web/
 RUN make
 
 
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 
 ARG BUILD_SERIES=dev
 ARG BUILD_ID=0
@@ -41,34 +46,32 @@ RUN set -eu; \
     export DEBIAN_FRONTEND=noninteractive; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
-        software-properties-common ca-certificates \
+        ca-certificates \
         gpg gpg-agent \
         ansible python3-passlib \
         build-essential \
         certbot anacron idn2 jq curl \
         nginx s6 gettext-base libjs-bootstrap4 libjs-jquery \
-        netcat-traditional python3 python3-setuptools python3-pip \
-        python3-aiohttp python3-email-validator python3-flask-babel \
-        python3-flaskext.wtf python3-hsluv python3-hypercorn \
-        python3-quart python3-typing-extensions python3-wtforms; \
+        netcat-traditional python3; \
     c_rehash; \
     ansible-playbook -c local -i localhost, --extra-vars "ansible_python_interpreter=/usr/bin/python3" /opt/ansible/snikket.yml; \
-    pip3 install --break-system-packages environ-config; \
     apt-get remove --purge -y \
          ansible \
-         software-properties-common \
          gpg gpg-agent \
          python3-passlib \
-         build-essential \
-         python3-pip python3-setuptools; \
+         build-essential; \
     apt-get autoremove -y; \
     rm -f /etc/nginx/sites-enabled/default; \
     if [ -f /etc/cron.daily/0anacron ]; then mv /etc/cron.daily/0anacron /tmp/0anacron; fi; \
     rm -f /etc/cron.daily/* /etc/cron.d/*; \
     if [ -f /tmp/0anacron ]; then mv /tmp/0anacron /etc/cron.daily/0anacron; fi; \
     rm -rf /var/lib/apt/lists/* /var/cache/* /root/.cache; \
-    useradd -md /snikket/letsencrypt letsencrypt
+    useradd -md /snikket/letsencrypt letsencrypt; \
+    useradd --system --no-create-home --home-dir /nonexistent --shell /usr/sbin/nologin snikket-portal; \
+    chown snikket-portal:snikket-portal /etc/snikket-web-portal
 
+COPY --from=portal-build /opt/snikket-web-portal/venv/ /opt/snikket-web-portal/venv/
+COPY combined/upstreams.lock /usr/local/share/snikket/combined-upstreams.lock
 COPY --from=portal-build /opt/snikket-web-portal/snikket_web/ /opt/snikket-web-portal/snikket_web/
 COPY combined/src/snikket-web-portal/babel.cfg /opt/snikket-web-portal/babel.cfg
 COPY combined/src/snikket-web-portal/docker/env.py /etc/snikket-web-portal/env.py

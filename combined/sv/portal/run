@@ -15,4 +15,4 @@ export SNIKKET_TWEAK_PORTAL_INTERNAL_HTTP_PORT="${SNIKKET_TWEAK_PORTAL_INTERNAL_
 
 cd /opt/snikket-web-portal
 
-exec hypercorn -b "${SNIKKET_TWEAK_PORTAL_INTERNAL_HTTP_INTERFACE}:${SNIKKET_TWEAK_PORTAL_INTERNAL_HTTP_PORT}" --access-logfile=- --log-file=- 'snikket_web:create_app()'
+exec s6-setuidgid snikket-portal /opt/snikket-web-portal/venv/bin/hypercorn -b "${SNIKKET_TWEAK_PORTAL_INTERNAL_HTTP_INTERFACE}:${SNIKKET_TWEAK_PORTAL_INTERNAL_HTTP_PORT}" --access-logfile=- --log-file=- 'snikket_web:create_app()'
