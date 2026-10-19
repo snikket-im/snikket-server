@@ -1,0 +1,30 @@
+name: Combined image
+on:
+  pull_request:
+    paths:
+      - 'combined/**'
+      - 'ansible/**'
+      - 'snikket-modules/**'
+      - 'tools/**'
+      - '.github/workflows/combined.yml'
+  push:
+    branches: [master]
+    paths:
+      - 'combined/**'
+      - 'ansible/**'
+      - 'snikket-modules/**'
+      - 'tools/**'
+      - '.github/workflows/combined.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - run: ./combined/scripts/fetch-upstreams.sh
+      - run: docker build -f combined/Dockerfile.combined -t snikket-combined:test .
+      - run: ./combined/tests/smoke.sh
+      - run: ./combined/tests/acme.sh
