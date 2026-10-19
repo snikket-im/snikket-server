@@ -42,7 +42,8 @@ function module.command(arg)
 		print("II: Migrating roles...");
 		local migrated, failed, skipped = do_migration(migrate_host);
 		print(("II: %d migrated, %d failed, %d skipped"):format(migrated, failed, skipped));
-		return (failed + skipped == 0) and 0 or 1;
+		-- Already-migrated roles are not failures.
+		return (failed == 0) and 0 or 1;
 	else
 		print("EE: Unknown command: "..(arg[1] or "<none given>"));
 		print("    Hint: try 'migrate'?");
