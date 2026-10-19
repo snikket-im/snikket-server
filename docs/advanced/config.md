@@ -106,14 +106,9 @@ The profiles are based on the profiles published by the [TLSref project](https:/
 
 Valid options:
 
-- `modern` - the strongest security. ~~Compatible with Android 10+, iOS 12+.~~
-- `intermediate` - wide compatibility with older devices, high security level - the default
-- `old` - compatibility with very old devices, not generally recommended
-
-**Note:** The `modern` profile is not currently compatible with some apps,
-including current versions of Snikket iOS. We intend to switch to the `modern`
-profile by default in a future release - after we have assessed the impact and
-ensured sufficient compatibility.
+- `modern` - the strongest security. Compatible with Android 10+, iOS 12+. The default.
+- `intermediate` - wide compatibility with older devices, high security level.
+- `old` - compatibility with very old devices, not generally recommended.
 
 ### `SNIKKET_TLS_PROFILE_VERSION`
 
