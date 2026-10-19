@@ -1,4 +1,0 @@
-volumes:
-  snikket_data:
-    external: true
-    name: ${SNIKKET_DATA_VOLUME:?Set SNIKKET_DATA_VOLUME to the existing Snikket volume}

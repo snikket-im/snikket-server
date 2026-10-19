@@ -33,28 +33,25 @@ The following assumes the standard named `/snikket` volume. For a custom bind
 mount, supply an equivalent mount override instead. Preserve your original
 Compose file, configuration and image versions for rollback.
 
-Before stopping the old stack, find its volume and take a backup using your
-usual backup procedure:
+Build the combined image as above and take a backup using your usual procedure.
+Before stopping the old stack, record its Compose project name:
 
 ```sh
-export SNIKKET_DATA_VOLUME=$(docker inspect snikket --format '{{range .Mounts}}{{if eq .Destination "/snikket"}}{{.Name}}{{end}}{{end}}')
-test -n "$SNIKKET_DATA_VOLUME"
-docker volume inspect "$SNIKKET_DATA_VOLUME"
+export COMPOSE_PROJECT_NAME=$(docker inspect snikket --format '{{index .Config.Labels "com.docker.compose.project"}}')
+test -n "$COMPOSE_PROJECT_NAME"
 ```
 
-Build the combined image as above. Stop the old stack with its original Compose
-file and project options (`docker compose ... down`, **without `-v`**). Then run:
+Stop the old stack with its original Compose file and project options
+(`docker compose ... down`, **without `-v`**). Then run:
 
 ```sh
-docker compose -f combined/docker-compose.combined.yml \
-  -f combined/docker-compose.migrate.yml up -d
+docker compose -p "$COMPOSE_PROJECT_NAME" -f combined/docker-compose.combined.yml up -d
 ```
 
-The migration override requires `SNIKKET_DATA_VOLUME` and uses that existing
-volume; it cannot silently create an empty replacement. Keep using both files
-and the same variable for later Compose operations. Without the override, the
-file under `combined/` derives a different default project/volume name from the
-old root Compose file.
+Both Compose files use the volume key `snikket_data`, so keeping the same project
+name reuses the existing data. No data conversion is required. Keep using this
+project name for later Compose operations; otherwise the file under `combined/`
+defaults to a different project name.
 
 Verify login, users, messages, uploads and certificates before retiring the old
 configuration. Existing backup/restore helpers still find container `snikket`.
