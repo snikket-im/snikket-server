@@ -1,5 +1,0 @@
-#!/bin/sh -e
-
-./wait-for-certs
-
-exec s6-setuidgid prosody /usr/bin/lua5.4 /usr/bin/prosody -F
