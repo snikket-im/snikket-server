@@ -1,6 +1,6 @@
 services:
   snikket_allinone:
-    container_name: snikket-allinone
+    container_name: snikket
     image: snikket/snikket-allinone:dev
     env_file: ../snikket.conf
     network_mode: host
