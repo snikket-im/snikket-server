@@ -4,26 +4,30 @@ local interpolation = require "prosody.util.interpolation";
 local render_url = interpolation.new("%b{}", urlencode);
 local render_text = interpolation.new("%b{}", function (s) return s; end);
 
-local security_notification = [[There is an important security release available
-for {software}. The latest secure version is {current.branch}.{latest.secure}.
+local function normalize(s)
+	return (s:gsub("(%S)\r?\n%f[%S]", "%1 "));
+end
+
+local security_notification = normalize [[There is an important security release
+available for {software}. The latest secure version is {current.branch}.{latest.secure}.
 You are currently running {software} {current.branch}.{current.level}.
 
 
 For more information please see: {url}
 ]];
 
-local version_notification = [[There is a new {software} release available. You are
-currently running {software} {current.branch}.{current.level}, and an upgrade to
+local version_notification = normalize [[There is a new {software} release available.
+You are currently running {software} {current.branch}.{current.level}, and an upgrade to
 {current.branch}.{latest.latest} is now available.
 
 For more information please see: {url}
 ]];
 
-local message_notification = [[There is a new announcement related to {software}, for more
+local message_notification = normalize [[There is a new announcement related to {software}, for more
 information please see: {url}
 ]];
 
-local support_notification = [[This version of {software} is no longer supported. For
+local support_notification = normalize [[This version of {software} is no longer supported. For
 more information please see: {url}
 ]]
 
