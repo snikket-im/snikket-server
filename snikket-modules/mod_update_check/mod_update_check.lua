@@ -28,7 +28,7 @@ function check_for_updates()
 	module:log("debug", "Checking for updates on %s...", record_name);
 	r:lookup(function (records)
 		if not records or #records == 0 then
-			module:log("warn", "Update check failed for %s", record_name);
+			module:log_status("warn", "Update check failed for %s", record_name);
 			return;
 		end
 		local result = {};
@@ -41,6 +41,7 @@ function check_for_updates()
 			end
 		end
 		module:log("debug", "Finished checking for updates");
+		module:set_status("info", "Last checked %s", os.date());
 		module:fire_event("update-check/result", { current = version_info, latest = result });
 	end, record_name, "TXT", "IN");
 	return check_interval;
@@ -50,6 +51,7 @@ function module.load()
 	if update_dns then
 		module:add_timer(5, check_for_updates);
 	else
-		module:log("warn", "Update notifications are disabled");
+		module:log("warn", "Update checks are disabled");
+		module:set_status("info", "Update checks are disabled");
 	end
 end

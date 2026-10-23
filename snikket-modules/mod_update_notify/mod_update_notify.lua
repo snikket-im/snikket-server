@@ -117,4 +117,6 @@ module:hook("update-check/result", function (event)
 			return;
 		end
 	end
+
+	module:set_status("info", "Up to date @ %s %s, checked %s", branch, event.current.level, os.date("%Y-%m-%d %H:%M"));
 end);
