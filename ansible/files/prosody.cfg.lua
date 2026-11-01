@@ -378,6 +378,14 @@ VirtualHost (DOMAIN)
 		}
 	end
 
+	if ENV_SNIKKET_SERVICE_OUTAGE_URL then
+		modules_enabled:append {
+			"service_outage_status";
+		}
+		outage_status_urls = {
+			ENV_SNIKKET_SERVICE_OUTAGE_URL
+		}
+	end
 
 Component ("groups."..DOMAIN) "muc"
 	modules_enabled = {
