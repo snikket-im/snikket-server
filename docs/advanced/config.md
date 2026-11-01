@@ -97,6 +97,10 @@ Optional. **Public.** Email address to which people should send abuse reports. I
 
 Optional. **Public.** Email address to which people should send security reports. It will be publicly visible to the XMPP network and on the instance website.
 
+### `SNIKKET_SERVICE_OUTAGE_URL`
+
+Optional. **Public.** URL to a JSON file where information about service outages can be reported. Should be hosted at a different location than the Snikket server. This allows checking during an outage whether it is e.g. due to planned maintenance, or communicate to users during unplanned outages. See [XEP-0455](https://xmpp.org/extensions/xep-0455.html) for syntax.
+
 ### `SNIKKET_TLS_PROFILE`
 
 Specify the TLS profile to use for chat connections. You only need this if you

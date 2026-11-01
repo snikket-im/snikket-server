@@ -114,6 +114,7 @@
     - mod_muc_offline_delivery
     - mod_http_host_status_check
     - mod_measure_process
+    - mod_service_outage_status
     - mod_spam_reporting
     - mod_watch_spam_reports
     - mod_muc_auto_reserve_nicks
